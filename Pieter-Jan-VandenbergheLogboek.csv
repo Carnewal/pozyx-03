@@ -7,3 +7,5 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 04/03/17,12:20,13:10,Extern,"Ontwerp databank sprint 1 afwerken",1,
 04/03/17,13:10,13:45,Extern,"Bespreking mocken van data met Rémy",4,
 04/03/17,13:45,14:05,Extern,"Ontwerp databank sprint 1 afwerken",1,
+04/03/17,15:50,17:00,Extern,"MariaDB lokaal installeren, configureren en aanmaken sql tabellen/kolommen",3,
+04/03/17,17:20,17:50,Extern,"MariaDB verbeteren tabellen en testen met dummy data",3,
