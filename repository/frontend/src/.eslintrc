@@ -1,0 +1,36 @@
+{
+    "plugins": [
+        "react"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6":     true,
+        "browser": true,
+        "node":    true,
+        "mocha":   true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+      "arrow-body-style": [2, "as-needed"],
+      "no-console": 1,
+      "no-unused-vars": [2, {
+        "args": "all",
+        "argsIgnorePattern": "^_$",
+        "vars": "all",
+        "varsIgnorePattern": "^_$"
+      }],
+      "no-var": 2,
+      "prefer-const": 2,
+      "react/jsx-indent-props": 0,
+      "jsx-quotes": [2, "prefer-single"]
+    }
+}
