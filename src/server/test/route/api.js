@@ -1,5 +1,6 @@
 import test from 'ava'
 import api from '../../src/route/api'
+import request from 'supertest'
 
 test('GET /tag/:id', async t => {
     t.plan(2)

@@ -106,7 +106,7 @@ api.get('/anchor', (req, res, next) => {
  * @apiSuccess {String} name  The tag's name.
  */
 api.get('/tag/:id', (req, res, next) => {
-  res.json({ id: req.params.id, color: '4286f4', name: 'Maximus' })
+  res.json({ id: parseInt(req.params.id), color: '4286f4', name: 'Maximus' })
 })
 
 export default api
