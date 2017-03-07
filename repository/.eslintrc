@@ -28,6 +28,8 @@
         "vars": "all",
         "varsIgnorePattern": "^_$"
       }],
+      "no-extra-semi": 1,
+      "semi": 0,
       "no-var": 2,
       "prefer-const": 2,
       "react/jsx-indent-props": 0,

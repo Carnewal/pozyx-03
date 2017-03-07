@@ -4,10 +4,16 @@
   "description": "Pozyx03 Indoor Positioning project.",
   "scripts": {
     "clean": "rimraf server/build && rimraf frontend/build",
+
     "build:frontend": "cross-env NODE_ENV=production webpack --config webpack.config.frontend.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.config.server.js",
+
     "test:frontend": "ava frontend/test",
     "test:server": "echo Currently unsupported",
+
+    "eslint:frontend": "eslint frontend/src",
+    "eslint:server": "eslint server/src",
+
     "build": "npm run clean && npm run build:frontend && npm run build:server",
     "dev": "cross-env NODE_ENV=development nodemon start.js",
     "prod": "cross-env NODE_ENV=production node start.js",
