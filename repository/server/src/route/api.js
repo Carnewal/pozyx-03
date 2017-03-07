@@ -54,7 +54,7 @@ api.delete('/tag/:id/label', (req, res, next) => {
  * @apiName GetAnchors
  * @apiGroup Anchor
  *
- * @apiSuccess {Object[]} anchor Array of all anchors
+ * @apiSuccess {Object[]} anchors Array of all anchors
  * @apiSuccess {Integer} anchors.anchorId The unique anchor id
  * @apiSuccess {String} anchors.anchorName The anchir name
  * @apiSuccess {Integer} anchors.mapId Id of the map this anchor exists on
@@ -66,6 +66,27 @@ api.delete('/tag/:id/label', (req, res, next) => {
  * @apiSuccess {Number} anchors.position.z The anchor's position z-coord
  * @apiSuccess {Integer} anchors.status The anchor's status
  * @apiSuccess {Number} anchors.timestamp The anchor's timestamp
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "anchors": [
+ *          {
+ *            "anchorId": 5,
+ *            "anchorName": "Maximus",
+ *            "mapId": 4,
+ *            "hardwareVersion": 12,
+ *            "firmwareVersion": 11,
+ *            "position": {
+ *              "x": 12.0000021,
+ *              "y": 105.12555,
+ *              "z": 0.04
+ *            },
+ *            "status": 0,
+ *            "timestamp": 123456789
+ *          }
+ *        ]
+ *      }
  */
 api.get('/anchor', (req, res, next) => {
   res.json([{ id: 0, color: '4286f4', name: 'Maximus' }])
