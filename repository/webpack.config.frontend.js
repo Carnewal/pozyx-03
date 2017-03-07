@@ -2,29 +2,29 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   entry: [
-    'eventsource-polyfill', // necessary for hot reloading with IE
-    'webpack-hot-middleware/client',
     './frontend/src/index'
   ],
   output: {
-    path: path.join(__dirname, 'server/frontend-build'),
+    path: path.join(__dirname, 'frontend/build'),
     filename: 'bundle.js',
     publicPath: '/frontend-build/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    })
   ],
   module: {
     loaders: [
       {
-        test: /\.js?/,
-        exclude: [/node_modules/, /styles/],
+        test: /\.js$/,
         loaders: ['babel-loader'],
         include: path.join(__dirname, 'frontend/src')
       },

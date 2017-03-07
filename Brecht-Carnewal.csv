@@ -1,5 +1,9 @@
 Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 21/02/16,08:15,12:15,Campus,"Voorstelling Pozyx, vragen, uitwerken user stories en backlog",,
 21/02/16,14:40,15:40,Extern,"Brainstorm in team",,
-24/02/16,15:30,17:00,Extern,"Opstart basis project (nodejs-react)",,
+24/02/16,15:30,17:00,Extern,"Opstart basis project (nodejs-react)",5,
 21/02/16,08:15,12:15,Campus,"Analyse",,
+05/03/17,14:00,15:30,Extern,"Project basis voorzien van testen",,
+05/03/17,14:00,15:00,Extern,"Consistent maken van de codebase",,
+06/03/17,22:00,23:30,Extern,"Toevoegen apidoc met voorbeeld, projectstructuur in orde zetten",,
+

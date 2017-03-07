@@ -16,7 +16,7 @@ class App extends Component {
     return (
       <div className='main-app-container'>
         <img width='380' src='/public/react.png' alt='React Image' />
-        <div className='main-app-nav'>Hot Redux Boilerplate</div>
+        <div className='main-app-nav'>Cool Redux Boilerplate</div>
         <Counter counter={counter} actions={actions} />
         <Footer />
       </div>
