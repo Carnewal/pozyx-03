@@ -13,6 +13,12 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/frontend-build/'
   },
+  resolve: {
+    alias: {
+      server: path.resolve(__dirname, 'server/src/'),
+      frontend: path.resolve(__dirname, 'frontend/src/')
+    }
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
