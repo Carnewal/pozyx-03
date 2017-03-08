@@ -5,10 +5,10 @@ import {shallow} from 'enzyme';
 //Placeholder tests.
 
 const Foo = ({children}) =>
-    <div className="Foo">
-        <span className="bar">bar</span>
+    <div className='Foo'>
+        <span className='bar'>bar</span>
         {children}
-        <span className="bar">bar</span>
+        <span className='bar'>bar</span>
     </div>;
 
 Foo.propTypes = {
@@ -28,8 +28,8 @@ test('renders two `.Bar`', t => {
 test('renders children when passed in', t => {
     const wrapper = shallow(
         <Foo>
-            <div className="unique"/>
+            <div className='unique'/>
         </Foo>
     );
-    t.true(wrapper.contains(<div className="unique"/>));
+    t.true(wrapper.contains(<div className='unique'/>));
 });

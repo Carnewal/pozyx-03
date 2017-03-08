@@ -2,7 +2,7 @@ import express from 'express'
 
 const api = new express()
 
-api.get('/', (req, res, next) => {
+api.get('/', (req, res, _next) => {
   res.json({working: true})
 })
 
@@ -28,7 +28,7 @@ api.get('/', (req, res, next) => {
  *       "z": 2
  *     }
  */
-api.get('/map', (req, res, next) => {
+api.get('/map', (_req, res, _next) => {
   res.json({
     "mapId": 1,
     "mapName": "Demo Map",
@@ -94,7 +94,7 @@ api.get('/map', (req, res, next) => {
  *        ]
  *      }
  */
-api.get('/tags', (req, res, next) => {
+api.get('/tags', (req, res, _next) => {
   res.json([{id: 0, color: '4286f4', name: 'Maximus'}])
 })
 
@@ -142,7 +142,7 @@ api.get('/tags', (req, res, next) => {
  *        ]
  *      }
  */
-api.get('/tag/:id/history', (req, res, next) => {
+api.get('/tag/:id/history', (req, res, _next) => {
   res.json({
     "tagId": 12,
     "interval": {
@@ -205,7 +205,7 @@ api.get('/tag/:id/history', (req, res, next) => {
  * @apiName DeleteTagLabel
  * @apiGroup Tag
  */
-api.delete('/tag/:id/label', (req, res, next) => {
+api.delete('/tag/:id/label', (req, res, _next) => {
   res.json({tagId: req.params.id, labelId: req.params.labelid, deleted: true})
 })
 
@@ -247,7 +247,7 @@ api.delete('/tag/:id/label', (req, res, next) => {
  *        ]
  *      }
  */
-api.get('/anchor', (req, res, next) => {
+api.get('/anchor', (req, res, _next) => {
   res.json([{id: 0, color: '4286f4', name: 'Maximus'}])
 })
 
@@ -263,7 +263,7 @@ api.get('/anchor', (req, res, next) => {
  * @apiSuccess {String} color The hexadecimal color of the tag.
  * @apiSuccess {String} name  The tag's name.
  */
-api.get('/tag/:id', (req, res, next) => {
+api.get('/tag/:id', (req, res, _next) => {
   res.json({id: req.params.id, color: '4286f4', name: 'Maximus'})
 })
 

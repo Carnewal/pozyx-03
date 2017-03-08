@@ -22,12 +22,7 @@
     "rules": {
       "arrow-body-style": [2, "as-needed"],
       "no-console": 1,
-      "no-unused-vars": [2, {
-        "args": "all",
-        "argsIgnorePattern": "^_$",
-        "vars": "all",
-        "varsIgnorePattern": "^_$"
-      }],
+      "no-unused-vars": [2, { "argsIgnorePattern": "^_" }],
       "no-extra-semi": 1,
       "semi": 0,
       "no-var": 2,

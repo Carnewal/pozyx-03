@@ -2,7 +2,7 @@
 
 Pozyx Indoor Positioning *Groep 3* Repo
 
-Authors: Rutger Benoot, Brecht Carnewal, Rémy D'heygere, Tom Dorchain, Pieter-Jan Vandenberge
+Authors: Rutger Benoot, Brecht Carnewal, Rémy D'heygere, Tom Dorchain, Pieter-Jan Vandenberge, Jonas Vermassen
 
 ***
 
