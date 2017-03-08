@@ -17,7 +17,7 @@
     "doc": "apidoc -i server/src/route -o server/public/apidoc"
   },
   "ava": {
-    "require": "babel-register",
+    "require": ["babel-register", "babel-polyfill"],
     "babel": "inherit"
   },
   "repository": {
