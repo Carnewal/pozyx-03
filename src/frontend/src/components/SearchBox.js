@@ -1,8 +1,8 @@
-import React from 'react';
-import TextField from 'material-ui/TextField';
-import {white, blue500} from 'material-ui/styles/colors';
-import IconButton from 'material-ui/IconButton';
-import Search from 'material-ui/svg-icons/action/search';
+import React from 'react'
+import TextField from 'material-ui/TextField'
+import {white, blue500} from 'material-ui/styles/colors'
+import IconButton from 'material-ui/IconButton'
+import Search from 'material-ui/svg-icons/action/search'
 
 const SearchBox = () => {
 
@@ -26,7 +26,7 @@ const SearchBox = () => {
       paddingLeft: 5,
       color: white
     }
-  };
+  }
 
   return (
     <div>
@@ -34,7 +34,7 @@ const SearchBox = () => {
         <Search color={white} />
       </IconButton>
       <TextField
-        hintText="Search..."
+        hintText='Search...'
         underlineShow={false}
         fullWidth={true}
         style={styles.textField}
@@ -42,7 +42,7 @@ const SearchBox = () => {
         hintStyle={styles.hintStyle}
       />
     </div>
-  );
-};
+  )
+}
 
-export default SearchBox;
+export default SearchBox

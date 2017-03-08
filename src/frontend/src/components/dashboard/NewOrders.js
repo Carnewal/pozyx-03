@@ -1,8 +1,8 @@
-import React, {PropTypes} from 'react';
-import Paper from 'material-ui/Paper';
-import {white, purple600, purple500} from 'material-ui/styles/colors';
-import {LineChart, Line, ResponsiveContainer} from 'recharts';
-import {typography} from 'material-ui/styles';
+import React, {PropTypes} from 'react'
+import Paper from 'material-ui/Paper'
+import {white, purple600, purple500} from 'material-ui/styles/colors'
+import {LineChart, Line, ResponsiveContainer} from 'recharts'
+import {typography} from 'material-ui/styles'
 
 const NewOrders = (props) => {
 
@@ -22,7 +22,7 @@ const NewOrders = (props) => {
       backgroundColor: purple600,
       padding: 10,
     }
-  };
+  }
 
   return (
     <Paper style={styles.paper}>
@@ -30,16 +30,16 @@ const NewOrders = (props) => {
       <div style={styles.div}>
         <ResponsiveContainer >
           <LineChart data={props.data}>
-            <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={2} />
+            <Line type='monotone' dataKey='pv' stroke='#8884d8' strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
       </div>
     </Paper>
-  );
-};
+  )
+}
 
 NewOrders.propTypes = {
   data: PropTypes.array
-};
+}
 
-export default NewOrders;
+export default NewOrders

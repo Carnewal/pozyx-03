@@ -1,13 +1,13 @@
-import React,  { PropTypes } from 'react';
-import Drawer from 'material-ui/Drawer';
-import {spacing, typography} from 'material-ui/styles';
-import {white, blue600} from 'material-ui/styles/colors';
-import MenuItem from 'material-ui/MenuItem';
-import {Link} from 'react-router';
-import Avatar from 'material-ui/Avatar';
+import React,  { PropTypes } from 'react'
+import Drawer from 'material-ui/Drawer'
+import {spacing, typography} from 'material-ui/styles'
+import {white, blue600} from 'material-ui/styles/colors'
+import MenuItem from 'material-ui/MenuItem'
+import {Link} from 'react-router'
+import Avatar from 'material-ui/Avatar'
 
 const LeftDrawer = (props) => {
-  const { navDrawerOpen } = props;
+  const { navDrawerOpen } = props
 
   const styles = {
     logo: {
@@ -44,7 +44,7 @@ const LeftDrawer = (props) => {
         textShadow: '1px 1px #444'
       }
     }
-  };
+  }
 
   return (
     <Drawer
@@ -54,7 +54,7 @@ const LeftDrawer = (props) => {
           Material Admin
         </div>
         <div style={styles.avatar.div}>
-          <Avatar src="http://www.material-ui.com/images/uxceo-128.jpg"
+          <Avatar src='http://www.material-ui.com/images/uxceo-128.jpg'
                   size={50}
                   style={styles.avatar.icon}/>
           <span style={styles.avatar.span}>{props.username}</span>
@@ -71,13 +71,13 @@ const LeftDrawer = (props) => {
           )}
         </div>
     </Drawer>
-  );
-};
+  )
+}
 
 LeftDrawer.propTypes = {
   navDrawerOpen: PropTypes.bool,
   menus: PropTypes.array,
   username: PropTypes.string,
-};
+}
 
-export default LeftDrawer;
+export default LeftDrawer
