@@ -1,13 +1,16 @@
+/* eslint-disable import/default */
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { configureStore } from './store/configureStore';
-import Root from './containers/Root';
+import { render } from 'react-dom';
+import { Router, browserHistory } from 'react-router';
+import routes from './routes';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import './styles.scss';
+import 'font-awesome/css/font-awesome.css';
+import 'flexboxgrid/css/flexboxgrid.css';
 
-import './styles/main.scss';
+injectTapEventPlugin();
 
-const store = configureStore();
-
-ReactDOM.render(
-  <Root store={store} />,
-  document.getElementById('root')
+render(
+    <Router routes={routes} history={browserHistory} />, document.getElementById('root')
 );
