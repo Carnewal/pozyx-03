@@ -5,7 +5,7 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import Menu from 'material-ui/svg-icons/navigation/menu'
-import ViewModule from 'material-ui/svg-icons/action/view-module'
+import ViewModule from 'material-ui/svg-icons/maps/satellite'
 import {white} from 'material-ui/styles/colors'
 import SearchBox from './SearchBox'
 
@@ -50,6 +50,7 @@ class Header extends React.Component {
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
+                    <div>Pick a map</div>
                     <MenuItem key={1} primaryText='Application 1'/>
                     <MenuItem key={2} primaryText='Application 2'/>
                     <MenuItem key={3} primaryText='Application 3'/>

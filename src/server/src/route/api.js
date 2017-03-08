@@ -1,4 +1,6 @@
 import express from 'express'
+import { dummyTags } from '../dummy/data.js'
+
 
 const api = new express()
 
@@ -83,7 +85,7 @@ api.get('/map', (_req, res, _next) => {
  *              "y": 25,
  *              "z": 1,
  *              "timestamp": "2017-03-07T15:31:31.456+01:00"
- *            }
+ *            },
  *            "labels": [
  *              {
  *                "labelId": 1,
@@ -95,7 +97,7 @@ api.get('/map', (_req, res, _next) => {
  *      }
  */
 api.get('/tags', (req, res, _next) => {
-  res.json([{id: 0, color: '4286f4', name: 'Maximus'}])
+  res.json(dummyTags)
 })
 
 /**

@@ -16,8 +16,6 @@ import 'flexboxgrid/css/flexboxgrid.css'
  *
  */
 
-
-
 injectTapEventPlugin()
 
 render(
