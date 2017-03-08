@@ -18,6 +18,10 @@ module.exports = {
       'server',
       'node_modules',
     ],
+    alias: {
+      server: path.resolve(__dirname, 'server/src/'),
+      frontend: path.resolve(__dirname, 'frontend/src/')
+    }
   },
 
   module: {
