@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import App from './containers/App'
-import NotFoundPage from './containers/NotFoundPage.js'
-import LoginPage from './containers/LoginPage'
-import FormPage from './containers/FormPage'
-import TablePage from './containers/TablePage'
-import Dashboard from './containers/DashboardPage'
+import App from 'frontend/containers/App'
+import NotFoundPage from 'frontend/containers/NotFoundPage.js'
+import LoginPage from 'frontend/containers/LoginPage'
+import FormPage from 'frontend/containers/FormPage'
+import TablePage from 'frontend/containers/TablePage'
+import Dashboard from 'frontend/containers/DashboardPage'
 
 export default (
   <Route>
