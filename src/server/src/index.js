@@ -1,5 +1,5 @@
 import express from 'express'
-import path from 'path';
+import path from 'path'
 // Webpack
 import webpack from 'webpack'
 import webpackDevConfig from '../../webpack.config.frontend-dev'

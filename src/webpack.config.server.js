@@ -20,7 +20,8 @@ module.exports = {
     ],
     alias: {
       server: path.resolve(__dirname, 'server/src/'),
-      frontend: path.resolve(__dirname, 'frontend/src/')
+      frontend: path.resolve(__dirname, 'frontend/src/'),
+      datamocking: path.resolve(__dirname, 'datamocking/')
     }
   },
 

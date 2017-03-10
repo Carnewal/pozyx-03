@@ -1,5 +1,8 @@
 {
   "presets": ["latest", "react", "stage-0"],
+  "plugins": [
+    [ "babel-plugin-webpack-alias", { "config": "webpack.config.server.js" } ]
+  ],
   "env": {
     "development": {
       "presets": ["react-hmre"]

@@ -1,5 +1,5 @@
 import express from 'express'
-import { dummyTags } from '../dummy/data.js'
+import { tags, tagHistory, anchors, map } from 'datamocking/data.js'
 
 
 const api = new express()
@@ -31,14 +31,7 @@ api.get('/', (req, res, _next) => {
  *     }
  */
 api.get('/map', (_req, res, _next) => {
-  res.json({
-    "mapId": 1,
-    "mapName": "Demo Map",
-    "mapURL": "someurltomapimage",
-    "x": 40,
-    "y": 40,
-    "z": 2
-  })
+  res.json(map)
 })
 
 
@@ -97,7 +90,7 @@ api.get('/map', (_req, res, _next) => {
  *      }
  */
 api.get('/tags', (req, res, _next) => {
-  res.json(dummyTags)
+  res.json(tags)
 })
 
 /**
@@ -145,33 +138,7 @@ api.get('/tags', (req, res, _next) => {
  *      }
  */
 api.get('/tag/:id/history', (req, res, _next) => {
-  res.json({
-    "tagId": 12,
-    "interval": {
-      "begin": "2017-03-07T15:31:31.456+01:00",
-      "end": "2017-03-07T16:31:31.456+01:00"
-    },
-    "positions": [
-      {
-        "x": 12.0000021,
-        "y": 105.12555,
-        "z": 0.04,
-        "timestamp": "2017-03-07T16:31:20.456+01:00"
-      },
-      {
-        "x": 13.678384,
-        "y": 104.34592555,
-        "z": 0.04,
-        "timestamp": "2017-03-07T16:31:21.456+01:00"
-      },
-      {
-        "x": 14.021,
-        "y": 104.1232555,
-        "z": 0.04,
-        "timestamp": "2017-03-07T16:31:23.456+01:00"
-      }
-    ]
-  })
+  res.json(tagHistory)
 })
 
 /**
@@ -203,7 +170,7 @@ api.get('/tag/:id/history', (req, res, _next) => {
  */
 
 /**
- * @api {get} /anchor Delete Label for Tag
+ * @api {get} /tag Delete Label for Tag
  * @apiName DeleteTagLabel
  * @apiGroup Tag
  */
@@ -250,7 +217,7 @@ api.delete('/tag/:id/label', (req, res, _next) => {
  *      }
  */
 api.get('/anchor', (req, res, _next) => {
-  res.json([{id: 0, color: '4286f4', name: 'Maximus'}])
+  res.json(anchors)
 })
 
 
