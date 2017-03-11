@@ -1,4 +1,4 @@
-import SET_FLOORPLAN from '../actions/FloorPlanActions'
+import { SET_FLOORPLAN } from '../actions/FloorPlanActions'
 
 const initialState = {
   anchors: [
@@ -71,7 +71,7 @@ export const types = {
 const map = (state = initialState, action) => {
   switch(action.type) {
     case SET_FLOORPLAN:
-      console.log('floroplan')
+      //hier zal er naar de backend moeten worden gestuurd en de link worden ontvangen
       return {...state, floorPlan: action.file}
     default:
       return state

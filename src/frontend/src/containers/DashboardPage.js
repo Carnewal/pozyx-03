@@ -1,20 +1,10 @@
-import React from 'react'
-import Data from '../data'
-import UploadPlanArea from './UploadPlanArea'
+import { connect } from 'react-redux'
+import Dashboard from '../components/dashboard/Dashboard'
 
-export default class DashboardPage extends React.Component {
+const mapStateToProps = (state) => ({
+  floorPlan: state.map.floorPlan
+})
 
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
-  render() {
-    return (
-      <div>
-      {this.state.floorPlan == undefined ?
-        <UploadPlanArea /> : <img src={this.state.floorPlan}/>}
-    </div>
-  )
-  }
-}
+export default connect(
+  mapStateToProps
+)(Dashboard)
