@@ -4,7 +4,7 @@ import * as setFloorplan from '../actions/FloorPlanActions'
 import UploadPlan from '../components/dashboard/UploadPlan'
 
 const mapDispatchToProps = (dispatch) => {
-  UploadFloorplan: dispatch(setFloorplan(file))
+  UploadFloorplan: (file) => dispatch(setFloorplan(file))
 }
 
 export default connect(
