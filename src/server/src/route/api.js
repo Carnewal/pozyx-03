@@ -1,5 +1,5 @@
 import express from 'express'
-import { tags, tagHistory, anchors, map } from 'datamocking/data.js'
+import { tags, tagHistory, anchors, map } from '../../../datamocking/data.js'
 
 
 const api = new express()
