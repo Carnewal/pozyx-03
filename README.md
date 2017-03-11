@@ -12,7 +12,7 @@ Logboeken vindt u in de hoofdmap van deze repo. Dit zijn .csv-bestanden met naam
 
 src
 ------
-De map src bevat de broncode voor het project.
+De map src bevat de broncode voor het project samen met instructies om de code uit te kunnen voeren.
 
 Auteurs
 ============
