@@ -1,6 +1,8 @@
+import SET_FLOORPLAN from '../actions/FloorPlanActions'
+
 const initialState = {
   anchors: [
-    
+
   ],
   tags: [
     {
@@ -58,6 +60,7 @@ const initialState = {
       ]
     }
   ],
+  floorPlan: ''
 }
 
 export const types = {
@@ -67,6 +70,9 @@ export const types = {
 
 const map = (state = initialState, action) => {
   switch(action.type) {
+    case SET_FLOORPLAN:
+      console.log('floroplan')
+      return {...state, floorPlan: action.file}
     default:
       return state
   }

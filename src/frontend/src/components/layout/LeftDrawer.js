@@ -4,7 +4,6 @@ import {spacing, typography} from 'material-ui/styles'
 import {white, blue600} from 'material-ui/styles/colors'
 import MenuItem from 'material-ui/MenuItem'
 import {Link} from 'react-router'
-import Avatar from 'material-ui/Avatar'
 
 const LeftDrawer = (props) => {
   const { navDrawerOpen } = props
@@ -51,13 +50,7 @@ const LeftDrawer = (props) => {
       docked={true}
       open={navDrawerOpen}>
         <div style={styles.logo}>
-          POZYX-03
-        </div>
-        <div style={styles.avatar.div}>
-          <Avatar src='http://www.material-ui.com/images/uxceo-128.jpg'
-                  size={50}
-                  style={styles.avatar.icon}/>
-          <span style={styles.avatar.span}>{props.username}</span>
+          Pozyx Applicatie
         </div>
         <div>
           {props.menus.map((menu, index) =>
