@@ -14,3 +14,6 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 07/03/17,13:00,14:30,Extern,"Linting voor WebStorm fixen en API documentatie opstellen",2, 
 07/03/17,19:00,19:45,Extern,"API documentatie opstellen",2, 
 07/03/17,20:15,21:40,Extern,"API documentatie opstellen",2, 
+10/03/17,13:00,16:30,Extern,"Werking van Sequelize ORM opzoeken, toevoegen aan project en model opzetten",3,
+11/03/17,11:30,14:30,Extern,"API documentatie verder uitwerken, API implementeren",8,
+11/03/17,14:30,16:30,Extern,"API documentatie verder uitwerken, API implementeren",16,
