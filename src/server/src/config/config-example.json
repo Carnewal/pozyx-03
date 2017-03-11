@@ -1,0 +1,9 @@
+{
+  "development": {
+    "database": "pozyx",
+    "host": "127.0.0.1",
+    "username": "username",
+    "password": "password",
+    "dialect": "mariadb"
+  }
+}

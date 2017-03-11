@@ -17,7 +17,10 @@
     "doc": "apidoc -i server/src/route -o server/public/apidoc"
   },
   "ava": {
-    "require": ["babel-register", "babel-polyfill"],
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ],
     "babel": "inherit"
   },
   "repository": {
@@ -60,6 +63,8 @@
   },
   "dependencies": {
     "history": "^4.5.1",
+    "mariasql": "^0.2.6",
+    "mysql": "^2.13.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
