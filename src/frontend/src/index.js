@@ -1,13 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { configureStore } from './store/configureStore';
-import Root from './containers/Root';
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { syncHistoryWithStore } from 'react-router-redux'
+import { Router, browserHistory } from 'react-router'
+import routes from './routes'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import store from 'frontend/store'
 
-import './styles/main.scss';
+import './styles.scss'
+import 'font-awesome/css/font-awesome.css'
+import 'flexboxgrid/css/flexboxgrid.css'
 
-const store = configureStore();
+/**
+ *  Copyright Notices:
+ *
+ *  © react-material-admin-template by rafaelhz (MIT)
+ *  https://github.com/rafaelhz/react-material-admin-template
+ *
+ *
+ */
 
-ReactDOM.render(
-  <Root store={store} />,
+injectTapEventPlugin()
+
+const history = syncHistoryWithStore(browserHistory, store)
+
+render(
+  <Provider store={store}>
+    <Router routes={routes} history={history} />
+  </Provider>,
   document.getElementById('root')
-);
+)

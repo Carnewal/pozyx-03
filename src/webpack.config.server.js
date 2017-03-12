@@ -20,7 +20,8 @@ module.exports = {
     ],
     alias: {
       server: path.resolve(__dirname, 'server/src/'),
-      frontend: path.resolve(__dirname, 'frontend/src/')
+      frontend: path.resolve(__dirname, 'frontend/src/'),
+      datamocking: path.resolve(__dirname, 'datamocking/')
     }
   },
 
@@ -31,7 +32,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets: ['react','latest']
+          presets: ['react','latest', 'stage-0']
         },
       }, {
         test: /\.json$/,

@@ -7,6 +7,8 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 // Routes
 import apiRoute from './route/api'
+
+import realtime from './realtime'
 import model from './model'
 
 const app = new express()
@@ -28,13 +30,15 @@ app.get('*', (req, res) => {
 })
 
 model.sequelize.sync().then(function() {
-  app.listen(3000, 'localhost', (err) => {
+const server = app.listen(3000, 'localhost', (err) => {
     if (err) {
       console.log(err)
       return
     }
     console.log('Listening at http://localhost:3000')
   })
+  realtime(server)
 })
+
 
 export default app
