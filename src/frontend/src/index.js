@@ -11,7 +11,6 @@ import './styles.scss'
 import 'font-awesome/css/font-awesome.css'
 import 'flexboxgrid/css/flexboxgrid.css'
 
-
 /**
  *  Copyright Notices:
  *

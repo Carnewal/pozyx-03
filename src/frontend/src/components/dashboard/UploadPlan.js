@@ -17,10 +17,6 @@ export default class UploadPlan extends React.Component {
     super(props, context)
   }
 
-  onImageDrop(file) {
-    this.props.UploadFloorplan(file[0].preview)
-  }
-
   render() {
     return (
       <div>
@@ -28,7 +24,7 @@ export default class UploadPlan extends React.Component {
         multiple={false}
         accept='image/*'
         style={styles}
-        onDrop={(e) => this.onImageDrop(e)}>
+        onDrop={(e) => this.props.UploadFloorplan(e[0].preview)}>
         <p>Sleep een plattegrond naar hier of klik om een bestand up te loaden.</p>
       </Dropzone>
       </div>

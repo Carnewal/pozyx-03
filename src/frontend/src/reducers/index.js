@@ -1,2 +1,3 @@
 import map from 'frontend/reducers/map'
-export default {map}
+import tag from 'frontend/reducers/tag'
+export default {map, tag}
