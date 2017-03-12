@@ -21,5 +21,5 @@ Auteurs
 * Brecht Carnewal
 * Rémy D'heygere
 * Tom Dorchain
-* Pieter-Jan Vandenberge
+* Pieter-Jan Vandenberghe
 * Jonas Vermassen

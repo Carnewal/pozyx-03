@@ -6,3 +6,4 @@ lib
 coverage
 dist
 server/frontend-build
+src/server/src/config/config.json

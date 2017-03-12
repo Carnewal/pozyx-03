@@ -73,6 +73,8 @@
     "material-ui": "^0.17.0",
     "npm": "^4.3.0",
     "primus": "^6.1.0",
+    "mariasql": "^0.2.6",
+    "mysql": "^2.13.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.11.1",

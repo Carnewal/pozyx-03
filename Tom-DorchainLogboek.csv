@@ -6,3 +6,6 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 07/03/16,8:15,12:15,Campus, Backlog afwerken,,
 07/03/16,13:15,14:30,Campus, UseCaseDiagrammen gemaakt,,
 10/03/16,14:30,16:30,Extern, Project set-up op laptops,,
+11/03/16,16:00,18:00,Extern, Pair programming frontend,,
+11/03/16,19:00,20:15,Extern, Backend set up mariadb,,
+12/03/16,10:00,12:00,Extern, Backend set up mariadb (python node-gyp),,
