@@ -80,7 +80,7 @@ Vervolgens is de documentatie terug te vinden onder ../server/public/apidoc/
 
 ### Database Design
 
-![alt text](https://lh4.googleusercontent.com/NPy3I5sTcG7Atd2sr-pcGFiMZCF9xmoaqeweCPomymfupvXfaMXdyzP4BrXnLzeQYaOKxTkAcNYy-io=w1920-h943 "UML Database Design")
+![UML Database Design](http://i.imgur.com/G19w0bm.png "UML Database Design")
 
 De laatste versie van het databank model is ook steeds terug te vinden op [google drive](https://drive.google.com/open?id=0B_pQpm22Q56JYUFYVDZyRnBpMkk).
 
