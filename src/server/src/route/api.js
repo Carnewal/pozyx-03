@@ -22,7 +22,7 @@ api.get('/', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       maps: [
+ *       "maps": [
  *         {
  *           "mapId": 1,
  *           "mapName": "Demo Map",
@@ -107,7 +107,7 @@ api.get('/map/:id', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       tags: [
+ *       "tags": [
  *         {
  *           "tagId": 5,
  *           "tagName": "Maximus",
@@ -123,7 +123,7 @@ api.get('/map/:id', (req, res) => {
  *             "y": 25,
  *             "z": 1,
  *             "timestamp": "2017-03-07T15:31:31.456"
- *           }
+ *           },
  *           "labels": [
  *             {
  *               "labelId": 1,
@@ -175,7 +175,7 @@ api.get('/map/:id/tags', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       tag: {
+ *       "tag": {
  *         "tagId": 5,
  *         "tagName": "Maximus",
  *         "mapId": 4,
@@ -190,7 +190,7 @@ api.get('/map/:id/tags', (req, res) => {
  *           "y": 25,
  *           "z": 1,
  *           "timestamp": "2017-03-07T15:31:31.456"
- *         }
+ *         },
  *         "labels": [
  *           {
  *             "labelId": 1,
@@ -309,7 +309,7 @@ api.get('map/:map_id/tag/:tag_id/positions', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       labels: [
+ *       "labels": [
  *         {
  *           "labelId": 1,
  *           "labelName": "Label1",
@@ -374,7 +374,7 @@ api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       anchors: [
+ *       "anchors": [
  *         {
  *           "anchorId": 5,
  *           "anchorName": "Maximus",
