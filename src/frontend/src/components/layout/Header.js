@@ -45,7 +45,9 @@ class Header extends React.Component {
                 <div style={style.iconsRightContainer}>
                   <IconMenu color={white}
                             iconButtonElement={
-                              <MapsLayers color={white}></MapsLayers>
+                              <IconButton>
+                                <MapsLayers color={white}></MapsLayers>
+                              </IconButton>
                             }
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
