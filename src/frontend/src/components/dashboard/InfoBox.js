@@ -16,7 +16,7 @@ class InfoBox extends React.Component {
       },
       number: {
         display: 'block',
-        fontWeight: typography.fontWeightMedium,
+        fontWeight: 600,
         fontSize: 18,
         color: grey800
       },

@@ -49,9 +49,8 @@ class Header extends React.Component {
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
-                    <MenuItem key={1} primaryText='Application 1'/>
-                    <MenuItem key={2} primaryText='Application 2'/>
-                    <MenuItem key={3} primaryText='Application 3'/>
+                    {this.props.maps.map((map) => <MenuItem key={map.id} primaryText={map.name}/>)}
+
                   </IconMenu>
                   <IconMenu color={white}
                             iconButtonElement={
@@ -71,6 +70,8 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+  maps: PropTypes.array,
+  currentMap: PropTypes.object,
   styles: PropTypes.object,
   handleChangeRequestNavDrawer: PropTypes.func
 }

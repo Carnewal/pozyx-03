@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
 const style = {
   wrappingDiv: {
@@ -35,4 +35,12 @@ export default class Map extends React.Component {
         <img style={style.img} src={this.props.floorPlan} />
       </div>)
   }
+}
+
+Map.propTypes = {
+  positions: PropTypes.array
+}
+
+Map.defaultProps = {
+  positions: []
 }
