@@ -103,7 +103,7 @@ const upload = multer({
      cb(null, 'server/public/maps/')
    },
    filename: function (req, file, cb) {
-     cb(null, req.params.id + path.extname(file.originalname))
+     cb(null, req.params.id + '.png')
    }
  }),
  fileFilter: (req, file, cb) => {
