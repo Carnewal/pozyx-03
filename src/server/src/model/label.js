@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Label.belongsToMany(models.Tag, {through: 'TagLabels'})
+        Label.belongsToMany(models.Tag, {through: models.TagLabel, foreignKey: 'labelId', as: 'tags'})
       }
     }
   })

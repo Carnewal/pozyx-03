@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Anchor.belongsTo(models.Map)
+        Anchor.belongsTo(models.Map, {foreignKey: 'mapId', targetKey: 'id'})
       }
     }
   })

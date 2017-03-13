@@ -24,9 +24,9 @@ api.get('/', (req, res) => {
  *     {
  *       maps: [
  *         {
- *           "mapId": 1,
- *           "mapName": "Demo Map",
- *           "mapURL": "http://some.url.to.map.image.png",
+ *           "id": 1,
+ *           "name": "Demo Map",
+ *           "url": "http://some.url.to.map.image.png",
  *           "x": 40,
  *           "y": 40,
  *           "z": 2
@@ -36,7 +36,7 @@ api.get('/', (req, res) => {
  */
 api.get('/maps', (req, res) => {
   model.Map.findAll().then((maps) => {
-    res.json(maps)
+    res.json({maps: maps})
   })
 })
 
@@ -58,9 +58,9 @@ api.get('/maps', (req, res) => {
  *     HTTP/1.1 200 OK
  *     {
  *       "map": {
- *         "mapId": 1,
- *         "mapName": "Demo Map",
- *         "mapURL": "http://some.url.to.map.image.png",
+ *         "id": 1,
+ *         "name": "Demo Map",
+ *         "url": "http://some.url.to.map.image.png",
  *         "x": 40,
  *         "y": 40,
  *         "z": 2
@@ -70,7 +70,7 @@ api.get('/maps', (req, res) => {
 api.get('/map/:id', (req, res) => {
   model.Map.findById(req.params.id).then((map) => {
     if (map) {
-      res.json(map)
+      res.json({map: map})
     } else {
       res.status(404)
       res.send({error: 'No entry for map with id ' + req.params.id})
@@ -109,8 +109,8 @@ api.get('/map/:id', (req, res) => {
  *     {
  *       tags: [
  *         {
- *           "tagId": 5,
- *           "tagName": "Maximus",
+ *           "id": 5,
+ *           "name": "Maximus",
  *           "mapId": 4,
  *           "hardwareVersion": 12,
  *           "firmwareVersion": 11,
@@ -135,13 +135,15 @@ api.get('/map/:id', (req, res) => {
  *     }
  */
 api.get('/map/:id/tags', (req, res) => {
-  //TODO Include labels
+  //TODO Fix mapId and MapId redundancy and fix TagLabel entry in every Label
+  //TODO include last known position
   model.Tag.findAll({
     where: {
       mapId: req.params.id
-    }
+    },
+    include: [{model: model.Label, through: model.TagLabel, as: 'labels'}]
   }).then((tags) => {
-    res.json(tags)
+    res.json({tags: tags})
   })
 })
 
@@ -200,10 +202,13 @@ api.get('/map/:id/tags', (req, res) => {
  *       }
  *     }
  */
-api.get('/tag/:id', (req, res) => {
-  // TODO Include labels
-  model.Tag.findById(req.params.id).then((tag) => {
-    res.json(tag)
+api.get('/map/:map_id/tag/:tag_id', (req, res) => {
+  //TODO Fix mapId and MapId redundancy and fix TagLabel entry in every Label
+  //TODO include last known position
+  model.Tag.findById(req.params.tag_id, {
+    include: [{model: model.Label, as: 'labels'}]
+  }).then((tag) => {
+    res.json({tag: tag})
   })
 })
 
@@ -326,12 +331,9 @@ api.get('map/:map_id/tag/:tag_id/positions', (req, res) => {
  *     }
  */
 api.get('/labels', (req, res) => {
-  // TODO implement
-  res.json([
-    {"labelId": 1, "labelName": "Label1",},
-    {"labelId": 2, "labelName": "Label2",},
-    {"labelId": 3, "labelName": "Label3",}
-  ])
+  model.Label.findAll().then((labels) => {
+    res.json({labels: labels})
+  })
 })
 
 /**
@@ -355,7 +357,7 @@ api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
 })
 
 /**
- * @api {get} /anchors Request All Anchors
+ * @api {get} /map/:map_id/anchors Request All Anchors
  * @apiName GetAnchors
  * @apiGroup Anchor
  *
@@ -392,9 +394,14 @@ api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
  *       ]
  *     }
  */
-api.get('/anchors', (req, res) => {
-  //TODO implement
-  res.json([{id: 0, color: '4286f4', name: 'Maximus'}])
+api.get('/map/:map_id/anchors', (req, res) => {
+  model.Anchor.findAll({
+    //where: {
+    //  mapId: req.params.map_id
+    //}
+  }).then((anchors) => {
+    res.json({anchors: anchors})
+  })
 })
 
 export default api

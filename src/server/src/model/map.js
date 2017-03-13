@@ -10,6 +10,14 @@ module.exports = function(sequelize, DataTypes) {
     x: DataTypes.DOUBLE,
     y: DataTypes.DOUBLE,
     z: DataTypes.DOUBLE
+  }, {
+    classMethods: {
+      associate: function(models) {
+        Map.hasMany(models.Tag, {as: 'tags'})
+        Map.hasMany(models.Anchor, {as: 'anchors'})
+        Map.hasMany(models.Zone, {as: 'zones'})
+      }
+    }
   })
   return Map
 }

@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Zone.belongsTo(models.Map)
+        Zone.belongsTo(models.Map, {foreignKey: 'mapId', targetKey: 'id'})
       }
     }
   })
