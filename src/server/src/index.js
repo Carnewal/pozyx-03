@@ -1,5 +1,6 @@
-import express from 'express'
 import path from 'path'
+import express from 'express'
+
 // Webpack
 import webpack from 'webpack'
 import webpackDevConfig from '../../webpack.config.frontend-dev'
@@ -12,6 +13,8 @@ import realtime from './realtime'
 import model from './model'
 
 const app = new express()
+
+
 
 if (process.env.NODE_ENV === 'development') {
   const compiler = webpack(webpackDevConfig)

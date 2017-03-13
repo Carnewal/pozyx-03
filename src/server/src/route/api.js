@@ -1,5 +1,7 @@
+import path from 'path'
 import {Router} from 'express'
 import model from '../model'
+import multer from 'multer'
 
 const api = Router()
 
@@ -76,6 +78,52 @@ api.get('/map/:id', (req, res) => {
       res.send({error: 'No entry for map with id ' + req.params.id})
     }
   })
+})
+
+/**
+ * @api {post} /map/:id/image Upload Map image
+ * @apiName PostMapImage
+ * @apiDescription When testing with postman, disable the Content-Type header and send the file in Body -> form-data.
+ * @apiGroup Map
+ *
+ * @apiParam {Integer} id Map ID (GET param)
+ * @apiParam {File} mapimage Map Image File (multipart/form-data),
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "uploaded": true,
+ *       "mapURL": "public/maps/5.png"
+ *     }
+ */
+
+const upload = multer({
+ storage: multer.diskStorage({
+   destination: function (req, file, cb) {
+     cb(null, 'server/public/maps/')
+   },
+   filename: function (req, file, cb) {
+     cb(null, req.params.id + path.extname(file.originalname))
+   }
+ }),
+ fileFilter: (req, file, cb) => {
+   if (file.mimetype !== 'image/png') {
+     req.fileValidationError = 'Invalid filetype';
+     return cb(null, false, new Error('Invalid Filetype'));
+   }
+   cb(null, true);
+ }
+})
+
+api.post('/map/:id/image', upload.single('mapimage'), (req, res) => {
+  const {file} = req
+  if(req.fileValidationError) {
+    return res.status(400).json({uploaded:false, error: req.fileValidationError})
+  } else if (!file) {
+    return res.status(400).json({uploaded:false, error: "Request form-data didn't contain a mapimage file."})
+  }
+  res.json({uploaded: true, mapURL: 'public/maps/' + file.filename});
+
 })
 
 /**
