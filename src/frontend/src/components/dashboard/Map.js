@@ -24,8 +24,8 @@ export default class Map extends React.Component {
   }
 
   tags() {
-    return this.props.positions.map((tag) =>
-      <div style={{...style.tag, left: tag.x + '%', top: tag.y + '%'}}></div>
+    return this.props.positions.map((tag, i) =>
+      <div key={i} style={{...style.tag, left: tag.x + '%', top: tag.y + '%'}}></div>
     )
   }
 

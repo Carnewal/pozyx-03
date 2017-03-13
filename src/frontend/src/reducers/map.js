@@ -28,7 +28,6 @@ export const types = {
 const map = (state = initialState, action) => {
   switch(action.type) {
     case SET_FLOORPLAN:
-      //hier zal er naar de backend moeten worden gestuurd en de link worden ontvangen
       const newState = state.slice()
       newState.find((map) => map.mapId === action.currentMap).floorPlan = action.file
       return newState

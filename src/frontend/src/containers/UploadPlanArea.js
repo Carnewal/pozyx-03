@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
-import { setFloorplan } from '../actions/FloorPlanActions'
+import { uploadFloorplan } from '../actions/FloorPlanActions'
 import UploadPlan from '../components/dashboard/UploadPlan'
 
 const mapStateToProps = (state) => ({
   currentMap: state.app.currentMap
 })
 const mapDispatchToProps = (dispatch) => ({
-  UploadFloorplan: (file, currentMap) =>  { dispatch(setFloorplan(file, currentMap)) }
+  UploadFloorplan: (file, currentMap) =>  { dispatch(uploadFloorplan(file, currentMap)) }
 })
 
 const mergeProps = (state, dispatch) => ({
