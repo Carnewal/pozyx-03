@@ -1,5 +1,7 @@
+import path from 'path'
 import {Router} from 'express'
 import model from '../model'
+import multer from 'multer'
 
 const api = Router()
 
@@ -22,7 +24,7 @@ api.get('/', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       maps: [
+ *       "maps": [
  *         {
  *           "id": 1,
  *           "name": "Demo Map",
@@ -79,6 +81,66 @@ api.get('/map/:id', (req, res) => {
 })
 
 /**
+ * @api {post} /map/:id/image Upload Map image
+ * @apiName PostMapImage
+ * @apiDescription When testing with postman, disable the Content-Type header and send the file in Body -> form-data.
+ * @apiGroup Map
+ *
+ * @apiParam {Integer} id Map ID (GET param)
+ * @apiParam {File} mapimage Map Image File (multipart/form-data),
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "uploaded": true,
+ *       "mapURL": "public/maps/5.png"
+ *     }
+ */
+
+const upload = multer({
+ storage: multer.diskStorage({
+   destination: function (req, file, cb) {
+     cb(null, 'server/public/maps/')
+   },
+   filename: function (req, file, cb) {
+     cb(null, req.params.id + '.png')
+   }
+ }),
+ fileFilter: (req, file, cb) => {
+   if (file.mimetype !== 'image/png') {
+     req.fileValidationError = 'Invalid filetype';
+     return cb(null, false, new Error('Invalid Filetype'));
+   }
+   cb(null, true);
+ }
+})
+
+api.post('/map/:id/image', upload.single('mapimage'), (req, res) => {
+  const {file} = req
+  if(req.fileValidationError) {
+    return res.status(400).json({uploaded:false, error: req.fileValidationError})
+  } else if (!file) {
+    return res.status(400).json({uploaded:false, error: "Request form-data didn't contain a mapimage file."})
+  }
+  res.json({uploaded: true, mapURL: 'public/maps/' + file.filename});
+})
+
+
+/**
+ * @api {get} /map/:id/image Request Map image
+ * @apiName GetMapImage
+ * @apiDescription Gets the map image (.png) file.
+ * @apiGroup Map
+ *
+ * @apiParam {Integer} id Map ID
+ *
+ */
+
+api.get('/map/:id/image', (req, res) => {
+
+})
+
+/**
  * @api {get} /map/:id/tags Request All Tags
  * @apiName GetTags
  * @apiGroup Tag
@@ -107,7 +169,7 @@ api.get('/map/:id', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       tags: [
+ *       "tags": [
  *         {
  *           "id": 5,
  *           "name": "Maximus",
@@ -123,7 +185,7 @@ api.get('/map/:id', (req, res) => {
  *             "y": 25,
  *             "z": 1,
  *             "timestamp": "2017-03-07T15:31:31.456"
- *           }
+ *           },
  *           "labels": [
  *             {
  *               "labelId": 1,
@@ -177,7 +239,7 @@ api.get('/map/:id/tags', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       tag: {
+ *       "tag": {
  *         "tagId": 5,
  *         "tagName": "Maximus",
  *         "mapId": 4,
@@ -192,7 +254,7 @@ api.get('/map/:id/tags', (req, res) => {
  *           "y": 25,
  *           "z": 1,
  *           "timestamp": "2017-03-07T15:31:31.456"
- *         }
+ *         },
  *         "labels": [
  *           {
  *             "labelId": 1,
@@ -314,7 +376,7 @@ api.get('map/:map_id/tag/:tag_id/positions', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       labels: [
+ *       "labels": [
  *         {
  *           "labelId": 1,
  *           "labelName": "Label1",
@@ -376,7 +438,7 @@ api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       anchors: [
+ *       "anchors": [
  *         {
  *           "anchorId": 5,
  *           "anchorName": "Maximus",

@@ -6,4 +6,10 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 05/03/17,14:00,15:30,Extern,"Project basis voorzien van testen",,
 05/03/17,14:00,15:00,Extern,"Consistent maken van de codebase",,
 06/03/17,22:00,23:30,Extern,"Toevoegen apidoc met voorbeeld, projectstructuur in orde zetten",,
-
+7/03/17,8:15,12:00,Campus,"Afwerken product backlog",,
+7/03/17,13:00,14:30,Extern,"Sequentidiagrammen voor API + documentatie API",,
+8/03/17,10:00,11:30,Extern,"ESLint op punt stellen",,
+8/03/17,13:30,15:00,Extern,"Opzetten material-ui",,
+8/03/17,18:30,21:00,Extern,"Verder Opzetten material-ui",,
+8/03/17,22:00,23:00,Extern,"Webpack aliases, proberen server via webpack laten gaan",,
+9/03/17,09:00,10:30,Extern,"Redux + Routing",,

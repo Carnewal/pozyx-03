@@ -14,7 +14,8 @@ module.exports = {
   resolve: {
     alias: {
       server: path.resolve(__dirname, 'server/src/'),
-      frontend: path.resolve(__dirname, 'frontend/src/')
+      frontend: path.resolve(__dirname, 'frontend/src/'),
+      datamocking: path.resolve(__dirname, 'datamocking/')
     }
   },
   plugins: [
@@ -30,9 +31,16 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.js?/,
+        exclude: [/node_modules/, /styles/],
         loaders: ['babel-loader'],
         include: path.join(__dirname, 'frontend/src')
+      },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
       },
       {
         test: /\.scss$/,
@@ -50,4 +58,4 @@ module.exports = {
       }
     ]
   }
-};
+}
