@@ -5,12 +5,14 @@ import NotFoundPage from './containers/NotFoundPage.js'
 import FormPage from './containers/FormPage'
 import TablePage from './containers/TablePage'
 import Dashboard from './containers/DashboardPage'
+import Tag from './containers/tag'
 
 export default (
   <Route>
     <Route path='/' component={App}>
       <IndexRoute component={Dashboard}/>
       <Route path='dashboard' component={Dashboard}/>
+      <Route path='tag' component={Tag}/>
       <Route path='form' component={FormPage}/>
       <Route path='table' component={TablePage}/>
       <Route path='*' component={NotFoundPage}/>

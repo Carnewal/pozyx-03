@@ -7,7 +7,7 @@ import RecentlyProducts from 'frontend/components/dashboard/RecentlyProducts';
 import {cyan600, pink600, purple600, orange600} from 'material-ui/styles/colors';
 
 import TagIcon from 'material-ui/svg-icons/maps/my-location';
-import AnchorIcon from 'material-ui/svg-icons/maps/navigation';
+import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi';
 
 import globalStyles from 'frontend/styles';
 

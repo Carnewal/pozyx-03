@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
   return {
     floorPlan: state.map.floorPlan,
     anchorsAmount: state.anchor.reduce((acc, anchor) => (acc + (anchor.mapId === currentMap ? 1 : 0)), 0),
-    tagsAmount: 5,
+    tagsAmount: state.tag.reduce((acc, tag) => (acc + (tag.mapId === currentMap ? 1 : 0)), 0),
     currentMap: currentMap
   }
 }
