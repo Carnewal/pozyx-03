@@ -123,6 +123,20 @@ api.post('/map/:id/image', upload.single('mapimage'), (req, res) => {
     return res.status(400).json({uploaded:false, error: "Request form-data didn't contain a mapimage file."})
   }
   res.json({uploaded: true, mapURL: 'public/maps/' + file.filename});
+})
+
+
+/**
+ * @api {get} /map/:id/image Request Map image
+ * @apiName GetMapImage
+ * @apiDescription Gets the map image (.png) file.
+ * @apiGroup Map
+ *
+ * @apiParam {Integer} id Map ID
+ *
+ */
+
+api.get('/map/:id/image', (req, res) => {
 
 })
 

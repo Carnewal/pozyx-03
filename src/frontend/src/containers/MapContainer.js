@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Map from '../components/Map'
+import Map from 'frontend/components/dashboard/Map'
 
 const mapStateToProps = (state) => ({
   positions: state.tag.positions,

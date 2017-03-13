@@ -33,14 +33,14 @@ app.get('*', (req, res) => {
 })
 
 model.sequelize.sync().then(function() {
-const server = app.listen(3000, 'localhost', (err) => {
-    if (err) {
-      console.log(err)
-      return
-    }
-    console.log('Listening at http://localhost:3000')
-  })
-  realtime(server)
+  const server = app.listen(3000, 'localhost', (err) => {
+      if (err) {
+        console.log(err)
+        return
+      }
+      console.log('Listening at http://localhost:3000')
+    })
+    realtime(server)
 })
 
 
