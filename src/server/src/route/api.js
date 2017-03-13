@@ -458,9 +458,9 @@ api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
  */
 api.get('/map/:map_id/anchors', (req, res) => {
   model.Anchor.findAll({
-    //where: {
-    //  mapId: req.params.map_id
-    //}
+    where: {
+      mapId: req.params.map_id
+    }
   }).then((anchors) => {
     res.json({anchors: anchors})
   })
