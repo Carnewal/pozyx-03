@@ -14,6 +14,10 @@ src
 ------
 De map src bevat de broncode voor het project samen met instructies om de code uit te kunnen voeren.
 
+verslag
+------
+De laatste versie van ons verslag, geüpdatet per sprint.
+
 Auteurs
 ============
 
