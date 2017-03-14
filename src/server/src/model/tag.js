@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Tag.belongsTo(models.Map, {as: 'map', foreignKey: 'mapId', targetKey: 'id'})
         Tag.belongsToMany(models.Label, {through: models.TagLabel, foreignKey: 'tagId', as: 'labels'})
-        //Tag.hasMany(models.Position, {as: 'positions'})
+        Tag.hasMany(models.Position, {as: 'positions', foreignKey: 'tagId'})
       }
     }
   })
