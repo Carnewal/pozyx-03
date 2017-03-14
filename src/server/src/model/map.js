@@ -13,9 +13,9 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        //Map.hasMany(models.Tag, {as: 'tags'})
-        //Map.hasMany(models.Anchor, {as: 'anchors'})
-        //Map.hasMany(models.Zone, {as: 'zones'})
+        Map.hasMany(models.Tag, {as: 'tags', foreignKey: 'mapId'})
+        Map.hasMany(models.Anchor, {as: 'anchors', foreignKey: 'mapId'})
+        Map.hasMany(models.Zone, {as: 'zones', foreignKey: 'mapId'})
       }
     }
   })
