@@ -2,7 +2,7 @@ import Primus from 'primus'
 
 const maxdistance = {x: 99, y: 99, z: 3} // meter
 
-const interval = 2000 //1000/30
+const interval = 1000/30
 
 class Tag {
   constructor(tagId, speed) {
