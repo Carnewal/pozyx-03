@@ -5,7 +5,7 @@ import { showPositions, SHOW_POSITIONS } from 'frontend/actions/TagActions'
 
 function initWebsocket() {
   return eventChannel(emitter => {
-    const primus = new Primus('http://'+window.location.hostname, {})
+    const primus = new Primus('http://'+window.location.hostname + window.location.port?":"+window.location.port:"", {})
 
     primus.on('data', (data) => {
       switch (data.action) {
