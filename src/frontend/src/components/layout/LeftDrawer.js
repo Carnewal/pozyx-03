@@ -15,9 +15,10 @@ const LeftDrawer = (props) => {
       color: typography.textFullWhite,
       lineHeight: `${spacing.desktopKeylineIncrement}px`,
       fontWeight: typography.fontWeightLight,
-      backgroundColor: blue600,
-      paddingLeft: 40,
-      height: 56,
+      backgroundColor: white,
+      paddingLeft: 10,
+      paddingTop:5,
+      height: 51,
     },
     menuItem: {
       color: white,
@@ -50,7 +51,7 @@ const LeftDrawer = (props) => {
       docked={true}
       open={navDrawerOpen}>
         <div style={styles.logo}>
-          Pozyx Applicatie
+          <img width='220' src='https://www.pozyx.io/assets/images/general/logo_x.png' alt='logo'/>
         </div>
         <div>
           {props.menus.map((menu, index) =>

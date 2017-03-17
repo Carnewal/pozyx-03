@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import withWidth, {LARGE, SMALL} from 'material-ui/utils/withWidth'
-import Header from 'frontend/components/layout/Header'
+import Header from 'frontend/containers/layout/HeaderContainer'
 import LeftDrawer from 'frontend/components/layout/LeftDrawer'
 import ThemeDefault from '../theme-default'
 import Data from '../data'

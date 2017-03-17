@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  const Position = sequelize.define("TagPosition", {
+  const Position = sequelize.define("Position", {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Position.belongsTo(models.Tag)
+        Position.belongsTo(models.Tag, {foreignKey: 'tagId', targetKey: 'id', as: 'tag'})
       }
     }
   })

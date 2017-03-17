@@ -7,7 +7,7 @@ import routes from './routes'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import store from 'frontend/store'
 
-import './styles.scss'
+import 'frontend/styles.scss'
 import 'font-awesome/css/font-awesome.css'
 import 'flexboxgrid/css/flexboxgrid.css'
 

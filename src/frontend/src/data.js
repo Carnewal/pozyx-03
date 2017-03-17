@@ -1,5 +1,6 @@
 import React from 'react'
 import Assessment from 'material-ui/svg-icons/action/assessment'
+import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import GridOn from 'material-ui/svg-icons/image/grid-on'
 import Web from 'material-ui/svg-icons/av/web'
 import {cyan600, pink600, purple600} from 'material-ui/styles/colors'
@@ -9,9 +10,10 @@ import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right'
 
 const data = {
   menus: [
-    { text: 'DashBoard', icon: <Assessment/>, link: '/dashboard' },
-    { text: 'Form Page', icon: <Web/>, link: '/form' },
-    { text: 'Table Page', icon: <GridOn/>, link: '/table' },
+    { text: 'Dashboard', icon: <Assessment/>, link: '/dashboard' },
+    { text: 'Tags', icon: <TagIcon/>, link: '/tag' },
+    /*{ text: 'Form Page', icon: <Web/>, link: '/form' },
+    { text: 'Table Page', icon: <GridOn/>, link: '/table' },*/
   ],
   tablePage: {
     items: [

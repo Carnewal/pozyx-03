@@ -2,6 +2,8 @@ import Primus from 'primus'
 
 const maxdistance = {x: 99, y: 99, z: 3} // meter
 
+const interval = 1000/30
+
 class Tag {
   constructor(tagId, speed) {
     this.tagId = tagId
@@ -67,7 +69,6 @@ class Manager {
   }
 }
 
-const interval = 1000/30
 
 const mgr = new Manager(
   20, // amount of tags
