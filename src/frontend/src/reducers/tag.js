@@ -4,7 +4,7 @@ const initialState = [
   {
     "tagId": 5,
     "tagName": "Maximus",
-    "mapId": 4,
+    "mapId": 5,
     "hardwareVersion": 12,
     "firmwareVersion": 11,
     "battery": 0.5,

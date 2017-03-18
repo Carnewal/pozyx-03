@@ -1,4 +1,4 @@
-import { SET_FLOORPLAN } from '../actions/FloorPlanActions'
+import { SET_FLOORPLAN } from 'frontend/actions/MapActions'
 
 const initialState = [
   {
@@ -16,7 +16,8 @@ const initialState = [
     "mapURL": "http://localhost:3000/public/maps/5.png",
     "x": 40,
     "y": 40,
-    "z": 2
+    "z": 2,
+    "floorPlan": ''
   }
 ]
 
@@ -27,10 +28,11 @@ export const types = {
 
 const map = (state = initialState, action) => {
   switch(action.type) {
-    case SET_FLOORPLAN:
+    case SET_FLOORPLAN: {
       const newState = state.slice()
       newState.find((map) => map.mapId === action.currentMap).floorPlan = action.file
       return newState
+    }
     default:
       return state
   }

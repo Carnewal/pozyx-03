@@ -3,7 +3,7 @@ import Map from 'frontend/components/dashboard/Map'
 import { getFloorPlan } from 'frontend/selectors/map'
 
 const mapFilter = (object, state) => {
-  if (object.mapId == state.app.currentMap) {
+  if (object.mapId === state.app.currentMap) {
     return true
   } else {
     return false

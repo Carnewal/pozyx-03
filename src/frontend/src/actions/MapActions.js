@@ -11,3 +11,9 @@ export const uploadFloorplan = (file, currentMap) => ({
   file,
   currentMap
 })
+
+export const SET_CURRENTMAP = "SET_CURRENTMAP"
+export const setCurrentmap = (mapId) => ({
+  type: SET_CURRENTMAP,
+  mapId
+})

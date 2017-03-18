@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { uploadFloorplan } from '../actions/FloorPlanActions'
-import UploadPlan from '../components/dashboard/UploadPlan'
+import { uploadFloorplan } from 'frontend/actions/MapActions'
+import UploadPlan from 'frontend/components/dashboard/UploadPlan'
 
 const mapStateToProps = (state) => ({
   currentMap: state.app.currentMap

@@ -5,6 +5,7 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import MapsLayers from 'material-ui/svg-icons/maps/layers'
+import Check from 'material-ui/svg-icons/navigation/check'
 import Menu from 'material-ui/svg-icons/navigation/menu'
 import ViewModule from 'material-ui/svg-icons/action/view-module'
 import {white} from 'material-ui/styles/colors'
@@ -52,7 +53,12 @@ class Header extends React.Component {
                             targetOrigin={{horizontal: 'right', vertical: 'top'}}
                             anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
-                    {this.props.maps.map((map) => <MenuItem key={map.id} primaryText={map.name}/>)}
+                    {this.props.maps.map((map) => <MenuItem
+                      key={map.id}
+                      onClick={() => this.props.setCurrentmap(map.id)}
+                      primaryText={map.name}
+                      leftIcon={map.id == this.props.currentMap ? <Check /> : <span/> }/>
+                    )}
 
                   </IconMenu>
                   <IconMenu color={white}
