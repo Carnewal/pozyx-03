@@ -108,10 +108,10 @@ const upload = multer({
  }),
  fileFilter: (req, file, cb) => {
    if (file.mimetype !== 'image/png') {
-     req.fileValidationError = 'Invalid filetype';
-     return cb(null, false, new Error('Invalid Filetype'));
+     req.fileValidationError = 'Invalid filetype'
+     return cb(null, false, new Error('Invalid Filetype'))
    }
-   cb(null, true);
+   cb(null, true)
  }
 })
 
@@ -122,7 +122,7 @@ api.post('/map/:id/image', upload.single('mapimage'), (req, res) => {
   } else if (!file) {
     return res.status(400).json({uploaded:false, error: "Request form-data didn't contain a mapimage file."})
   }
-  res.json({uploaded: true, mapURL: 'public/maps/' + file.filename});
+  res.json({uploaded: true, mapURL: 'public/maps/' + file.filename})
 })
 
 

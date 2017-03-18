@@ -2,14 +2,12 @@ import React, {PropTypes} from 'react'
 import UploadPlanArea from '../../containers/UploadPlanArea'
 import Map from '../../containers/MapContainer'
 import InfoBox from 'frontend/components/dashboard/InfoBox'
-import RecentlyProducts from 'frontend/components/dashboard/RecentlyProducts'
 import PageBase from 'frontend/components/layout/PageBase'
 
 import {cyan600, purple600} from 'material-ui/styles/colors'
 
 import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
-
 
 export default class Dashboard extends React.Component {
   constructor(props) {

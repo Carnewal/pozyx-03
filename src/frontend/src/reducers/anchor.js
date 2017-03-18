@@ -7,8 +7,8 @@ const initialState = [
     "hardwareVersion": 12,
     "firmwareVersion": 11,
     "position": {
-      "x": 12.0000021,
-      "y": 105.12555,
+      "x": 2.0000021,
+      "y": 95.12555,
       "z": 0.04
     },
     "status": 0,
@@ -21,8 +21,8 @@ const initialState = [
     "hardwareVersion": 12,
     "firmwareVersion": 11,
     "position": {
-      "x": 13.0000021,
-      "y": 102.12555,
+      "x": 98.0000021,
+      "y": 4.12555,
       "z": 0.03
     },
     "status": 0,
@@ -30,13 +30,13 @@ const initialState = [
   },
     {
       "anchorId": 6,
-      "mapId": 3,
+      "mapId": 5,
       "anchorName": "Maximus",
       "hardwareVersion": 12,
       "firmwareVersion": 11,
       "position": {
-        "x": 12.0000021,
-        "y": 105.12555,
+        "x": 98.0000021,
+        "y": 1.12555,
         "z": 0.04
       },
       "status": 0,
@@ -44,13 +44,13 @@ const initialState = [
     },
     {
       "anchorId": 7,
-      "mapId": 3,
+      "mapId": 5,
       "anchorName": "John",
       "hardwareVersion": 12,
       "firmwareVersion": 11,
       "position": {
         "x": 13.0000021,
-        "y": 102.12555,
+        "y": 91.12555,
         "z": 0.03
       },
       "status": 0,
