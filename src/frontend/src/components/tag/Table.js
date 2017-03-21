@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import {grey500} from 'material-ui/styles/colors'
 import Chip from 'material-ui/Chip'
+import TextField from 'material-ui/TextField'
 import PageBase from 'frontend/components/layout/PageBase'
 
 const styles = {
@@ -45,35 +46,36 @@ const styles = {
 export default class TagTable extends React.Component {
 
 render() {
-  const {labels,labelFilters} = this.props
+  const {labels,labelFilters,onLabelClick,onSearchChange} = this.props
 
   return (
     <PageBase title='Tags'
     navigation='Map / Tags'>
       <br/>
-      <span>Filter by Label:</span>
+      <TextField
+        hintText="Search"
+        onChange={(e,val) => { onSearchChange(val) }}
+      />
+      <br/>
+
       <div style={styles.chipWrapper}>
         {Object.keys(labels).map((lbl) =>
           <Chip
             style={styles.chip}
             key={lbl}
             onRequestDelete={labelFilters.includes(labels[lbl].labelId)
-              ? () => { this.props.onLabelClick(labels[lbl].labelId) }
+              ? () => { onLabelClick(labels[lbl].labelId) }
               : false
             }
             onTouchTap={() => {
-              this.props.onLabelClick(labels[lbl].labelId)
+              onLabelClick(labels[lbl].labelId)
             }}
             >
             {lbl}
           </Chip>
         )}
       </div>
-      <span>Search:</span>
-
-
-
-      <Table>
+      {this.props.tags.length > 0 ? <Table>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
     <TableRow>
     <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
@@ -107,7 +109,7 @@ render() {
       </TableRow>
     )}
     </TableBody>
-    </Table>
+    </Table> : <div><br/>No tags found!</div>}
     </PageBase>
   )
 
@@ -117,13 +119,15 @@ render() {
 TagTable.propTypes = {
   tags: PropTypes.array,
   labels: PropTypes.object,
-  labelFilters: PropTypes.func,
-  onLabelClick: PropTypes.func
+  labelFilters: PropTypes.array,
+  onLabelClick: PropTypes.func,
+  onSearchChange: PropTypes.func
 }
 
 TagTable.defaultProps = {
   tags: [],
   labels: {},
   labelFilters: [],
-  onLabelClick: (id) => {console.log('click ' + id)}
+  onLabelClick: (id) => {console.log('unhandled click ' + id)},
+  onSearchChange: (val) => {console.log('unhandled search change ' + val)}
 }

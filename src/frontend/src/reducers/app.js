@@ -1,5 +1,5 @@
 import { SET_CURRENTMAP } from 'frontend/actions/MapActions'
-import { TOGGLE_LABEL_FILTER } from 'frontend/actions/AppActions'
+import { TOGGLE_TAG_LABEL_FILTER, SET_TAG_SEARCH } from 'frontend/actions/AppActions'
 
 const initialState = {
   currentMap: 4
@@ -10,7 +10,7 @@ const app = (state = initialState, action) => {
     case SET_CURRENTMAP: {
       return ({currentMap: action.mapId})
     }
-    case TOGGLE_LABEL_FILTER: {
+    case TOGGLE_TAG_LABEL_FILTER: {
       const labelSet = new Set(state.tagLabelFilters || [])
       return Object.assign({}, state, {
         tagLabelFilters: [
@@ -20,6 +20,10 @@ const app = (state = initialState, action) => {
           )
         ]
       })
+    }
+
+    case SET_TAG_SEARCH: {
+      return Object.assign({}, state, { tagSearch: action.search })
     }
 
     default:

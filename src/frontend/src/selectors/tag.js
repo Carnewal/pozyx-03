@@ -30,5 +30,9 @@ export const getTagLabelIds = (tag) => tag.labels.map((l) => l.labelId)
 const labelFilter = (filters) => (tag) =>
   filters.length === 0 || filters.every((f) => getTagLabelIds(tag).includes(f))
 
+const searchFilter = (search) => (tag) =>
+  !search || tag.tagName.toLowerCase().includes(search.toLowerCase())
+
 export const getFilteredTags = (state) => getTags(state)
     .filter(labelFilter(getLabelFilters(state)))
+    .filter(searchFilter(state.app.tagSearch || null))

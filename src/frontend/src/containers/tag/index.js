@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import TagTable from 'frontend/components/tag/Table'
 import {getFilteredTags, getExistingLabels, getLabelFilters} from 'frontend/selectors/tag'
-import { toggleLabelFilter } from 'frontend/actions/AppActions'
+import { toggleTagLabelFilter, setTagSearch } from 'frontend/actions/AppActions'
 
 
 const mapStateToProps = (state) => {
@@ -14,7 +14,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLabelClick: (labelId) => dispatch(toggleLabelFilter(labelId))
+    onLabelClick: (labelId) => dispatch(toggleTagLabelFilter(labelId)),
+    onSearchChange: (search) => dispatch(setTagSearch(search))
   }
 }
 
