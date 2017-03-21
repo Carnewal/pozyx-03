@@ -50,6 +50,7 @@ render() {
   return (
     <PageBase title='Tags'
     navigation='Map / Tags'>
+      <br/>
       <span>Filter by Label:</span>
       <div style={styles.chipWrapper}>
         {Object.keys(labels).map((lbl) =>
@@ -68,6 +69,9 @@ render() {
           </Chip>
         )}
       </div>
+      <span>Search:</span>
+
+
 
       <Table>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -85,7 +89,18 @@ render() {
         <TableRowColumn style={styles.columns.name}>{tag.tagName}</TableRowColumn>
         <TableRowColumn style={styles.columns.price}>
             <div style={styles.chipWrapper}>
-              {tag.labels.map((l) => <Chip style={styles.chip} key={l.labelId}>{l.labelName}</Chip>)}
+              {tag.labels.map((l) => <Chip
+                style={styles.chip}
+                key={l.labelId}
+                onRequestDelete={labelFilters.includes(l.labelId)
+                  ? () => { this.props.onLabelClick(l.labelId) }
+                  : false
+                }
+                onTouchTap={() => {
+                  this.props.onLabelClick(l.labelId)
+                }}
+
+                >{l.labelName}</Chip>)}
             </div>
           </TableRowColumn>
         <TableRowColumn style={styles.columns.id}>{tag.battery * 100} %</TableRowColumn>
