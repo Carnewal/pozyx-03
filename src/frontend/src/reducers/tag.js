@@ -81,6 +81,33 @@ const initialState = [
         "labelName": "Storage Room"
       }
     ]
+  },
+  {
+    "tagId": 7,
+    "tagName": "Eva",
+    "mapId": 4,
+    "hardwareVersion": 12,
+    "firmwareVersion": 11,
+    "battery": 0.7,
+    "updateRate": 1.2,
+    "iconNumber": 1,
+    "iconColor": "4286f4",
+    "position": {
+      "x": 20,
+      "y": 2,
+      "z": 11,
+      "timestamp": "2017-03-07T15:31:31.456+01:00"
+    },
+    "labels": [
+      {
+        "labelId": 4,
+        "labelName": "Jonasty"
+      },
+      {
+        "labelId": 8,
+        "labelName": "Larder"
+      }
+    ]
   }
 ]
 
