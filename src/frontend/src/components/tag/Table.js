@@ -53,7 +53,7 @@ render() {
     navigation='Map / Tags'>
       <br/>
       <TextField
-        hintText="Search"
+        hintText='Search id or name'
         onChange={(e,val) => { onSearchChange(val) }}
       />
       <br/>

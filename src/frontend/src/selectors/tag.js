@@ -31,7 +31,9 @@ const labelFilter = (filters) => (tag) =>
   filters.length === 0 || filters.every((f) => getTagLabelIds(tag).includes(f))
 
 const searchFilter = (search) => (tag) =>
-  !search || tag.tagName.toLowerCase().includes(search.toLowerCase())
+  !search ||
+  tag.tagName.toLowerCase().includes(search.toLowerCase()) ||
+  tag.tagId === parseInt(search)
 
 export const getFilteredTags = (state) => getTags(state)
     .filter(labelFilter(getLabelFilters(state)))
