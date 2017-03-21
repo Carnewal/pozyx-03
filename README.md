@@ -26,4 +26,9 @@ Auteurs
 * Rémy D'heygere
 * Tom Dorchain
 * Pieter-Jan Vandenberghe
-* Jonas Vermassen
+* Jonas Vermassen 
+
+Applicatie
+============
+
+Meer informatie omtrent de applicatie kunt u binnenkort hier terugvinden
