@@ -1,13 +1,25 @@
 import { connect } from 'react-redux'
 import TagTable from 'frontend/components/tag/Table'
+import {getFilteredTags, getExistingLabels, getLabelFilters} from 'frontend/selectors/tag'
+import { toggleLabelFilter } from 'frontend/actions/AppActions'
+
 
 const mapStateToProps = (state) => {
-  const {currentMap} = state.app
   return {
-    tags: state.tag.filter((tag) => tag.mapId === currentMap)
+    tags: getFilteredTags(state),
+    labels: getExistingLabels(state),
+    labelFilters: getLabelFilters(state)
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLabelClick: (labelId) => dispatch(toggleLabelFilter(labelId))
+  }
+}
+
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(TagTable)
