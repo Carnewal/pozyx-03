@@ -36,10 +36,10 @@ const styles = {
   chip: {
     margin: 4,
   },
-  wrapper: {
+  chipWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
-  },
+  }
 }
 
 export default class TagTable extends React.Component {
@@ -50,7 +50,8 @@ render() {
   return (
     <PageBase title='Tags'
     navigation='Map / Tags'>
-      <div style={styles.wrapper}>
+      <span>Filter by Label:</span>
+      <div style={styles.chipWrapper}>
         {Object.keys(labels).map((lbl) =>
           <Chip
             style={styles.chip}
@@ -83,7 +84,7 @@ render() {
         <TableRowColumn style={styles.columns.id}>{tag.tagId}</TableRowColumn>
         <TableRowColumn style={styles.columns.name}>{tag.tagName}</TableRowColumn>
         <TableRowColumn style={styles.columns.price}>
-            <div style={styles.wrapper}>
+            <div style={styles.chipWrapper}>
               {tag.labels.map((l) => <Chip style={styles.chip} key={l.labelId}>{l.labelName}</Chip>)}
             </div>
           </TableRowColumn>
