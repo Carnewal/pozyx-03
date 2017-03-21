@@ -91,7 +91,7 @@ render() {
         <TableRowColumn style={styles.columns.name}>{tag.tagName}</TableRowColumn>
         <TableRowColumn style={styles.columns.price}>
             <div style={styles.chipWrapper}>
-              {tag.labels.map((l) => <Chip
+              {tag.labels && tag.labels.map((l) => <Chip
                 style={styles.chip}
                 key={l.labelId}
                 onRequestDelete={labelFilters.includes(l.labelId)

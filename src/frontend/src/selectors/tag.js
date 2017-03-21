@@ -27,10 +27,10 @@ export const getExistingLabels = (state) => {
 export const getLabelFilters = (state) => state.app.tagLabelFilters || []
 
 // Get the label Ids on a tag
-export const getTagLabelIds = (tag) => tag.labels.map((l) => l.labelId)
+export const getTagLabelIds = (tag) => tag.labels && tag.labels.map((l) => l.labelId) || []
 
 // Get the label names on a tag
-export const getTagLabelNames = (tag) => tag.labels.map((l) => l.labelName)
+export const getTagLabelNames = (tag) => tag.labels && tag.labels.map((l) => l.labelName) || []
 
 // Filter tag labels
 // Returns true if the tag's labelIds exist inside the given filters array
@@ -51,4 +51,4 @@ const searchFilter = (search) => (tag) =>
 // Filters the tags
 export const getFilteredTags = (state) => getTags(state)
     .filter(labelFilter(getLabelFilters(state)))
-    .filter(searchFilter(state.app.tagSearch || null))
+    .filter(searchFilter(state.app.tagSearch || null)) || []
