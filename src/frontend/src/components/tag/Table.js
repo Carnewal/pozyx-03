@@ -52,11 +52,21 @@ render() {
     <PageBase title='Tags'
     navigation='Map / Tags'>
       <br/>
-      <TextField
-        hintText='Filter by id, name or label'
-        onChange={(e,val) => { onSearchChange(val) }}
-      />
-      <br/>
+
+      <div className='row'>
+        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-15 '>
+          <TextField
+          hintText='Filter by id, name or label'
+          onChange={(e,val) => { onSearchChange(val) }}
+          />
+        </div>
+        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-15 '>
+          <TextField
+          hintText='Filter by id, name or label'
+          onChange={(e,val) => { onSearchChange(val) }}
+          />
+        </div>
+      </div>
 
       <div style={styles.chipWrapper}>
         {Object.keys(labels).map((lbl) =>
@@ -65,7 +75,7 @@ render() {
             key={lbl}
             onRequestDelete={labelFilters.includes(labels[lbl].labelId)
               ? () => { onLabelClick(labels[lbl].labelId) }
-              : false
+              : null
             }
             onTouchTap={() => {
               onLabelClick(labels[lbl].labelId)
@@ -96,12 +106,11 @@ render() {
                 key={l.labelId}
                 onRequestDelete={labelFilters.includes(l.labelId)
                   ? () => { this.props.onLabelClick(l.labelId) }
-                  : false
+                  : null
                 }
                 onTouchTap={() => {
                   this.props.onLabelClick(l.labelId)
                 }}
-
                 >{l.labelName}</Chip>)}
             </div>
           </TableRowColumn>
