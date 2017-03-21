@@ -23,18 +23,32 @@ export const getExistingLabels = (state) => {
   return labels
 }
 
+// Get the labels selected by the user
 export const getLabelFilters = (state) => state.app.tagLabelFilters || []
 
+// Get the label Ids on a tag
 export const getTagLabelIds = (tag) => tag.labels.map((l) => l.labelId)
 
+// Get the label names on a tag
+export const getTagLabelNames = (tag) => tag.labels.map((l) => l.labelName)
+
+// Filter tag labels
+// Returns true if the tag's labelIds exist inside the given filters array
 const labelFilter = (filters) => (tag) =>
   filters.length === 0 || filters.every((f) => getTagLabelIds(tag).includes(f))
 
+// Filter tag by search
+// Returns true if the tag's:
+// - name contains the search term
+// - id matches the search term
+// - any label matches the search term
 const searchFilter = (search) => (tag) =>
   !search ||
   tag.tagName.toLowerCase().includes(search.toLowerCase()) ||
-  tag.tagId === parseInt(search)
+  tag.tagId === parseInt(search) ||
+  getTagLabelNames(tag).find((lbl) => lbl.toLowerCase().includes(search.toLowerCase()))
 
+// Filters the tags
 export const getFilteredTags = (state) => getTags(state)
     .filter(labelFilter(getLabelFilters(state)))
     .filter(searchFilter(state.app.tagSearch || null))

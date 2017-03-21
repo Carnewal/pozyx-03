@@ -53,7 +53,7 @@ render() {
     navigation='Map / Tags'>
       <br/>
       <TextField
-        hintText='Search id or name'
+        hintText='Filter by id, name or label'
         onChange={(e,val) => { onSearchChange(val) }}
       />
       <br/>
