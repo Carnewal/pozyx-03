@@ -34,7 +34,7 @@ Applicatie
 ============
 
 _Deze informatie wordt verder geüpdatet naargelang de huidige versie van de applicatie._
-_Informatie over de vooruitgang van functionaliteiten kan worden teruggevonden onder issues_
+_Informatie over de vooruitgang van functionaliteiten kan worden teruggevonden onder issues. De laatste werkende versie is steeds beschikbaar op http://pozyx-03.project.tiwi.be_
 
 Op de homepagina (dashboard) kan een plattegrond worden toegevoegd. Dit kan via de dropzone of via het menu rechtsboven.
 Deze wordt gebruikt als ondergrond om de tags te visualiseren.
