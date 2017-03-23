@@ -22,7 +22,7 @@ export default class UploadPlan extends React.Component {
       <div>
       <Dropzone
         multiple={false}
-        accept='image/*'
+        accept='image/png'
         style={styles}
         onDrop={(e) => this.props.UploadFloorplan(e[0])}>
         <p>Sleep een plattegrond naar hier of klik om een bestand up te loaden.</p>
