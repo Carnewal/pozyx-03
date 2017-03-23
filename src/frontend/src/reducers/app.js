@@ -1,5 +1,5 @@
 import { SET_CURRENTMAP } from 'frontend/actions/MapActions'
-import { TOGGLE_TAG_LABEL_FILTER, SET_TAG_SEARCH } from 'frontend/actions/AppActions'
+import { TOGGLE_TAG_LABEL_FILTER, SET_TAG_SEARCH, SET_TAG_BATTERY_FILTER, SET_TAG_BATTERY_OPERATOR } from 'frontend/actions/AppActions'
 
 const initialState = {
   currentMap: 4
@@ -21,7 +21,13 @@ const app = (state = initialState, action) => {
         ]
       })
     }
+    case SET_TAG_BATTERY_FILTER: {
+      return Object.assign({}, state, { tagBatteryFilter: action.percentage })
+    }
+    case SET_TAG_BATTERY_OPERATOR: {
+      return Object.assign({}, state, { tagBatteryOperator: action.operator })
 
+    }
     case SET_TAG_SEARCH: {
       return Object.assign({}, state, { tagSearch: action.search })
     }

@@ -3,6 +3,9 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {grey500} from 'material-ui/styles/colors'
 import Chip from 'material-ui/Chip'
 import TextField from 'material-ui/TextField'
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Slider from 'material-ui/Slider'
 import PageBase from 'frontend/components/layout/PageBase'
 
 const styles = {
@@ -40,13 +43,29 @@ const styles = {
   chipWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  slider: {
+    marginTop: 22,
+    marginBottom: 0
+  },
+  batteryDropdown: {
+    width: 100
   }
 }
 
 export default class TagTable extends React.Component {
 
 render() {
-  const {labels,labelFilters,onLabelClick,onSearchChange} = this.props
+  const {
+    labels,
+    labelFilters,
+    batteryFilter,
+    batteryOperator,
+    onLabelClick,
+    onSearchChange,
+    onBatteryOperatorChange,
+    onBatteryFilterChange
+  } = this.props
 
   return (
     <PageBase title='Tags'
@@ -54,17 +73,34 @@ render() {
       <br/>
 
       <div className='row'>
-        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-15 '>
+        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 '>
           <TextField
           hintText='Filter by id, name or label'
           onChange={(e,val) => { onSearchChange(val) }}
           />
         </div>
-        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 m-b-15 '>
-          <TextField
-          hintText='Filter by id, name or label'
-          onChange={(e,val) => { onSearchChange(val) }}
-          />
+        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+          <div className='row'>
+            <div className='col-xs-9 col-sm-10 col-md-8 col-lg-8 '>
+              <Slider
+                disabled={batteryOperator === 0}
+                sliderStyle={styles.slider}
+                defaultValue={1}
+                value={batteryFilter}
+                onChange={(e,val) => {onBatteryFilterChange(val)}}
+              />
+            </div>
+            <div className='col-xs-3 col-sm-2 col-md-4 col-lg-4 '>
+              <DropDownMenu
+              value={batteryOperator}
+              onChange={(e,i,val) => {onBatteryOperatorChange(val)}}
+              >
+                <MenuItem value={0} primaryText='Off' />
+                <MenuItem value={1} label='>' primaryText='More than' />
+                <MenuItem value={2} label='<' primaryText='Less than' />
+              </DropDownMenu>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -129,14 +165,21 @@ TagTable.propTypes = {
   tags: PropTypes.array,
   labels: PropTypes.object,
   labelFilters: PropTypes.array,
+  batteryFilter: PropTypes.number,
+  batteryOperator: PropTypes.number,
   onLabelClick: PropTypes.func,
-  onSearchChange: PropTypes.func
+  onSearchChange: PropTypes.func,
+  onBatteryFilterChange: PropTypes.func,
+  onBatteryOperatorChange: PropTypes.func
 }
 
 TagTable.defaultProps = {
   tags: [],
   labels: {},
   labelFilters: [],
+  batteryFilter: null,
   onLabelClick: (id) => {console.log('unhandled click ' + id)},
-  onSearchChange: (val) => {console.log('unhandled search change ' + val)}
+  onSearchChange: (val) => {console.log('unhandled search change ' + val)},
+  onBatteryOperatorChange: (val) => {console.log('unhandled battery operator change ' + val)},
+  onBatteryFilterChange: (val) => {console.log('unhandled battery slider change ' + val)}
 }
