@@ -3,7 +3,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {grey500} from 'material-ui/styles/colors'
 import Chip from 'material-ui/Chip'
 import TextField from 'material-ui/TextField'
-import DropDownMenu from 'material-ui/DropDownMenu';
+import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Slider from 'material-ui/Slider'
 import PageBase from 'frontend/components/layout/PageBase'
@@ -49,7 +49,8 @@ const styles = {
     marginBottom: 0
   },
   batteryDropdown: {
-    width: 100
+    width: 118,
+    marginTop: -14
   }
 }
 
@@ -81,24 +82,30 @@ render() {
         </div>
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
           <div className='row'>
-            <div className='col-xs-9 col-sm-10 col-md-8 col-lg-8 '>
+            <div className='col-xs-6 col-sm-9 col-md-8 col-lg-8 '>
               <Slider
                 disabled={batteryOperator === 0}
                 sliderStyle={styles.slider}
-                defaultValue={1}
+                defaultValue={0.5}
                 value={batteryFilter}
+                step={0.05}
                 onChange={(e,val) => {onBatteryFilterChange(val)}}
-              />
+              >
+              <div>Test</div>
+              </Slider>
             </div>
-            <div className='col-xs-3 col-sm-2 col-md-4 col-lg-4 '>
-              <DropDownMenu
-              value={batteryOperator}
-              onChange={(e,i,val) => {onBatteryOperatorChange(val)}}
+            <div className='col-xs-6 col-sm-3 col-md-4 col-lg-4 '>
+              <SelectField
+               value={batteryOperator}
+               style={styles.batteryDropdown}
+               autoWidth={false}
+               onChange={(e,i,val) => {onBatteryOperatorChange(val)}}
+               floatingLabelText='Battery filter'
               >
                 <MenuItem value={0} primaryText='Off' />
-                <MenuItem value={1} label='>' primaryText='More than' />
-                <MenuItem value={2} label='<' primaryText='Less than' />
-              </DropDownMenu>
+                <MenuItem value={1} label={`> ${Math.round(batteryFilter*100)} %`} primaryText='More than' />
+                <MenuItem value={2} label={`< ${Math.round(batteryFilter*100)} %`} primaryText='Less than' />
+              </SelectField>
             </div>
           </div>
         </div>
