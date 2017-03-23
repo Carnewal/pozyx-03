@@ -55,12 +55,15 @@ getTagLabelNames(tag).find((lbl) => lbl.toLowerCase().includes(search.toLowerCas
 // 0 = OFF
 // 1 = > (more than)
 // 2 = < (less than)
-const batteryFilter = (percentage, operator) => (tag) =>
-  operator && operator === 0
-    ? true
-    : operator === 1
-      ? tag.battery > percentage
-      : tag.battery < percentage
+const batteryFilter = (percentage, operator) => (tag) => {
+  if(!operator || operator === 0) {
+    return true
+  } else if(operator === 1) {
+    return tag.battery > percentage
+  } else if(operator === 2) {
+    return tag.battery < percentage
+  }
+}
 
 // Filters the tags
 export const getFilteredTags = (state) => getTags(state)
