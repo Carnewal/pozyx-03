@@ -1,6 +1,7 @@
 import { SET_CURRENTMAP } from 'frontend/actions/MapActions'
 import { ADD_ALERT, REMOVE_ALERT } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
+import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
 
 const initialState = {
   currentMap: 4,
@@ -18,14 +19,17 @@ const sortFunction = (a1, a2) => {
 
 const priorityNumber = (priority) => {
   switch(priority) {
-    case 'error': {
+    case ERROR: {
       return 0
     }
-    case 'warning': {
+    case SUCCESS: {
       return 1
     }
-    default: {
+    case WARNING: {
       return 2
+    }
+    default: {
+      return 3
     }
   }
 }

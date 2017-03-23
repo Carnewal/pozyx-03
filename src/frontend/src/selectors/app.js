@@ -5,9 +5,8 @@ export const getAlertsAmount = (state) => state.app.alerts.length
 export const getCurrentAlert = (state) => {
   if (getAlertsAmount(state) === 0) {
     return {
-      message:'test',
-      duration:'0',
-      priority:'none'
+      message:'',
+      duration:'0'
     }
   }
   return state.app.alerts[0]

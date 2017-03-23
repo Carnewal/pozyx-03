@@ -5,7 +5,7 @@ import Header from 'frontend/containers/layout/HeaderContainer'
 import LeftDrawer from 'frontend/components/layout/LeftDrawer'
 import ThemeDefault from '../theme-default'
 import Data from '../data'
-import Alert from 'frontend/containers/Alert'
+import Alert from 'frontend/containers/AlertContainer'
 
 class App extends React.Component {
 
