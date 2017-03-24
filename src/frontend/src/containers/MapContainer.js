@@ -1,25 +1,18 @@
 import { connect } from 'react-redux'
 import Map from 'frontend/components/dashboard/Map'
 import { getFloorPlan } from 'frontend/selectors/map'
-
-const mapFilter = (object, state) => {
-  if (object.mapId === state.app.currentMap) {
-    return true
-  } else {
-    return false
-  }
-}
+import { getFilteredTags } from 'frontend/selectors/tag'
+import { getAnchors } from 'frontend/selectors/anchor'
 
 const mapStateToProps = (state) => ({
-  positions: state.tag.filter((tag) => mapFilter(tag, state)).map((tag) => ({
+  positions: getFilteredTags(state).map((tag) => ({
     tagId:tag.tagId,
     x: tag.position.x,
     y:tag.position.y,
     z: tag.position.z
   })),
   floorPlan: getFloorPlan(state),
-  anchors: state.anchor.filter((anchor) => mapFilter(anchor, state))
-  .map((anchor) => ({
+  anchors: getAnchors(state).map((anchor) => ({
     anchorId: anchor.anchorId,
     x: anchor.position.x,
     y: anchor.position.y,
