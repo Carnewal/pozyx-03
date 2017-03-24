@@ -32,7 +32,10 @@ export const getTagLabelIds = (tag) => tag.labels && tag.labels.map((l) => l.lab
 // Get the label names on a tag
 export const getTagLabelNames = (tag) => tag.labels && tag.labels.map((l) => l.labelName) || []
 
-export const getBatteryFilter = (state) => state.app.tagBatteryFilter || 0.5
+export const getBatteryFilter = (state) => state.app.tagBatteryFilter === undefined
+  ? 0.5
+  : state.app.tagBatteryFilter
+  
 export const getBatteryOperator = (state) => state.app.tagBatteryOperator || 0
 
 // Filter tag labels
