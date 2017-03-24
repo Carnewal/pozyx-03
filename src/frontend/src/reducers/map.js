@@ -5,10 +5,10 @@ const initialState = [
     "mapId": 4,
     "mapName": "Demo Map",
     "mapURL": "http://localhost:3000/public/maps/4.png",
+    "floorPlan": "http://localhost:3000/public/maps/4.png",
     "x": 1000,
     "y": 857,
-    "z": 2,
-    "floorPlan": ''
+    "z": 2
   },
   {
     "mapId": 5,
