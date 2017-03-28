@@ -9,15 +9,15 @@ import {
 } from 'frontend/actions/AppActions'
 
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => (
+  {
     tags: getFilteredTags(state),
     labels: getExistingLabels(state),
     labelFilters: getLabelFilters(state),
     batteryFilter: getBatteryFilter(state),
     batteryOperator: getBatteryOperator(state)
   }
-}
+)
 
 const mapDispatchToProps = (dispatch) => {
   return {
