@@ -7,3 +7,5 @@ coverage
 dist
 server/frontend-build
 src/server/src/config/config.json
+src/.vs/slnx.sqlite
+src/.vs/

@@ -5,6 +5,7 @@ import Header from 'frontend/containers/layout/HeaderContainer'
 import LeftDrawer from 'frontend/components/layout/LeftDrawer'
 import ThemeDefault from '../theme-default'
 import Data from '../data'
+import menuItems from 'frontend/constants/menu-items'
 
 class App extends React.Component {
 
@@ -48,7 +49,7 @@ class App extends React.Component {
                   handleChangeRequestNavDrawer={this.handleChangeRequestNavDrawer.bind(this)}/>
 
             <LeftDrawer navDrawerOpen={navDrawerOpen}
-                        menus={Data.menus}
+                        menus={menuItems}
                         username='User Admin'/>
 
             <div style={styles.container}>
