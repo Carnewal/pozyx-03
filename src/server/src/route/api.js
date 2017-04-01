@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import mapRoutes from './map'
-import anchorRoutes from './map'
-import tagRoutes from './map'
+import anchorRoutes from './anchor'
+import tagRoutes from './tag'
 
 
 const api = Router()
