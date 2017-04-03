@@ -14,19 +14,20 @@ export default class Dashboard extends React.Component {
     super(props)
   }
 
-  updateDimensions() {
-    this.setState({mapWidth: this.refs.mapSizePlaceholder.clientWidth})
-    this.forceUpdate()
-
-  }
-
   componentDidMount() {
-      this.updateDimensions()
+    const updateDimensions = () => {
+      console.log('updating..')
+      this.setState({mapWidth: this.refs.mapSizePlaceholder.clientWidth})
+    }
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize')
   }
 
 
   render() {
-    console.log(this.refs)
     const {floorPlan, tagsAmount, anchorsAmount} = this.props
     return (
       <PageBase title='Dashboard'
