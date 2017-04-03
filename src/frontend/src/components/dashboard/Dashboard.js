@@ -14,8 +14,19 @@ export default class Dashboard extends React.Component {
     super(props)
   }
 
-  render() {
+  updateDimensions() {
+    this.setState({mapWidth: this.refs.mapSizePlaceholder.clientWidth})
+    this.forceUpdate()
 
+  }
+
+  componentDidMount() {
+      this.updateDimensions()
+  }
+
+
+  render() {
+    console.log(this.refs)
     const {floorPlan, tagsAmount, anchorsAmount} = this.props
     return (
       <PageBase title='Dashboard'
@@ -47,9 +58,10 @@ export default class Dashboard extends React.Component {
       <br/>
 
       <div className='row'>
-        <div className='col-xs-12 col-sm-12 col-md-12 col-lg-12 m-b-15 '>
-          {floorPlan == '' ? <UploadPlanArea/> : <Map />}
 
+        <div className='col-xs-12 col-sm-12 col-md-12 col-lg-12 m-b-15 '>
+          <div ref='mapSizePlaceholder'></div>
+          {floorPlan == '' ? <UploadPlanArea/> : <Map containerWidth={this.state && this.state.mapWidth}/>}
         </div>
 
       </div>

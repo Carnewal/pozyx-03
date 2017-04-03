@@ -6,8 +6,8 @@ const initialState = [
     "mapName": "Demo Map",
     "mapURL": "http://localhost:3000/public/maps/4.png",
     "floorPlan": "http://localhost:3000/public/maps/4.png",
-    "x": 1000,
-    "y": 857,
+    "x": 200,
+    "y": 100,
     "z": 2
   },
   {

@@ -3,8 +3,10 @@ import Map from 'frontend/components/dashboard/Map'
 import { getFloorPlan } from 'frontend/selectors/map'
 import { getFilteredTags } from 'frontend/selectors/tag'
 import { getAnchors } from 'frontend/selectors/anchor'
+import { getCurrentMap } from 'frontend/selectors/map'
 
 const mapStateToProps = (state) => ({
+  map: getCurrentMap(state),
   positions: getFilteredTags(state).map((tag) => ({
     tagId:tag.tagId,
     x: tag.position.x,

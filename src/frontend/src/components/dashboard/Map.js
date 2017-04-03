@@ -34,58 +34,64 @@ export default class Map extends React.Component {
     super(props)
   }
   componentDidMount() {
-    const image = new window.Image();
-    image.src = this.props.floorPlan;
+    const image = new window.Image()
+    image.src = this.props.floorPlan
     image.onload = () => {
       this.setState({
         image: image
-      });
+      })
     }
   }
 
-  background() {
+  background(w, h) {
     return <Image
-      width={700}
-      height={500}
+      width={w}
+      height={h}
       image={this.state.image}
     />
   }
 
-  tags() {
+  tags(scale) {
     return this.props.positions.map((tag, i) =>
       <Circle
         key={i}
         ref={`tag${i}`}
         radius={2}
-        x={tag.x}
-        y={tag.y}
-        fill={`#${tag.iconColor}`}
+        x={tag.x * scale}
+        y={tag.y * scale}
+        fill={'#fff'/*`#${tag.iconColor}`*/}
       />
     )
   }
 
-  anchors() {
+  anchors(scale) {
     return this.props.anchors.map((anchor, i) =>
       <Rect
         key={i}
         ref={`rect${i}`}
-        x={anchor.x}
-        y={anchor.y}
+        x={anchor.x * scale}
+        y={anchor.y * scale}
         width={8}
         height={8}
-        fill={`#000`}
+        fill={`#fff`}
       />
     )
   }
 
   render() {
+
+      const {containerWidth, map} = this.props
+      const mapScaling = containerWidth / map.x
+      const containerHeight = map.y * mapScaling
+
+
       return (
-        <Stage width={700} height={500}>
+        <Stage width={containerWidth} height={containerHeight}>
           <Layer
             scale={{x:1, y: 1}}>
-              {this.state && this.state.image && this.background()}
-              {this.tags()}
-              {this.anchors()}
+              {this.state && this.state.image && this.background(containerWidth, containerHeight)}
+              {this.tags(mapScaling)}
+              {this.anchors(mapScaling)}
           </Layer>
         </Stage>
       )
@@ -93,6 +99,8 @@ export default class Map extends React.Component {
 }
 
 Map.propTypes = {
+  map: PropTypes.object,
+  containerWidth: PropTypes.number,
   positions: PropTypes.array,
   anchors: PropTypes.array,
   floorPlan: PropTypes.string
