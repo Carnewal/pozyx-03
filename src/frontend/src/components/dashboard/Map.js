@@ -1,7 +1,5 @@
 import React, {PropTypes} from 'react'
-import TagIcon from 'material-ui/svg-icons/maps/my-location'
-import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
-import {Layer, Rect, Stage, Group, Image, Circle} from 'react-konva';
+import {Layer, Rect, Stage, Group, Image, Circle, Text as KText} from 'react-konva'
 
 const style = {
   wrappingDiv: {
@@ -53,14 +51,23 @@ export default class Map extends React.Component {
 
   tags(scale) {
     return this.props.positions.map((tag, i) =>
-      <Circle
-        key={i}
-        ref={`tag${i}`}
-        radius={2}
+      <Group
         x={tag.x * scale}
         y={tag.y * scale}
-        fill={'#fff'/*`#${tag.iconColor}`*/}
-      />
+      >
+        <KText
+          text={'Test'}
+          fontSize={30}
+          fill={'#fff'}
+
+        />
+        <Circle
+          key={i}
+          ref={`tag${i}`}
+          radius={2}
+          fill={'#fff'/*`#${tag.iconColor}`*/}
+        />
+      </Group>
     )
   }
 
