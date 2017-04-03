@@ -23,7 +23,7 @@ export default class Dashboard extends React.Component {
     window.addEventListener('resize', updateDimensions)
   }
   componentWillUnmount() {
-    window.removeEventListener('resize')
+    window.removeEventListener('resize', () => {})
   }
 
 

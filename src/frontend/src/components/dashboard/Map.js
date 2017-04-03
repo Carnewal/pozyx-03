@@ -50,21 +50,22 @@ export default class Map extends React.Component {
   }
 
   tags(scale) {
-    return this.props.positions.map((tag, i) =>
+    return this.props.tags.map((tag, i) =>
       <Group
-        x={tag.x * scale}
-        y={tag.y * scale}
+        key={i}
+        x={tag.position.x * scale + (0.5 * scale / 2) }
+        y={tag.position.y * scale + (0.5 * scale / 2)}
       >
         <KText
-          text={'Test'}
-          fontSize={30}
+          text={tag.tagName}
+          fontSize={3 * scale}
           fill={'#fff'}
 
         />
         <Circle
           key={i}
           ref={`tag${i}`}
-          radius={2}
+          radius={0.5 * scale}
           fill={'#fff'/*`#${tag.iconColor}`*/}
         />
       </Group>
@@ -76,8 +77,8 @@ export default class Map extends React.Component {
       <Rect
         key={i}
         ref={`rect${i}`}
-        x={anchor.x * scale}
-        y={anchor.y * scale}
+        x={anchor.position.x * scale}
+        y={anchor.position.y * scale}
         width={8}
         height={8}
         fill={`#fff`}
@@ -108,12 +109,12 @@ export default class Map extends React.Component {
 Map.propTypes = {
   map: PropTypes.object,
   containerWidth: PropTypes.number,
-  positions: PropTypes.array,
+  tags: PropTypes.array,
   anchors: PropTypes.array,
   floorPlan: PropTypes.string
 }
 
 Map.defaultProps = {
-  positions: [],
+  tags: [],
   anchors: []
 }
