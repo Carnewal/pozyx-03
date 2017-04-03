@@ -1,8 +1,15 @@
 import { SET_CURRENTMAP } from 'frontend/actions/MapActions'
-import { TOGGLE_TAG_LABEL_FILTER, SET_TAG_SEARCH, SET_TAG_BATTERY_FILTER, SET_TAG_BATTERY_OPERATOR } from 'frontend/actions/AppActions'
+import {
+  TOGGLE_TAG_LABEL_FILTER,
+  SET_TAG_SEARCH,
+  SET_TAG_BATTERY_FILTER,
+  SET_TAG_BATTERY_OPERATOR,
+  SET_NAVDRAWER_OPEN
+} from 'frontend/actions/AppActions'
 
 const initialState = {
-  currentMap: 4
+  currentMap: 4,
+  navDrawerOpen: true
 }
 
 const app = (state = initialState, action) => {
@@ -30,6 +37,10 @@ const app = (state = initialState, action) => {
     }
     case SET_TAG_SEARCH: {
       return Object.assign({}, state, { tagSearch: action.search })
+    }
+
+    case SET_NAVDRAWER_OPEN: {
+      return Object.assign({}, state, { navDrawerOpen: action.navDrawerOpen})
     }
 
     default:

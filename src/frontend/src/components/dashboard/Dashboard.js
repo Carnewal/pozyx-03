@@ -16,7 +16,6 @@ export default class Dashboard extends React.Component {
 
   componentDidMount() {
     const updateDimensions = () => {
-      console.log('updating..')
       this.setState({mapWidth: this.refs.mapSizePlaceholder.clientWidth})
     }
     updateDimensions()

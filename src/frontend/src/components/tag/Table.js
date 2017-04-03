@@ -3,10 +3,11 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {grey500} from 'material-ui/styles/colors'
 import Chip from 'material-ui/Chip'
 import TextField from 'material-ui/TextField'
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
 import PageBase from 'frontend/components/layout/PageBase'
+import Popout from 'frontend/containers/map/PopoutContainer'
 
 const styles = {
   floatingActionButton: {
@@ -71,6 +72,9 @@ render() {
   return (
     <PageBase title='Tags'
     navigation='Map / Tags'>
+
+      <Popout />
+
       <br/>
 
       <div className='row'>

@@ -58,7 +58,7 @@ export default class Map extends React.Component {
       >
         <KText
           text={tag.tagName}
-          fontSize={3 * scale}
+          fontSize={5 * scale}
           fill={`#${tag.iconColor}`}
         />
         <Circle
