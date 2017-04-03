@@ -37,7 +37,7 @@ const initialState = [
     "battery": 0.15,
     "updateRate": 1.2,
     "iconNumber": 1,
-    "iconColor": "ee11ff",
+    "iconColor": "e9841f",
     "position": {
       "x": 10,
       "y": 25,
@@ -64,7 +64,7 @@ const initialState = [
     "battery": 0.30,
     "updateRate": 1.2,
     "iconNumber": 1,
-    "iconColor": "4286f4",
+    "iconColor": "baa4c5",
     "position": {
       "x": 20,
       "y": 2,
@@ -91,7 +91,7 @@ const initialState = [
     "battery": 0.6,
     "updateRate": 1.2,
     "iconNumber": 1,
-    "iconColor": "4286f4",
+    "iconColor": "bdd05b",
     "position": {
       "x": 20,
       "y": 2,

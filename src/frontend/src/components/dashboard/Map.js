@@ -59,14 +59,13 @@ export default class Map extends React.Component {
         <KText
           text={tag.tagName}
           fontSize={3 * scale}
-          fill={'#fff'}
-
+          fill={`#${tag.iconColor}`}
         />
         <Circle
           key={i}
           ref={`tag${i}`}
           radius={0.5 * scale}
-          fill={'#fff'/*`#${tag.iconColor}`*/}
+          fill={`#${tag.iconColor}`}
         />
       </Group>
     )
