@@ -42,44 +42,44 @@ export default class Map extends React.Component {
   }
 
   background(w, h) {
-    return <Image
+    return this.state && this.state.image && <Image
       width={w}
       height={h}
       image={this.state.image}
     />
   }
 
-  tags(scale) {
+  tags() {
     return this.props.tags.map((tag, i) =>
       <Group
         key={i}
-        x={tag.position.x * scale + (0.5 * scale / 2) }
-        y={tag.position.y * scale + (0.5 * scale / 2)}
+        x={tag.position.x}
+        y={tag.position.y}
       >
         <KText
           text={tag.tagName}
-          fontSize={5 * scale}
+          fontSize={5}
           fill={`#${tag.iconColor}`}
         />
         <Circle
           key={i}
           ref={`tag${i}`}
-          radius={0.5 * scale}
+          radius={0.5}
           fill={`#${tag.iconColor}`}
         />
       </Group>
     )
   }
 
-  anchors(scale) {
+  anchors() {
     return this.props.anchors.map((anchor, i) =>
       <Rect
         key={i}
         ref={`rect${i}`}
-        x={anchor.position.x * scale}
-        y={anchor.position.y * scale}
-        width={8}
-        height={8}
+        x={anchor.position.x}
+        y={anchor.position.y}
+        width={4}
+        height={4}
         fill={`#fff`}
       />
     )
@@ -87,18 +87,16 @@ export default class Map extends React.Component {
 
   render() {
 
-      const {containerWidth, map} = this.props
-      const mapScaling = containerWidth / map.x
-      const containerHeight = map.y * mapScaling
-
+      const {containerWidth, containerHeight, mapScaling} = this.props
 
       return (
         <Stage width={containerWidth} height={containerHeight}>
-          <Layer
-            scale={{x:1, y: 1}}>
-              {this.state && this.state.image && this.background(containerWidth, containerHeight)}
-              {this.tags(mapScaling)}
-              {this.anchors(mapScaling)}
+          <Layer scale={{x:1, y: 1}}>
+              {this.background(containerWidth, containerHeight)}
+          </Layer>
+          <Layer scale={{x:mapScaling, y: mapScaling}}>
+            {this.tags(mapScaling)}
+            {this.anchors(mapScaling)}
           </Layer>
         </Stage>
       )
@@ -106,8 +104,9 @@ export default class Map extends React.Component {
 }
 
 Map.propTypes = {
-  map: PropTypes.object,
   containerWidth: PropTypes.number,
+  containerHeight: PropTypes.number,
+  mapScaling: PropTypes.number,
   tags: PropTypes.array,
   anchors: PropTypes.array,
   floorPlan: PropTypes.string

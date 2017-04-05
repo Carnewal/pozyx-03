@@ -15,7 +15,7 @@ const initialState = {
 const app = (state = initialState, action) => {
   switch(action.type) {
     case SET_CURRENTMAP: {
-      return ({currentMap: action.mapId})
+      return Object.assign({}, initialState, { currentMap: action.mapId })
     }
     case TOGGLE_TAG_LABEL_FILTER: {
       const labelSet = new Set(state.tagLabelFilters || [])

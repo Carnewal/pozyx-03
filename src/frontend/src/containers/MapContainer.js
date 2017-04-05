@@ -5,12 +5,21 @@ import { getFilteredTags } from 'frontend/selectors/tag'
 import { getAnchors } from 'frontend/selectors/anchor'
 import { getCurrentMap } from 'frontend/selectors/map'
 
-const mapStateToProps = (state) => ({
-  map: getCurrentMap(state),
-  tags: getFilteredTags(state),
-  floorPlan: getFloorPlan(state),
-  anchors: getAnchors(state)
-})
+const mapStateToProps = (state, ownProps) => {
+
+  const { containerWidth } = ownProps
+  const map = getCurrentMap(state)
+  const mapScaling = containerWidth / map.x
+  const containerHeight = map.y * mapScaling
+  return {
+    tags: getFilteredTags(state),
+    anchors: getAnchors(state),
+    floorPlan: getFloorPlan(state),
+    containerWidth: containerWidth,
+    containerHeight: containerHeight,
+    mapScaling: mapScaling
+  }
+}
 
 export default connect(
   mapStateToProps

@@ -14,8 +14,8 @@ const initialState = [
     "mapId": 5,
     "mapName": "Warehouse",
     "mapURL": "http://localhost:3000/public/maps/5.png",
-    "x": 40,
-    "y": 40,
+    "x": 140,
+    "y": 100,
     "z": 2,
     "floorPlan": ''
   }

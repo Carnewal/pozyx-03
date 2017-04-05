@@ -30,7 +30,8 @@ export default class Dashboard extends React.Component {
     const {floorPlan, tagsAmount, anchorsAmount} = this.props
     return (
       <PageBase title='Dashboard'
-        navigation='Map / Dashboard'>
+        navigation='Map / Dashboard'
+        >
         <br/>
       <div className='row'>
 
