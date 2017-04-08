@@ -1,4 +1,5 @@
 import Primus from 'primus'
+import Notifier from './middleware/trigger/notifier'
 
 const maxdistance = {x: 99, y: 99, z: 3} // meter
 
@@ -79,6 +80,7 @@ const mgr = new Manager(
 
 const realtime = (server) => {
   const primus = new Primus(server, {})
+  const notifier = new Notifier() //TODO notifier integreren in live data
 
   primus.on('connection', () => {
     console.log('client connected')
