@@ -1,16 +1,16 @@
 const c =  {
-  amountValue: 0,
+  active: true,
   amount: {
     any: "any",
     exactly: "exactly",
     atLeast: "atLeast",
     lessThan: "lessThan"
   },
+  amountValue: 0,
   objects: {
     tags: "tags",
     anchors: "anchors"
   },
-  filterValue: 0,
   filter: {
     name: "name",
     inZone: "inZone",
@@ -21,6 +21,7 @@ const c =  {
     firmwareVersion: "firmwareVersion",
     status: "status" //anchor only
   },
+  filterValue: 0,
   action: {
     print: "print"
   }
