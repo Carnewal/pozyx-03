@@ -1,5 +1,5 @@
 const c =  {
-  value: 0,
+  amountValue: 0,
   amount: {
     any: "any",
     exactly: "exactly",
@@ -10,6 +10,7 @@ const c =  {
     tags: "tags",
     anchors: "anchors"
   },
+  filterValue: 0,
   filter: {
     name: "name",
     inZone: "inZone",

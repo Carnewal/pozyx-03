@@ -1,12 +1,12 @@
-import Compare from './compare'
+import Comparator from './comparator'
 import Filter from './filter'
 import Action from './action'
 
 class Factory {
 
   buildTrigger(args) {
-    const compare = Compare[args.amount]
-    const filter = Filter[args.filter]
+    const compare = new Comparator(args.amountValue)[args.amount]
+    const filter = new Filter(args.filterValue)[args.filter]
     const trigger = {}
 
     trigger.checkState = (state) => {
@@ -18,7 +18,7 @@ class Factory {
     trigger.check = (prevState, currState)
       => (!this.checkState(prevState) && this.checkState(currState))
 
-    trigger.action = Action[args.action]
+    trigger.action = new Action(args.actionMessage)[args.action]
 
     return trigger
   }

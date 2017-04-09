@@ -1,11 +1,17 @@
-function print(args) {
-  return () => {
-    console.log(args)
+class Action {
+
+  message
+
+  constructor(message) {
+    this.message = message
   }
+
+  print() {
+    return () => {
+      console.log(this.message)
+    }
+  }
+
 }
 
-const action = {
-  "print": print
-}
-
-export default action
+export default Action

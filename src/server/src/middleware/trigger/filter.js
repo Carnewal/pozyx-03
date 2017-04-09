@@ -1,44 +1,43 @@
-function name() {
-  return true
+class Filter {
+
+  reference
+
+  constructor(reference) {
+    this.reference = reference
+  }
+
+  name(tag) {
+    return this.reference === tag.name
+  }
+
+  inZone(tag) {
+    return true //TODO implement based on zone object properties
+  }
+
+  outsideZone(tag) {
+    return !this.inZone(tag)
+  }
+
+  label(tag) {
+    return tag.labels.filter((label) => (label.labelName === this.reference)).length > 0
+  }
+
+  battery(tag) {
+    return tag.battery < this.reference
+  }
+
+  hardwareVersion(tag) {
+    return tag.hardwareVersion === this.reference
+  }
+
+  firmwareVersion(tag) {
+    return tag.firmwareVersion === this.reference
+  }
+
+  status(anchor) {
+    return anchor.status === this.reference
+  }
+
 }
 
-function inZone() {
-  return true
-}
-
-function outsideZone() {
-  return true
-}
-
-function label() {
-  return true
-}
-
-function battery() {
-  return true
-}
-
-function hardwareVersion() {
-  return true
-}
-
-function firmwareVersion() {
-  return true
-}
-
-function status() {
-  return true
-}
-
-const filter = {
-  "name": name,
-  "inZone": inZone,
-  "outsideZone": outsideZone,
-  "label": label,
-  "battery": battery,
-  "hardwareVersion": hardwareVersion,
-  "firmwareVersion": firmwareVersion,
-  "status": status
-}
-
-export default filter
+export default Filter
