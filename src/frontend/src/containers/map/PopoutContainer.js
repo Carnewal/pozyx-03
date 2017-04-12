@@ -7,7 +7,8 @@ const mapStateToProps = (state) => ({
     position: 'fixed',
     left:state.app.navDrawerOpen ? 250 : 20,
     bottom:0,
-    height:210
+    height:210,
+    cursor:'pointer'
   }
 })
 

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import Paper from 'material-ui/Paper'
 import Map from 'frontend/containers/MapContainer'
+import {Link} from 'react-router'
 
 export default class Popout extends React.Component {
 
@@ -12,7 +13,9 @@ export default class Popout extends React.Component {
     const { containerStyle } = this.props
     return (
       <div style={containerStyle}>
-        <Map containerWidth={containerStyle.width} />
+        <Link to={'/'}>
+          <Map containerWidth={containerStyle.width} />
+        </Link>
       </div>
     )
   }

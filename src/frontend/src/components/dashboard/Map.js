@@ -26,6 +26,10 @@ const style = {
   }
 }
 
+const ANCHOR_SIZE = 3
+const TAG_RADIUS = 1
+
+
 export default class Map extends React.Component {
 
   constructor(props) {
@@ -64,7 +68,7 @@ export default class Map extends React.Component {
         <Circle
           key={i}
           ref={`tag${i}`}
-          radius={0.5}
+          radius={TAG_RADIUS}
           fill={`#${tag.iconColor}`}
         />
       </Group>
@@ -76,10 +80,10 @@ export default class Map extends React.Component {
       <Rect
         key={i}
         ref={`rect${i}`}
-        x={anchor.position.x}
-        y={anchor.position.y}
-        width={4}
-        height={4}
+        x={anchor.position.x - ANCHOR_SIZE / 2}
+        y={anchor.position.y - ANCHOR_SIZE / 2}
+        width={ANCHOR_SIZE}
+        height={ANCHOR_SIZE}
         fill={`#fff`}
       />
     )
