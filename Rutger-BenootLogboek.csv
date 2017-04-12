@@ -21,3 +21,5 @@
 13/03/17,19:49,23:44,Extern,"Kleine fixes + uploaden van plattegrond",,
 14/03/17,08:15,11:00,Campus,"Server in orde brengen + presentatie",,
 18/03/17,14:08,18:52,Extern,"Anchors visualiseren + veranderen van maps","18,20",
+22/03/17,21:22,23:43,Extern,"Errorhandling in Uploadsaga toegevoegd + begonnen aan alert systeem",32,
+23/03/17,21:29,23:04,Extern,"Alert systeem afgewerkt + pullrequest #33 gecontroleerd",32,
