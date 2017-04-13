@@ -53,11 +53,13 @@ app.get('*', (req, res) => {
 
 model.sequelize.sync().then(function() {
   const server = app.listen(3000, ipaddress, (err) => {
+    /* eslint-disable */
     if (err) {
       console.log(err)
       return
     }
     console.log(`Listening at http://${ipaddress}`)
+    /* eslint-enable */
   })
   realtime(server)
 })
