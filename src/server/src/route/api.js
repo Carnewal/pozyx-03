@@ -198,12 +198,14 @@ api.get('/map/:id/image', (req, res) => {
  */
 api.get('/map/:id/tags', (req, res) => {
   //TODO Fix mapId and MapId redundancy and fix TagLabel entry in every Label
-  //TODO include last known position
   model.Tag.findAll({
     where: {
       mapId: req.params.id
     },
-    include: [{model: model.Label, through: model.TagLabel, as: 'labels'}]
+    include: [
+      {model: model.Label, through: model.TagLabel, as: 'labels'},
+      {model: model.Position, as: 'positions', limit: 1, order: 'timestamp DESC'}
+    ]
   }).then((tags) => {
     res.json({tags: tags})
   })
@@ -266,9 +268,11 @@ api.get('/map/:id/tags', (req, res) => {
  */
 api.get('/map/:map_id/tag/:tag_id', (req, res) => {
   //TODO Fix mapId and MapId redundancy and fix TagLabel entry in every Label
-  //TODO include last known position
   model.Tag.findById(req.params.tag_id, {
-    include: [{model: model.Label, as: 'labels'}]
+    include: [
+      {model: model.Label, as: 'labels'},
+      {model: model.Position, as: 'positions', limit: 1, order: 'timestamp DESC'}
+    ]
   }).then((tag) => {
     res.json({tag: tag})
   })
@@ -278,7 +282,9 @@ api.get('/map/:map_id/tag/:tag_id', (req, res) => {
  * @api {get} map/:map_id/tag/:tag_id/positions?begin=:begin&end=:end Request Positions
  * @apiName GetPositions
  * @apiGroup Tag
- *
+
+ * @apiParam {Integer} map_id Map ID
+ * @apiParam {Integer} tag_id Tag ID
  * @apiParam {DateTime} begin ISO 8601 DateTime that is the begin of interval
  * @apiParam {DateTime} end ISO 8601 DateTime that is the end of interval
  *
