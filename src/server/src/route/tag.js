@@ -140,7 +140,6 @@ api.get('/map/:map_id/tag/:tag_id', (req, res) => {
     res.json({tag: tag})
   })
 })
-
 /**
  * @api {get} map/:map_id/tag/:tag_id/positions?begin=:begin&end=:end Request Positions
  * @apiName GetPositions
