@@ -6,6 +6,7 @@ import LeftDrawer from 'frontend/components/layout/LeftDrawer'
 import ThemeDefault from '../theme-default'
 import Data from '../data'
 import menuItems from 'frontend/constants/menu-items'
+import Alert from 'frontend/containers/AlertContainer'
 
 class App extends React.Component {
 
@@ -45,6 +46,7 @@ class App extends React.Component {
     return (
       <MuiThemeProvider muiTheme={ThemeDefault}>
         <div>
+          <Alert />
           <Header styles={styles.header}
                   handleChangeRequestNavDrawer={this.handleChangeRequestNavDrawer.bind(this)}/>
 

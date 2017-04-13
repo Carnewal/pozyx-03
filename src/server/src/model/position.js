@@ -10,9 +10,9 @@ module.exports = function(sequelize, DataTypes) {
     z: DataTypes.DOUBLE,
     timestamp: {
       type: DataTypes.DATE(3), //milliseconds
-      validate: {
+      /*validate: {
         is: /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})/
-      }
+      }*/
     }
   }, {
     classMethods: {

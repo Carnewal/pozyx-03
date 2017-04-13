@@ -113,9 +113,8 @@ api.post('/map/:id/image', upload.single('mapimage'), (req, res) => {
  *
  */
 
-api.get('/map/:id/image', (req, res) => {
+api.get('/map/:id/image', (_req, _res) => {
 
 })
 
 export default api
-

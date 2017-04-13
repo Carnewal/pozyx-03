@@ -1,8 +1,11 @@
 require('babel-register')();
 require('babel-polyfill');
 
+
 var model = require('../src/model')
+
 model.sequelize.sync().then(function(){
+ model.Map.destroy({where: {}}).then(function () {})
  model.Map.create({
     name: "Demo Map",
     url: "someurltomapimage",
@@ -46,10 +49,14 @@ model.sequelize.sync().then(function(){
     iconColor: "ff0000",
     labels: [{
       name:"cart"}],
-    positions:[{
-      x: 40,
-      y: 40,
-      z: 2}]
+    positions:[
+      {x: 40, y: 40, z: 2, timestamp: new Date(2017, 3, 13).toJSON()},
+      {x: 44, y: 35, z: 2, timestamp: new Date(2017, 3, 12).toJSON()},
+      {x: 48, y: 30, z: 2, timestamp: new Date(2017, 3, 11).toJSON()},
+      {x: 52, y: 25, z: 2, timestamp: new Date(2017, 3, 10).toJSON()},
+      {x: 56, y: 20, z: 2, timestamp: new Date(2017, 3, 9).toJSON()},
+      {x: 60, y: 15, z: 2, timestamp: new Date(2017, 3, 8).toJSON()}
+    ]
     }
     ,{
     name:"Julius",
