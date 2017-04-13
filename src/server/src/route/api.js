@@ -327,47 +327,35 @@ api.get('/map/:map_id/tag/:tag_id', (req, res) => {
  *        ]
  *      }
  */
-api.get('map/:map_id/tag/:tag_id/positions', (req, res) => {
-  // TODO Query for positions based on tag_id AND map_id (requires to join Posititions and Tags tables)
-  // let query = {
-  //   where: {
-  //     mapId: req.params.id
-  //   }
-  //   include: [{
-  //     model: model.Tag,
-  //     where: {  }
-  //   }]
-  // }
-  // model.Position.findAll(query).then()
-  // req.query.begin
-  // req.query.end //TODO
-  // between: [new Date("2017-03-09T10:43:49"), new Date("2017-03-13T10:43:49")]
-  res.json({
-    "tagId": 12,
-    "interval": {
-      "begin": "2017-03-07T15:31:31.456",
-      "end": "2017-03-07T16:31:31.456"
-    },
-    "positions": [
+api.get('/map/:map_id/tag/:tag_id/positions/:begin/:end', (req, res) => {
+  // Convert to Date before passing to our query to make sure it's the correct
+  // format.
+  const begin = new Date(req.params.begin).toISOString()
+  const end = new Date(req.params.end).toISOString()
+
+  model.Tag.findById(req.params.tag_id, {
+    include: [
       {
-        "x": 12.0000021,
-        "y": 105.12555,
-        "z": 0.04,
-        "timestamp": "2017-03-07T16:31:20.456"
-      },
-      {
-        "x": 13.678384,
-        "y": 104.34592555,
-        "z": 0.04,
-        "timestamp": "2017-03-07T16:31:21.456"
-      },
-      {
-        "x": 14.021,
-        "y": 104.1232555,
-        "z": 0.04,
-        "timestamp": "2017-03-07T16:31:23.456"
+        model: model.Position,
+        as: 'positions',
+        where: {
+          timestamp: {
+            $between: [begin, end]
+          }
+        }
       }
     ]
+  }).then((tag) => {
+    res.json(
+      {
+        tagId: tag.id,
+        interval: {
+          begin: begin,
+          end: end
+        },
+        positions: tag.positions
+      }
+    )
   })
 })
 
