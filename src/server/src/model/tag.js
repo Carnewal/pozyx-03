@@ -29,6 +29,16 @@ module.exports = function(sequelize, DataTypes) {
           : null
         delete json.positions
         return json
+      },
+      toIntervalJSON: function(b, e) {
+        return {
+          tagId: this.id,
+          interval: {
+            begin: b,
+            end: e
+          },
+          positions: this.positions
+        }
       }
     }
   })

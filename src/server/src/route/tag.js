@@ -70,7 +70,7 @@ api.get('/map/:id/tags', (req, res) => {
       {model: model.Position, as: 'positions', name: 'position', limit: 1, order: 'timestamp DESC'}
     ]
   }).then((tags) => {
-    res.json({tags: tags.map((t) => t.toJSON())})
+    res.json({tags: tags})
   })
 })
 
@@ -137,7 +137,7 @@ api.get('/map/:map_id/tag/:tag_id', (req, res) => {
       {model: model.Position, as: 'positions', limit: 1, order: 'timestamp DESC'}
     ]
   }).then((tag) => {
-    res.json({tag: tag.toJSON()})
+    res.json({tag: tag})
   })
 })
 /**
@@ -208,16 +208,7 @@ api.get('/map/:map_id/tag/:tag_id/positions/:begin/:end', (req, res) => {
       }
     ]
   }).then((tag) => {
-    res.json(
-      {
-        tagId: tag.id,
-        interval: {
-          begin: begin,
-          end: end
-        },
-        positions: tag.positions
-      }
-    )
+    res.json(tag.toIntervalJSON(begin, end))
   })
 })
 
