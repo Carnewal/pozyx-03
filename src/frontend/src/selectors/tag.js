@@ -6,15 +6,24 @@ export const getTagsAmount = (state) => state.tag.reduce(
   (acc, tag) => (acc + (tag.mapId === state.app.currentMap ? 1 : 0)),
   0
 )
+/**
+ * Get a tag by Id
+ */
+export const getTag = (state, id) => state.tag && state.tag.find(
+  (t) => t.tagId === parseInt(id)
+)
 
+/**
+ * Get the tags for the selected map
+ */
 export const getTags = (state) => state.tag && state.tag.filter(
   (tag) => tag.mapId === state.app.currentMap
 ) || []
 
-// Returns an object of all labels for the current map.
-// Key: labelName, Val: the label
+// Returns an object of all unique labels for the current map.
+// Key: labelName, Val: the label object
 export const getExistingLabels = (state) => {
-  let labels = {}
+  const labels = {}
   getTags(state).forEach(
     (tag) => tag.labels && tag.labels.forEach(
       (label) => labels[label.labelName] = label
@@ -35,7 +44,7 @@ export const getTagLabelNames = (tag) => tag.labels && tag.labels.map((l) => l.l
 export const getBatteryFilter = (state) => state.app.tagBatteryFilter === undefined
   ? 0.5
   : state.app.tagBatteryFilter
-  
+
 export const getBatteryOperator = (state) => state.app.tagBatteryOperator || 0
 
 // Filter tag labels
