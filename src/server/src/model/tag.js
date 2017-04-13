@@ -11,13 +11,24 @@ module.exports = function(sequelize, DataTypes) {
     battery: DataTypes.DOUBLE,
     updateRate: DataTypes.DOUBLE,
     iconNumber: DataTypes.INTEGER,
-    iconColor: DataTypes.STRING
-  }, {
+    iconColor: DataTypes.STRING,
+  },
+  {
     classMethods: {
       associate: function(models) {
         Tag.belongsTo(models.Map, {as: 'map', foreignKey: 'mapId', targetKey: 'id'})
         Tag.belongsToMany(models.Label, {through: models.TagLabel, foreignKey: 'tagId', as: 'labels'})
         Tag.hasMany(models.Position, {as: 'positions', foreignKey: 'tagId'})
+      }
+    },
+    instanceMethods: {
+      toJSON: function() {
+        const json = Object.assign({}, this.get())
+        json.position = json.positions && json.positions.length > 0
+          ? json.positions[0]
+          : null
+        delete json.positions
+        return json
       }
     }
   })

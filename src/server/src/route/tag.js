@@ -20,7 +20,7 @@ const api = Router()
  * @apiSuccess {Number} tags.updateRate The tag's update rate
  * @apiSuccess {Integer} tags.iconNumber The tag's icon number
  * @apiSuccess {String} tags.iconColor The tag's icon hex color
- * @apiSuccess {Object} tags.position The tag's position object
+ * @apiSuccess {Object} tags.position The tag's last known position
  * @apiSuccess {Number} tags.position.x The tag's position x-coord
  * @apiSuccess {Number} tags.position.y The tag's position y-coord
  * @apiSuccess {Number} tags.position.z The tag's position z-coord
@@ -67,10 +67,10 @@ api.get('/map/:id/tags', (req, res) => {
     },
     include: [
       {model: model.Label, through: model.TagLabel, as: 'labels'},
-      {model: model.Position, as: 'positions', limit: 1, order: 'timestamp DESC'}
+      {model: model.Position, as: 'positions', name: 'position', limit: 1, order: 'timestamp DESC'}
     ]
   }).then((tags) => {
-    res.json({tags: tags})
+    res.json({tags: tags.map((t) => t.toJSON())})
   })
 })
 
@@ -92,7 +92,7 @@ api.get('/map/:id/tags', (req, res) => {
  * @apiSuccess {Number} tag.updateRate The tag's update rate
  * @apiSuccess {Integer} tag.iconNumber The tag's icon number
  * @apiSuccess {String} tag.iconColor The tag's icon hex color
- * @apiSuccess {Object} tag.position The tag's position object
+ * @apiSuccess {Object} tag.position The tag's last known position
  * @apiSuccess {Number} tag.position.x The tag's position x-coord
  * @apiSuccess {Number} tag.position.y The tag's position y-coord
  * @apiSuccess {Number} tag.position.z The tag's position z-coord
@@ -137,7 +137,7 @@ api.get('/map/:map_id/tag/:tag_id', (req, res) => {
       {model: model.Position, as: 'positions', limit: 1, order: 'timestamp DESC'}
     ]
   }).then((tag) => {
-    res.json({tag: tag})
+    res.json({tag: tag.toJSON()})
   })
 })
 /**
