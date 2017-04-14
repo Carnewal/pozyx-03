@@ -48,7 +48,9 @@ export default class Dashboard extends React.Component {
 
       <div className='row'>
         <div className='col-xs-12 col-sm-12 col-md-12 col-lg-12 m-b-15 '>
-          {(floorPlan === '' || floorPlan === null) ? <UploadPlanArea/> : <Map />}
+          {
+
+            (floorPlan && floorPlan !== '') ? <Map /> : <UploadPlanArea/>}
 
         </div>
 
