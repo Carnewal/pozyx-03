@@ -4,13 +4,12 @@ import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
 
 const initialState = {
-  currentMap: 4,
-  alerts: []
+  alerts: [],
+  initialLoadComplete: false
 }
 
 const sortFunction = (a1, a2) => {
   const diff = priorityNumber(a1.priority) - priorityNumber(a2.priority)
-    console.log(a1, a2,diff, a1.id-a2.id,priorityNumber(a1.priority),priorityNumber(a2.priority))
   if (diff == 0) {
     return a1.id - a2.id
   }
