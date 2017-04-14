@@ -10,7 +10,7 @@ function initWebsocket() {
     primus.on('data', (data) => {
       switch (data.action) {
         case SHOW_POSITIONS:
-          return //emitter(showPositions(data.positions))
+          return emitter(showPositions(data.positions))
       }
     })
 

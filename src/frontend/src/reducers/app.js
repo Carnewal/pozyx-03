@@ -11,7 +11,6 @@ import {
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
-import { getCurrentAlertIndex } from 'frontend/selectors/app'
 
 const initialState = {
   alerts: [],
@@ -92,7 +91,7 @@ const app = (state = initialState, action) => {
     case SET_NAVDRAWER_OPEN: {
       return Object.assign({}, state, { navDrawerOpen: action.navDrawerOpen})
     }
-    
+
     case SET_INITIAL_LOAD: {
       return Object.assign({}, state, { initialLoad: action.complete })
     }
