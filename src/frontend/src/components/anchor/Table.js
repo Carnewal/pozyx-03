@@ -68,7 +68,7 @@ export default class AnchorTable extends React.Component {
 
 
                 {anchors.length > 0
-                    ? <Table>
+                    ? <Table selectable={false}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
                             <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>

@@ -128,7 +128,7 @@ render() {
           </Chip>
         )}
       </div>
-      {this.props.tags.length > 0 ? <Table>
+      {this.props.tags.length > 0 ? <Table selectable={false}>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
     <TableRow>
     <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
