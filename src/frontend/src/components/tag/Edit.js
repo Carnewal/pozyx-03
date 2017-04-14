@@ -39,6 +39,13 @@ const styles = {
 
 export default class Edit extends React.Component {
 
+  //TODO: Improve this
+  // Currently, the labels are too deeply nested which makes the Component
+  // Not update when the state changes.
+  shouldComponentUpdate(a,b) {
+    return true
+  }
+
   onLabelRemoveToggle(e, checked) {
     this.setState({canRemoveLabels: checked})
   }
@@ -50,13 +57,24 @@ export default class Edit extends React.Component {
       this.refs.labelTextField.input.value &&
       this.refs.labelTextField.input.value !== ''
     ) {
-      this.props.addLabel(this.refs.labelTextField.input.value)
+      const {tag, currentMap} = this.props
+      this.props.addLabel(
+        currentMap.id,
+        tag.id,
+        this.refs.labelTextField.input.value
+      )
+      this.forceUpdate()
     }
   }
 
-  render () {
-    const {tag} = this.props
+  onLabelRemoveClick(labelId) {
+    const {currentMap, tag, removeLabel} = this.props
+    removeLabel(currentMap.id, tag.id, labelId)
+    this.forceUpdate()
+  }
 
+  render () {
+    const {tag, currentMap} = this.props
     return (
       <PageBase title={`Edit tag ${tag.id}`}
       navigation='Application / Edit Tag'>
@@ -82,7 +100,7 @@ export default class Edit extends React.Component {
             {tag.labels && tag.labels.map((l) => <Chip
               style={styles.chip}
               onRequestDelete={this.state && this.state.canRemoveLabels
-                ? () => {this.props.removeLabel(l.id)}
+                ? () => {this.onLabelRemoveClick(l.id)}
                 : null
               }
               key={l.id}
@@ -106,15 +124,16 @@ export default class Edit extends React.Component {
 
 Edit.propTypes = {
   tag: PropTypes.object,
+  currentMap: PropTypes.object,
   addLabel: PropTypes.func,
   removeLabel: PropTypes.func
 }
 
 Edit.defaultProps = {
-  addLabel: (label) => {
-    console.log('Not implemented: add label ' + label)
+  addLabel: (mapId, tagId, labelName) => {
+    console.log('Not implemented: add label ' + labelName)
   },
-  removeLabel: (label) => {
-    console.log('Not implemented: remove label ' + label)
+  removeLabel: (mapId, tagId, labelId) => {
+    console.log('Not implemented: remove label ' + labelId)
   }
 }

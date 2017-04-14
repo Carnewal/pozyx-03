@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
 import Header from 'frontend/components/layout/Header'
 import { setCurrentmap } from 'frontend/actions/AppActions'
-
+import { currentMap } from 'frontend/selectors/app'
 const mapStateToProps = (state) => ({
   maps: state.map.map((m) => ({ id: m.id, name: m.name})),
-  currentMap: state.app.currentMap
+  currentMap: currentMap(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

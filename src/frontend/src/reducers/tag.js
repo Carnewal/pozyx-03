@@ -1,4 +1,4 @@
-import { SHOW_POSITIONS, SET_TAGS } from 'frontend/actions/TagActions'
+import { SHOW_POSITIONS, SET_TAGS, ADD_LABEL, REMOVE_LABEL } from 'frontend/actions/TagActions'
 
 const initialState = []
 
@@ -16,6 +16,26 @@ const tag = (state = initialState, action) => {
           tag.position = positions[tag.id]
         }
       })
+      return newState
+    }
+    case ADD_LABEL: {
+      const {tagId, label} = action
+      const newState = state.slice()
+      const tagIndex = newState.findIndex((tag) => tag.id === tagId)
+      if(newState[tagIndex].labels && newState[tagIndex].labels.length) {
+        newState[tagIndex].labels.push(label)
+      } else {
+        newState[tagIndex].labels = [label]
+      }
+      return newState
+    }
+    case REMOVE_LABEL: {
+      const {tagId, labelId} = action
+      console.log(tagId, labelId)
+
+      const newState = state.slice()
+      const tagIndex = newState.findIndex((tag) => tag.id === tagId)
+      newState[tagIndex].labels = newState[tagIndex].labels.filter((label) => label.id !== labelId)
       return newState
     }
     default:
