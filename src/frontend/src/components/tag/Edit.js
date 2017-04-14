@@ -75,9 +75,12 @@ export default class Edit extends React.Component {
 
   render () {
     const {tag, currentMap} = this.props
-    return (
+    return tag && currentMap && (
       <PageBase title={`Edit tag ${tag.id}`}
       navigation='Application / Edit Tag'>
+
+
+
 
       <TextField
         hintText='Name'
@@ -118,7 +121,7 @@ export default class Edit extends React.Component {
       </div>
 
       </PageBase>
-    )
+    ) || <div>Loading..</div>
   }
 }
 
