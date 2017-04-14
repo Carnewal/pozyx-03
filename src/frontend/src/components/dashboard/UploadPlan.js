@@ -18,15 +18,19 @@ export default class UploadPlan extends React.Component {
   }
 
   render() {
+    const {map, UploadFloorplan} = this.props
     return (
       <div>
+      {map ?
       <Dropzone
         multiple={false}
         accept='image/png'
         style={styles}
-        onDrop={(e) => this.props.UploadFloorplan(e[0])}>
-        <p>Sleep een plattegrond naar hier of klik om een bestand up te loaden.</p>
+        onDrop={(e) => UploadFloorplan(e[0])}>
+        <p>Sleep een plattegrond naar hier of klik om een bestand up te loaden.
+          <br/>Zorg ervoor dat de afmetingen van uw afbeelding een veelvoud zijn van de afmetingen van de kaart ({`${map.x} x ${map.y}`}).</p>
       </Dropzone>
+      : null}
       </div>
     )
   }
