@@ -3,8 +3,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import reducers from 'frontend/reducers'
 import createSagaMiddleware from 'redux-saga'
-import websocketSaga from 'frontend/sagas/WebsocketSaga'
-import uploadFloorplanSaga from 'frontend/sagas/UploadFloorplanSaga'
+import sagas from 'frontend/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 //const logger = createLogger()
@@ -22,7 +21,6 @@ const store = finalCreateStore(
   {}, // Initial State
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
-sagaMiddleware.run(websocketSaga)
-sagaMiddleware.run(uploadFloorplanSaga)
+sagaMiddleware.run(sagas)
 
 export default store
