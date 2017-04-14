@@ -6,6 +6,7 @@ import FormPage from './containers/FormPage'
 import TablePage from './containers/TablePage'
 import Dashboard from './containers/DashboardPage'
 import Tag from './containers/tag'
+import TagEdit from './containers/tag/Edit'
 import Anchor from './containers/anchor'
 
 export default (
@@ -14,6 +15,7 @@ export default (
       <IndexRoute component={Dashboard}/>
       <Route path='dashboard' component={Dashboard}/>
       <Route path='tag' component={Tag} />
+      <Route path='tag/:id' component={TagEdit} />
       <Route path='anchor' component={Anchor} />
       <Route path='form' component={FormPage}/>
       <Route path='table' component={TablePage}/>
