@@ -99,7 +99,14 @@ api.post('/map/:id/image', upload.single('mapimage'), (req, res) => {
   } else if (!file) {
     return res.status(400).json({uploaded: false, error: "Request form-data didn't contain a mapimage file."})
   }
-  res.json({uploaded: true, mapURL: 'public/maps/' + file.filename})
+  model.Map.update(
+    {url: 'public/maps/' + file.filename},
+    {where: {id:req.params.id}}
+  ).then(() => {
+    res.json({uploaded: true, mapURL: 'public/maps/' + file.filename})
+  }).catch(() => {
+    return res.status(400).json({uploaded: false, error: "Error while updating the map."})
+  })
 })
 
 

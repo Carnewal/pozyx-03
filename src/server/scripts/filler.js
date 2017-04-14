@@ -5,7 +5,16 @@ require('babel-polyfill');
 var model = require('../src/model')
 
 model.sequelize.sync().then(function(){
- model.Map.destroy({where: {}}).then(function () {})
+
+  model.Label.destroy({where: {}}).then(function () {})
+  model.TagLabel.destroy({where: {}}).then(function () {})
+  model.Position.destroy({where: {}}).then(function () {})
+  model.Tag.destroy({where: {}}).then(function () {})
+  model.Anchor.destroy({where: {}}).then(function () {})
+  model.Zone.destroy({where: {}}).then(function () {})
+  model.Map.destroy({where: {}}).then(function () {})
+
+
  model.Map.create({
     name: "Demo Map",
     url: "",
