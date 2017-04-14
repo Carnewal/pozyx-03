@@ -9,7 +9,7 @@ const map = (state = initialState, action) => {
     }
     case SET_FLOORPLAN: {
       const newState = state.slice()
-      newState.find((map) => map.mapId === action.currentMap).floorPlan = action.file
+      newState.find((map) => map.id === action.currentMap).floorPlan = action.file
       return newState
     }
     default:

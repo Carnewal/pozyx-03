@@ -58,14 +58,14 @@ export default class Edit extends React.Component {
     const {tag} = this.props
 
     return (
-      <PageBase title={`Edit tag ${tag.tagId}`}
+      <PageBase title={`Edit tag ${tag.id}`}
       navigation='Application / Edit Tag'>
 
       <TextField
         hintText='Name'
         floatingLabelText='Name'
         fullWidth={true}
-        value={tag.tagName}
+        value={tag.name}
         disabled
       />
 
@@ -82,11 +82,11 @@ export default class Edit extends React.Component {
             {tag.labels && tag.labels.map((l) => <Chip
               style={styles.chip}
               onRequestDelete={this.state && this.state.canRemoveLabels
-                ? () => {this.props.removeLabel(l.labelId)}
+                ? () => {this.props.removeLabel(l.id)}
                 : null
               }
-              key={l.labelId}
-              >{l.labelName}</Chip>)}
+              key={l.id}
+              >{l.name}</Chip>)}
           </div>
         </div>
         <div className='col-xs-12 col-sm-3'>

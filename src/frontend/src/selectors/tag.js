@@ -10,7 +10,7 @@ export const getTagsAmount = (state) => state.tag.reduce(
  * Get a tag by Id
  */
 export const getTag = (state, id) => state.tag && state.tag.find(
-  (t) => t.tagId === parseInt(id)
+  (t) => t.id === parseInt(id)
 )
 
 /**

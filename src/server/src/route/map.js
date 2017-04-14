@@ -45,7 +45,7 @@ api.get('/maps', (req, res) => {
  * @apiParam {Integer} id Map ID
  *
  * @apiSuccess {Object} map map
- * @apiSuccess {Integer} map.mapId Map ID
+ * @apiSuccess {Integer} map.id Map ID
  * @apiSuccess {String} map.mapName Map name
  * @apiSuccess {String} map.mapURL URL to image of the map
  * @apiSuccess {Number} map.x Max distance in x direction

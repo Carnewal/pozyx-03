@@ -14,9 +14,9 @@ const mapStateToProps = (state) => ({
   floorPlan: getFloorPlan(state),
   anchors: getAnchors(state).map((anchor) => ({
     anchorId: anchor.id,
-    x: anchor.position.x,
-    y: anchor.position.y,
-    z: anchor.position.z
+    x: anchor.x,
+    y: anchor.y,
+    z: anchor.z
   }))
 })
 

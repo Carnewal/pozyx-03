@@ -164,7 +164,7 @@ render() {
           </TableRowColumn>
         <TableRowColumn style={styles.columns.battery}>{tag.battery * 100}%</TableRowColumn>
         <TableRowColumn style={styles.columns.edit}>
-          <Link className='button' to={`tag/${tag.tagId}`}>
+          <Link className='button' to={`tag/${tag.id}`}>
             <FloatingActionButton zDepth={0}
                                   mini={true}
                                   backgroundColor={grey200}
