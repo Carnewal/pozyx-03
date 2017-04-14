@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import Header from 'frontend/components/layout/Header'
-import { setCurrentmap } from 'frontend/actions/MapActions'
+import { setCurrentmap } from 'frontend/actions/AppActions'
 
 const mapStateToProps = (state) => ({
-  maps: state.map.map((m) => ({ id: m.mapId, name: m.mapName})),
+  maps: state.map.map((m) => ({ id: m.id, name: m.name})),
   currentMap: state.app.currentMap
 })
 

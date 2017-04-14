@@ -9,8 +9,8 @@ const api = Router()
  * @apiGroup Anchor
  *
  * @apiSuccess {Object[]} anchors Array of all anchors
- * @apiSuccess {Integer} anchors.anchorId Anchor ID
- * @apiSuccess {String} anchors.anchorName Name
+ * @apiSuccess {Integer} anchors.id Anchor ID
+ * @apiSuccess {String} anchors.name Name
  * @apiSuccess {Integer} anchors.mapId Map ID of map this anchor is in
  * @apiSuccess {Integer} anchors.hardwareVersion Hardware version
  * @apiSuccess {Integer} anchors.firmwareVersion Firmware version
@@ -25,8 +25,8 @@ const api = Router()
  *     {
  *       "anchors": [
  *         {
- *           "anchorId": 5,
- *           "anchorName": "Maximus",
+ *           "id": 5,
+ *           "name": "Maximus",
  *           "mapId": 4,
  *           "hardwareVersion": 12,
  *           "firmwareVersion": 11,
@@ -52,6 +52,3 @@ api.get('/map/:map_id/anchors', (req, res) => {
 })
 
 export default api
-
-
-

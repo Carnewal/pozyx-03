@@ -120,19 +120,19 @@ render() {
           <Chip
             style={styles.chip}
             key={lbl}
-            onRequestDelete={labelFilters.includes(labels[lbl].labelId)
-              ? () => { onLabelClick(labels[lbl].labelId) }
+            onRequestDelete={labelFilters.includes(labels[lbl].name)
+              ? () => { onLabelClick(labels[lbl].name) }
               : null
             }
             onTouchTap={() => {
-              onLabelClick(labels[lbl].labelId)
+              onLabelClick(labels[lbl].name)
             }}
             >
             {lbl}
           </Chip>
         )}
       </div>
-      {this.props.tags.length > 0 ? <Table>
+      {this.props.tags.length > 0 ? <Table selectable={false}>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
     <TableRow>
     <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
@@ -144,22 +144,22 @@ render() {
     </TableHeader>
     <TableBody displayRowCheckbox={false}>
     {this.props.tags.map(tag =>
-      <TableRow key={tag.tagId}>
-        <TableRowColumn style={styles.columns.id}>{tag.tagId}</TableRowColumn>
-        <TableRowColumn style={styles.columns.name}>{tag.tagName}</TableRowColumn>
+      <TableRow key={tag.id}>
+        <TableRowColumn style={styles.columns.id}>{tag.id}</TableRowColumn>
+        <TableRowColumn style={styles.columns.name}>{tag.name}</TableRowColumn>
         <TableRowColumn style={styles.columns.labels}>
             <div style={styles.chipWrapper}>
               {tag.labels && tag.labels.map((l) => <Chip
                 style={styles.chip}
-                key={l.labelId}
-                onRequestDelete={labelFilters.includes(l.labelId)
-                  ? () => { this.props.onLabelClick(l.labelId) }
+                key={l.id}
+                onRequestDelete={labelFilters.includes(l.name)
+                  ? () => { this.props.onLabelClick(l.name) }
                   : null
                 }
                 onTouchTap={() => {
-                  this.props.onLabelClick(l.labelId)
+                  this.props.onLabelClick(l.name)
                 }}
-                >{l.labelName}</Chip>)}
+                >{l.name}</Chip>)}
             </div>
           </TableRowColumn>
         <TableRowColumn style={styles.columns.battery}>{tag.battery * 100}%</TableRowColumn>

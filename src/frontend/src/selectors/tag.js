@@ -26,7 +26,7 @@ export const getExistingLabels = (state) => {
   const labels = {}
   getTags(state).forEach(
     (tag) => tag.labels && tag.labels.forEach(
-      (label) => labels[label.labelName] = label
+      (label) => labels[label.name] = label
     )
   )
   return labels
@@ -36,10 +36,10 @@ export const getExistingLabels = (state) => {
 export const getLabelFilters = (state) => state.app.tagLabelFilters || []
 
 // Get the label Ids on a tag
-export const getTagLabelIds = (tag) => tag.labels && tag.labels.map((l) => l.labelId) || []
+export const getTagLabelIds = (tag) => tag.labels && tag.labels.map((l) => l.id) || []
 
 // Get the label names on a tag
-export const getTagLabelNames = (tag) => tag.labels && tag.labels.map((l) => l.labelName) || []
+export const getTagLabelNames = (tag) => tag.labels && tag.labels.map((l) => l.name) || []
 
 export const getBatteryFilter = (state) => state.app.tagBatteryFilter === undefined
   ? 0.5
@@ -50,7 +50,7 @@ export const getBatteryOperator = (state) => state.app.tagBatteryOperator || 0
 // Filter tag labels
 // Returns true if the tag's labelIds exist inside the given filters array
 const labelFilter = (filters) => (tag) =>
-filters.length === 0 || filters.every((f) => getTagLabelIds(tag).includes(f))
+filters.length === 0 || filters.every((f) => getTagLabelNames(tag).includes(f))
 
 // Filter tag by search
 // Returns true if the tag's:
@@ -59,8 +59,8 @@ filters.length === 0 || filters.every((f) => getTagLabelIds(tag).includes(f))
 // - any label matches the search term
 const searchFilter = (search) => (tag) =>
 !search ||
-tag.tagName.toLowerCase().includes(search.toLowerCase()) ||
-tag.tagId === parseInt(search) ||
+tag.name.toLowerCase().includes(search.toLowerCase()) ||
+tag.id === parseInt(search) ||
 getTagLabelNames(tag).find((lbl) => lbl.toLowerCase().includes(search.toLowerCase()))
 
 // Operators:
