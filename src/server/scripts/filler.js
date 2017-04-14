@@ -8,7 +8,7 @@ model.sequelize.sync().then(function(){
  model.Map.destroy({where: {}}).then(function () {})
  model.Map.create({
     name: "Demo Map",
-    url: "someurltomapimage",
+    url: "",
     x: 80,
     y: 80,
     z: 2,
@@ -125,7 +125,7 @@ model.sequelize.sync().then(function(){
 model.sequelize.sync().then(function(){
 model.Map.create({
    name: "Demo Map 2",
-   url: "someurltomapimage",
+   url: "",
    x: 225,
    y: 150,
    z: 2,

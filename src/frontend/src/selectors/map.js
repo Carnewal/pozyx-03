@@ -5,4 +5,4 @@ export const getCurrentMap = (state) => state.map.find(
   (map) => map.id === state.app.currentMap
 ) || {}
 
-export const getFloorPlan = (state) => getCurrentMap(state).floorPlan
+export const getFloorPlan = (state) => getCurrentMap(state).url
