@@ -11,8 +11,8 @@ const api = Router()
  * @apiParam {Integer} id Map ID
  *
  * @apiSuccess {Object[]} tags Array of all tags
- * @apiSuccess {Integer} tags.tagId The unique tag id
- * @apiSuccess {String} tags.tagName The tag name
+ * @apiSuccess {Integer} tags.id The unique tag id
+ * @apiSuccess {String} tags.name The tag name
  * @apiSuccess {Integer} tags.mapId Id of the map this tag exists on
  * @apiSuccess {Integer} tags.hardwareVersion The tag's hardware version
  * @apiSuccess {Integer} tags.firmwareVersion The tag's firmware version

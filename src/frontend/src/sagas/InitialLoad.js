@@ -3,6 +3,11 @@ import { delay } from 'redux-saga'
 import { call, select, put } from 'redux-saga/effects'
 import {isInitialLoadComplete} from 'frontend/selectors/app'
 
+import {setCurrentmap, setInitialLoad} from 'frontend/actions/AppActions'
+import {setMaps} from 'frontend/actions/MapActions'
+import {setTags} from 'frontend/actions/TagActions'
+import {setAnchors} from 'frontend/actions/AnchorActions'
+
 const fetchMaps = () => request.get('/api/maps/')
 const fetchTags = (mapId) => request.get(`/api/map/${mapId}/tags`)
 const fetchAnchors = (mapId) => request.get(`/api/map/${mapId}/anchors`)
@@ -26,11 +31,11 @@ export default function *initialLoad() {
         []
       )
 
-      //yield put(setInitialMaps(maps))
-      //yield put(setInitialAnchors(anchors))
-      //yield put(setInitialTags(tags))
-
-
+      yield put(setMaps(maps))
+      yield put(setAnchors(anchors))
+      yield put(setTags(tags))
+      yield put(setCurrentmap(maps[0].id))
+      yield put(setInitialLoad(true))
     }
     yield delay(5000)
   }

@@ -6,14 +6,14 @@ import { getAnchors } from 'frontend/selectors/anchor'
 
 const mapStateToProps = (state) => ({
   positions: getFilteredTags(state).map((tag) => ({
-    tagId:tag.tagId,
+    tagId:tag.id,
     x: tag.position.x,
     y:tag.position.y,
     z: tag.position.z
   })),
   floorPlan: getFloorPlan(state),
   anchors: getAnchors(state).map((anchor) => ({
-    anchorId: anchor.anchorId,
+    anchorId: anchor.id,
     x: anchor.position.x,
     y: anchor.position.y,
     z: anchor.position.z

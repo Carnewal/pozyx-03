@@ -10,8 +10,8 @@ const api = Router()
  * @apiGroup Map
  *
  * @apiSuccess {Object[]} maps Array of all maps
- * @apiSuccess {Integer} maps.mapId Map ID
- * @apiSuccess {String} maps.mapName Map name
+ * @apiSuccess {Integer} maps.id Map ID
+ * @apiSuccess {String} maps.name Map name
  * @apiSuccess {String} maps.mapURL URL to image of the map
  * @apiSuccess {Number} maps.x Max distance in x direction
  * @apiSuccess {Number} maps.y Max distance in y direction

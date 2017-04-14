@@ -12,4 +12,4 @@ export const getCurrentAlert = (state) => {
   return state.app.alerts[0]
 }
 
-export const isInitialLoadComplete = (state) => state.app.initialLoadComplete
+export const isInitialLoadComplete = (state) => state.app.initialLoad
