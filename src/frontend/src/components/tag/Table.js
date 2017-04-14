@@ -64,6 +64,7 @@ render() {
   const {
     labels,
     labelFilters,
+    searchFilter,
     batteryFilter,
     batteryOperator,
     onLabelClick,
@@ -81,6 +82,7 @@ render() {
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 '>
           <TextField
           hintText='Filter by id, name or label'
+          value={searchFilter}
           onChange={(e,val) => { onSearchChange(val) }}
           />
         </div>
@@ -187,6 +189,7 @@ TagTable.propTypes = {
   tags: PropTypes.array,
   labels: PropTypes.object,
   labelFilters: PropTypes.array,
+  searchFilter: PropTypes.string,
   batteryFilter: PropTypes.number,
   batteryOperator: PropTypes.number,
   onLabelClick: PropTypes.func,

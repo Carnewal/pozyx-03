@@ -32,6 +32,9 @@ export const getExistingLabels = (state) => {
   return labels
 }
 
+// Get the search field filter
+export const getSearchFilter = (state) => state.app.tagSearch
+
 // Get the labels selected by the user
 export const getLabelFilters = (state) => state.app.tagLabelFilters || []
 

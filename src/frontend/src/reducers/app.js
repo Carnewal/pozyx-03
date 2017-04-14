@@ -14,6 +14,11 @@ const initialState = {
   initialLoad: false
 }
 
+const resetState = {
+  alerts: [],
+  tagLabelFilters: null
+}
+
 const sortFunction = (a1, a2) => {
   const diff = priorityNumber(a1.priority) - priorityNumber(a2.priority)
   if (diff == 0) {
@@ -42,7 +47,7 @@ const priorityNumber = (priority) => {
 const app = (state = initialState, action) => {
   switch(action.type) {
     case SET_CURRENTMAP: {
-      return Object.assign({}, state, {currentMap: action.mapId})
+      return Object.assign({}, state, resetState, {currentMap: action.mapId})
     }
     case TOGGLE_TAG_LABEL_FILTER: {
       const labelSet = new Set(state.tagLabelFilters || [])
