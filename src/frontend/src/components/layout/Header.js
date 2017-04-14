@@ -80,7 +80,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   maps: PropTypes.array,
-  currentMap: PropTypes.object,
+  currentMap: PropTypes.number,
   styles: PropTypes.object,
   handleChangeRequestNavDrawer: PropTypes.func
 }

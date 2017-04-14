@@ -61,7 +61,7 @@ export default class Map extends React.Component {
         y={tag.position.y}
       >
         <KText
-          text={tag.tagName}
+          text={tag.name}
           fontSize={5}
           fill={`#${tag.iconColor}`}
         />
