@@ -2,6 +2,8 @@ import path from 'path'
 import express from 'express'
 import os from 'os'
 
+import bodyParser from 'body-parser'
+
 // Webpack
 import webpack from 'webpack'
 import webpackDevConfig from '../../webpack.config.frontend-dev'
@@ -42,6 +44,9 @@ if (process.env.NODE_ENV === 'development') {
     })
   })
 }
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/public', express.static(path.resolve(__dirname, '../public')))
 
