@@ -262,7 +262,27 @@ api.delete('/map/:map_id/tag/:tag_id/label/:label_id', (req, res) => {
  */
 //TODO document and implement
 api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
-  res.json({la: "dida"})
+
+  if(!req.body || !req.body.label || req.body.label === '') {
+    return res.status(400).json({ex:'No label defined'})
+  }
+
+  model.Tag.findById(req.params.tag_id, {
+    include: [
+      {model: model.Label, as: 'labels'},
+    ]
+  }).then((tag) => {
+     model.Label
+      .findOrCreate({where: {name: req.body.label}})
+      .spread(
+          (label, created) => {
+            tag.addLabel(label)
+            res.json({label: label})
+          }
+        )
+  }).catch((ex) => {
+    res.status(400).json({ex: ex})
+  })
 })
 
 export default api
