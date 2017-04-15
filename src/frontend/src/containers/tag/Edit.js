@@ -9,6 +9,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     tag: tag,
     labels: tag && tag.labels || [],
+    labelAmount: tag && tag.labels && tag.labels.length,
     currentMap: getCurrentMap(state)
   }
 }
@@ -21,4 +22,8 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    areStatesEqual: () => false
+  }
 )(Edit)

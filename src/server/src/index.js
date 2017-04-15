@@ -7,6 +7,8 @@ import webpack from 'webpack'
 import webpackDevConfig from '../../webpack.config.frontend-dev'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
+//Middleware
+import bodyParser from 'body-parser'
 // Routes
 import apiRoute from './route/api'
 
@@ -14,6 +16,11 @@ import realtime from './realtime'
 import model from './model'
 
 const app = new express()
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+
 
 let ipaddress = 'localhost'
 

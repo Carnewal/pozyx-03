@@ -56,8 +56,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "ff0000",
-    labels: [{
-      name:"cart"}],
+    labels: [],
     positions:[
       {x: 40, y: 40, z: 2, timestamp: new Date(2017, 3, 13).toJSON()},
       {x: 44, y: 35, z: 2, timestamp: new Date(2017, 3, 12).toJSON()},
@@ -75,8 +74,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "ff0000",
-    labels: [{
-      name:"cart"}],
+    labels: [],
     positions:[{
       x: 40,
       y: 40,
@@ -89,8 +87,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "33cc33",
-    labels: [{
-      name:"Warehouse"}],
+    labels: [],
     positions:[{
       x: 40,
       y: 40,
@@ -103,9 +100,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "0066ff",
-    labels: [{
-      name:"cart"},{
-      name:"Warehouse"}],
+    labels: [],
     positions:[{
       x: 40,
       y: 40,
@@ -173,8 +168,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "ff0000",
-   labels: [{
-     name:"student"}],
+   labels: [],
    positions:[{
      x: 60,
      y: 40,
@@ -188,8 +182,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "ff0000",
-   labels: [{
-     name:"student"}],
+   labels: [],
    positions:[{
      x: 70,
      y: 90,
@@ -202,8 +195,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "33cc33",
-   labels: [{
-     name:"teacher"}],
+   labels: [],
    positions:[{
      x: 67,
      y: 45,
@@ -216,9 +208,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "0066ff",
-   labels: [{
-     name:"teacher"},{
-     name:"assistent"}],
+   labels: [],
    positions:[{
      x: 115,
      y: 100,
