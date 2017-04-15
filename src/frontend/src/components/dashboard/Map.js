@@ -29,19 +29,28 @@ const style = {
 const ANCHOR_SIZE = 3
 const TAG_RADIUS = 1
 
+function updateImage(props, component) {
+  const image = new window.Image()
+  image.src = props.floorPlan
+  image.onload = () => {
+    component.setState({
+      image: image
+    })
+  }
+}
 
 export default class Map extends React.Component {
 
   constructor(props) {
     super(props)
   }
+
   componentDidMount() {
-    const image = new window.Image()
-    image.src = this.props.floorPlan
-    image.onload = () => {
-      this.setState({
-        image: image
-      })
+    updateImage(this.props, this)
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.floorPlan !== this.props.floorPlan) {
+      updateImage(nextProps, this)
     }
   }
 
