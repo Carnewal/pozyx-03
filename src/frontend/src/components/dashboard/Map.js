@@ -70,7 +70,7 @@ export default class Map extends React.Component {
         y={tag.position.y}
       >
         <KText
-          text={tag.tagName}
+          text={tag.name}
           fontSize={5}
           fill={`#${tag.iconColor}`}
         />
@@ -89,8 +89,8 @@ export default class Map extends React.Component {
       <Rect
         key={i}
         ref={`rect${i}`}
-        x={anchor.position.x - ANCHOR_SIZE / 2}
-        y={anchor.position.y - ANCHOR_SIZE / 2}
+        x={anchor.x - ANCHOR_SIZE / 2}
+        y={anchor.y - ANCHOR_SIZE / 2}
         width={ANCHOR_SIZE}
         height={ANCHOR_SIZE}
         fill={`#fff`}

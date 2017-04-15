@@ -1,5 +1,4 @@
 import { call, takeEvery, put } from 'redux-saga/effects'
-import { eventChannel } from 'redux-saga'
 import request from 'superagent'
 import { UPLOAD_FLOORPLAN, SET_FLOORPLAN } from 'frontend/actions/MapActions'
 import { ADD_ALERT } from 'frontend/actions/AppActions'

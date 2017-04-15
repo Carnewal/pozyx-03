@@ -1,145 +1,43 @@
-import { SHOW_POSITIONS } from 'frontend/actions/TagActions'
+import { SHOW_POSITIONS, SET_TAGS, ADD_LABEL, REMOVE_LABEL } from 'frontend/actions/TagActions'
 
-const initialState = [
-  {
-    "tagId": 5,
-    "tagName": "Maximus",
-    "mapId": 5,
-    "hardwareVersion": 12,
-    "firmwareVersion": 11,
-    "battery": 0.5,
-    "updateRate": 1.2,
-    "iconNumber": 1,
-    "iconColor": "ee11ff",
-    "position": {
-      "x": 10,
-      "y": 25,
-      "z": 1,
-      "timestamp": "2017-03-07T15:31:31.456+01:00"
-    },
-    "labels": [
-      {
-        "labelId": 1,
-        "labelName": "Cart"
-      },
-      {
-        "labelId": 2,
-        "labelName": "Warehouse"
-      }
-    ]
-  },
-  {
-    "tagId": 4,
-    "tagName": "Minima",
-    "mapId": 4,
-    "hardwareVersion": 12,
-    "firmwareVersion": 11,
-    "battery": 0.15,
-    "updateRate": 1.2,
-    "iconNumber": 1,
-    "iconColor": "e9841f",
-    "position": {
-      "x": 10,
-      "y": 25,
-      "z": 1,
-      "timestamp": "2017-03-07T15:31:31.456+01:00"
-    },
-    "labels": [
-      {
-        "labelId": 1,
-        "labelName": "Cart"
-      },
-      {
-        "labelId": 4,
-        "labelName": "Jonasty"
-      }
-    ]
-  },
-  {
-    "tagId": 6,
-    "tagName": "Arnold",
-    "mapId": 4,
-    "hardwareVersion": 12,
-    "firmwareVersion": 11,
-    "battery": 0.30,
-    "updateRate": 1.2,
-    "iconNumber": 1,
-    "iconColor": "baa4c5",
-    "position": {
-      "x": 20,
-      "y": 2,
-      "z": 11,
-      "timestamp": "2017-03-07T15:31:31.456+01:00"
-    },
-    "labels": [
-      {
-        "labelId": 1,
-        "labelName": "Cart"
-      },
-      {
-        "labelId": 3,
-        "labelName": "Storage Room"
-      }
-    ]
-  },
-  {
-    "tagId": 7,
-    "tagName": "Eva",
-    "mapId": 4,
-    "hardwareVersion": 12,
-    "firmwareVersion": 11,
-    "battery": 0.6,
-    "updateRate": 1.2,
-    "iconNumber": 1,
-    "iconColor": "bdd05b",
-    "position": {
-      "x": 20,
-      "y": 2,
-      "z": 11,
-      "timestamp": "2017-03-07T15:31:31.456+01:00"
-    },
-    "labels": [
-      {
-        "labelId": 4,
-        "labelName": "Jonasty"
-      },
-      {
-        "labelId": 8,
-        "labelName": "Larder"
-      }
-    ]
-  },
-  {
-    "tagId": 8,
-    "tagName": "Eva2",
-    "mapId": 4,
-    "hardwareVersion": 12,
-    "firmwareVersion": 11,
-    "battery": 0.8,
-    "updateRate": 1.2,
-    "iconNumber": 1,
-    "iconColor": "4286f4",
-    "position": {
-      "x": 20,
-      "y": 2,
-      "z": 11,
-      "timestamp": "2017-03-07T15:31:31.456+01:00"
-    }
-  }
-]
+const initialState = []
 
 const tag = (state = initialState, action) => {
   switch(action.type) {
-    case SHOW_POSITIONS:
+    case SET_TAGS: {
+      return [...action.tags]
+    }
+    case SHOW_POSITIONS: {
       const newState = state.slice()
       const positions = action.positions
       newState.map((tag) => {
-        if(positions[tag.tagId]) {
-          delete positions[tag.tagId].tagId
-          tag.position = positions[tag.tagId]
+        if(positions[tag.id]) {
+          delete positions[tag.id].id
+          tag.position = positions[tag.id]
         }
       })
       return newState
+    }
+    case ADD_LABEL: {
+      const {tagId, label} = action
+      const newState = state.slice()
+      const tagIndex = newState.findIndex((tag) => tag.id === tagId)
+      if(newState[tagIndex].labels && newState[tagIndex].labels.length) {
+        newState[tagIndex].labels.push(label)
+      } else {
+        newState[tagIndex].labels = [label]
+      }
+      return newState
+    }
+    case REMOVE_LABEL: {
+      const {tagId, labelId} = action
+      console.log(tagId, labelId)
+
+      const newState = state.slice()
+      const tagIndex = newState.findIndex((tag) => tag.id === tagId)
+      newState[tagIndex].labels = newState[tagIndex].labels.filter((label) => label.id !== labelId)
+      return newState
+    }
     default:
       return state
   }

@@ -62,7 +62,7 @@ export default class Dashboard extends React.Component {
 
         <div className='col-xs-12 col-sm-12 col-md-12 col-lg-12 m-b-15 '>
           <div ref='mapSizePlaceholder'></div>
-          {floorPlan == '' ? <UploadPlanArea/> : <Map containerWidth={this.state && this.state.mapWidth}/>}
+          {(floorPlan && floorPlan !== '') ? <Map containerWidth={this.state && this.state.mapWidth}/> : <UploadPlanArea/>}
         </div>
 
       </div>
