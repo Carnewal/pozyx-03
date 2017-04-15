@@ -23,9 +23,9 @@ export const requestAddLabel = (mapId, tagId, labelName) => ({
 })
 
 export const REMOVE_LABEL = "REMOVE_LABEL" // Use in reducer
-export const removeLabel = (tagId, labelId) => ({
+export const removeLabel = (tagId, labelId, labelName) => ({
   type: REMOVE_LABEL,
-  tagId,  labelId
+  tagId,  labelId, labelName
 })
 export const REQUEST_REMOVE_LABEL = "REQUEST_REMOVE_LABEL" // Use in sagas
 export const requestRemoveLabel = (mapId, tagId, labelId) => ({

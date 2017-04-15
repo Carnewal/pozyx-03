@@ -1,4 +1,5 @@
 import { SET_CURRENTMAP } from 'frontend/actions/AppActions'
+import { REMOVE_LABEL } from 'frontend/actions/TagActions'
 import {
   TOGGLE_TAG_LABEL_FILTER,
   SET_TAG_SEARCH,
@@ -52,6 +53,10 @@ const app = (state = initialState, action) => {
   switch(action.type) {
     case SET_CURRENTMAP: {
       return Object.assign({}, state, resetState, {currentMap: action.mapId})
+    }
+    case REMOVE_LABEL: {
+      console.log(action, state.tagLabelFilters.filter((label) => label !== action.labelName))
+      return Object.assign({}, state, {tagLabelFilters: state.tagLabelFilters.filter((label) => label !== action.labelName)})
     }
     case TOGGLE_TAG_LABEL_FILTER: {
       const labelSet = new Set(state.tagLabelFilters || [])
