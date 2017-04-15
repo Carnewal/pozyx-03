@@ -252,8 +252,25 @@ api.get('/labels', (req, res) => {
  */
 //TODO document and implement
 api.delete('/map/:map_id/tag/:tag_id/label/:label_id', (req, res) => {
-  res.json({tagId: req.params.tag_id, labelId: req.params.label_id, deleted: true})
-})
+  model.Tag.findById(req.params.tag_id, {
+    include: [
+      {model: model.Label, as: 'labels'},
+    ]
+  }).then((tag) => {
+     model.Label
+      .findById(req.params.label_id)
+      .then((label) => {
+            if(label) {
+              tag.removeLabel(label)
+              res.json({label: label})
+            } else {
+              res.status(400).json({ex: 'Label does not exist.'})
+            }
+          }
+        )
+  }).catch((ex) => {
+    res.status(400).json({ex: ex})
+  })})
 
 /**
  * @api {post} /map/:map_id/tag/:tag_id/label Add Label for Tag
@@ -264,7 +281,7 @@ api.delete('/map/:map_id/tag/:tag_id/label/:label_id', (req, res) => {
 api.post('/map/:map_id/tag/:tag_id/label', (req, res) => {
 
   if(!req.body || !req.body.label || req.body.label === '') {
-    return res.status(400).json({ex:'No label defined'})
+    return res.status(400).json({ex:'No label defined.'})
   }
 
   model.Tag.findById(req.params.tag_id, {

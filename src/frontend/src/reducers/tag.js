@@ -19,6 +19,7 @@ const tag = (state = initialState, action) => {
       return newState
     }
     case ADD_LABEL: {
+      console.log('add label', label)
       const {tagId, label} = action
       const newState = state.slice()
       const tagIndex = newState.findIndex((tag) => tag.id === tagId)
