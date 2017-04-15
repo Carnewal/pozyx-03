@@ -17,7 +17,8 @@ function * watchDeleteLabelRequests() {
     while(true) {
       const {mapId, tagId, labelId} = yield take(REQUEST_REMOVE_LABEL)
       const response = yield call(deleteLabel, mapId, tagId, labelId)
-      yield put(removeLabel(tagId, labelId))
+      const {id, name} = response.body.label
+      yield put(removeLabel(tagId, id, name))
     }
 }
 
