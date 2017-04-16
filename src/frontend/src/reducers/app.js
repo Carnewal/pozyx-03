@@ -97,7 +97,7 @@ const app = (state = initialState, action) => {
       return Object.assign({}, state, { initialLoad: action.complete })
     }
     case SET_ADDING_ZONE: {
-      return Object.assing({}, state, {addingZone: action.adding})
+      return Object.assign({}, state, {addingZone: action.adding})
     }
     default:
       return state

@@ -17,7 +17,8 @@ const mapStateToProps = (state, ownProps) => {
     floorPlan: getFloorPlan(state),
     containerWidth: containerWidth,
     containerHeight: containerHeight,
-    mapScaling: mapScaling
+    mapScaling: mapScaling,
+    addingZone: state.app.addingZone
   }
 }
 

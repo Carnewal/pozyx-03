@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {Layer, Rect, Stage, Group, Image, Circle, Text as KText} from 'react-konva'
+import {Layer, Rect, Stage, Group, Image, Circle, Line, Text as KText} from 'react-konva'
 
 const style = {
   wrappingDiv: {
@@ -41,6 +41,8 @@ function updateImage(props, component) {
 
 export default class Map extends React.Component {
 
+  state = {points:[], cur:{x:0,y:0}}
+
   constructor(props) {
     super(props)
   }
@@ -51,6 +53,38 @@ export default class Map extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.floorPlan !== this.props.floorPlan) {
       updateImage(nextProps, this)
+    }
+    if (nextProps.addingZone !== this.props.addingZone) {
+      if (!nextProps.addingZone) {
+        this.refs.drawLayer.off('mousemove click')
+        this.setState({cur: {x:0,y:0}, prev: undefined, start: undefined, points:[]})
+      }
+    }
+  }
+  componentDidUpdate() {
+    if (this.props.addingZone &&
+      this.refs.drawLayer.eventListeners.mousemove === undefined) {
+      const stage = this.refs.stage.getStage()
+      const scaling = this.props.mapScaling
+      this.refs.drawLayer.on('mousemove', () => {
+        const pos = stage.getPointerPosition()
+        pos.x /= scaling
+        pos.y /= scaling
+        this.setState({cur: pos})
+      })
+      this.refs.drawLayer.on('click', () => {
+        const pos = stage.getPointerPosition()
+        const points = this.state.points.slice()
+        pos.x /= scaling
+        pos.y /= scaling
+        points.push(pos.x, pos.y)
+
+        if (this.state.points.length === 0) {
+          this.setState({start: pos})
+        }
+
+        this.setState({points, prev: pos})
+      })
     }
   }
 
@@ -100,17 +134,47 @@ export default class Map extends React.Component {
 
   render() {
 
-      const {containerWidth, containerHeight, mapScaling} = this.props
+      const {containerWidth, containerHeight, mapScaling, addingZone} = this.props
 
       return (
         <Stage ref='stage' width={containerWidth} height={containerHeight}>
           <Layer scale={{x:1, y: 1}}>
               {this.background(containerWidth, containerHeight)}
           </Layer>
-          <Layer scale={{x:mapScaling, y: mapScaling}}>
-            {this.tags(mapScaling)}
-            {this.anchors(mapScaling)}
-          </Layer>
+          {!addingZone ?
+            <Layer scale={{x:mapScaling, y: mapScaling}}>
+              {this.tags(mapScaling)}
+              {this.anchors(mapScaling)}
+            </Layer>:
+            <Layer ref='drawLayer'>
+              <Line x={0} y={0}
+                points={this.state.points}
+                stroke='red'/>
+              {this.state.prev !== undefined ?
+                <Line x={0} y={0}
+                  points={[this.state.prev.x, this.state.prev.y, this.state.cur.x, this.state.cur.y]}
+                  stroke='red'/>
+                :
+                <Line x={0} y={0}
+                  points={0,0}
+                  stroke='red'/>
+              }
+              {this.state.start !== undefined ?
+                <Circle x={this.state.start.x} y={this.state.start.y}
+                  radius={1}
+                  fill='blue'
+                  stroke='blue'/>
+                :
+                <Circle x={0} y={0}
+                  radius={0}
+                  stroke='transparent'/>
+              }
+              <Rect
+                x={0} y={0} width={containerWidth} height={containerHeight}
+                fill='transparent'
+                />
+            </Layer>
+          }
         </Stage>
       )
   }
@@ -122,7 +186,8 @@ Map.propTypes = {
   mapScaling: PropTypes.number,
   tags: PropTypes.array,
   anchors: PropTypes.array,
-  floorPlan: PropTypes.string
+  floorPlan: PropTypes.string,
+  addingZone: PropTypes.bool
 }
 
 Map.defaultProps = {

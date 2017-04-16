@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import Dashboard from '../components/dashboard/Dashboard'
 
+import {setAddingZone} from 'frontend/actions/AppActions'
+
 import {getAnchorsAmount} from 'frontend/selectors/anchor'
 import {getTagsAmount} from 'frontend/selectors/tag'
 import {getZonesAmount} from 'frontend/selectors/zone'
@@ -11,10 +13,18 @@ const mapStateToProps = (state) => (
     anchorsAmount: getAnchorsAmount(state),
     zonesAmount: getZonesAmount(state),
     tagsAmount: getTagsAmount(state),
-    currentMap: state.app.currentMap
+    currentMap: state.app.currentMap,
+    addingZone: state.app.addingZone
+  }
+)
+
+const mapDispatchToProps = (dispatch) => (
+  {
+    setAddingZone: (addingZone) => { dispatch(setAddingZone(addingZone)) }
   }
 )
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Dashboard)

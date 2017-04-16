@@ -3,7 +3,9 @@ import UploadPlanArea from '../../containers/UploadPlanArea'
 import Map from '../../containers/MapContainer'
 import InfoBox from 'frontend/components/dashboard/InfoBox'
 import PageBase from 'frontend/components/layout/PageBase'
-import {Toolbar} from 'material-ui/Toolbar'
+import {Toolbar, ToolbarGroup, ToolbarSeparator} from 'material-ui/Toolbar'
+import RaisedButton from 'material-ui/RaisedButton'
+import Toggle from 'material-ui/Toggle'
 
 import {cyan600, purple600, green600} from 'material-ui/styles/colors'
 
@@ -27,6 +29,9 @@ export default class Dashboard extends React.Component {
     window.removeEventListener('resize', () => {})
   }
 
+  toggleCreateZone(addingZone) {
+    this.props.setAddingZone(addingZone)
+  }
 
   render() {
     const {floorPlan, tagsAmount, anchorsAmount, zonesAmount} = this.props
@@ -66,6 +71,26 @@ export default class Dashboard extends React.Component {
       <br/>
 
       <Toolbar>
+        <ToolbarGroup>
+          <Toggle label='Show zones' labelPosition='right' defaultToggled={true}/>
+        </ToolbarGroup>
+        <ToolbarGroup>
+          {!this.props.addingZone ?
+            <RaisedButton
+              label='Create zone'
+              primary={true}
+              onClick={() => this.toggleCreateZone(true)}/>
+            :
+            <RaisedButton
+              label='Cancel'
+              primary={true}
+              onClick={() => this.toggleCreateZone(false)}/>
+          }
+
+          <div>
+            <Toggle label='Remove zones' labelPosition='right'/>
+          </div>
+        </ToolbarGroup>
       </Toolbar>
 
       <div className='row'>
