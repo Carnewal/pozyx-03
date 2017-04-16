@@ -103,7 +103,7 @@ export default class Map extends React.Component {
       const {containerWidth, containerHeight, mapScaling} = this.props
 
       return (
-        <Stage width={containerWidth} height={containerHeight}>
+        <Stage ref='stage' width={containerWidth} height={containerHeight}>
           <Layer scale={{x:1, y: 1}}>
               {this.background(containerWidth, containerHeight)}
           </Layer>

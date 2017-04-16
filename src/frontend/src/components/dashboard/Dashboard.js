@@ -3,11 +3,13 @@ import UploadPlanArea from '../../containers/UploadPlanArea'
 import Map from '../../containers/MapContainer'
 import InfoBox from 'frontend/components/dashboard/InfoBox'
 import PageBase from 'frontend/components/layout/PageBase'
+import {Toolbar} from 'material-ui/Toolbar'
 
-import {cyan600, purple600} from 'material-ui/styles/colors'
+import {cyan600, purple600, green600} from 'material-ui/styles/colors'
 
 import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
+import ZoneIcon from 'material-ui/svg-icons/social/pages'
 
 export default class Dashboard extends React.Component {
   constructor(props) {
@@ -27,14 +29,13 @@ export default class Dashboard extends React.Component {
 
 
   render() {
-    const {floorPlan, tagsAmount, anchorsAmount} = this.props
+    const {floorPlan, tagsAmount, anchorsAmount, zonesAmount} = this.props
     return (
       <PageBase title='Dashboard'
         navigation='Map / Dashboard'
         >
         <br/>
       <div className='row'>
-
 
         <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 '>
           <InfoBox Icon={TagIcon}
@@ -44,7 +45,6 @@ export default class Dashboard extends React.Component {
           />
         </div>
 
-
         <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 '>
           <InfoBox Icon={AnchorIcon}
                    color={cyan600}
@@ -53,10 +53,20 @@ export default class Dashboard extends React.Component {
           />
         </div>
 
+        <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15'>
+          <InfoBox Icon={ZoneIcon}
+                   color={green600}
+                   title='Zones'
+                   value={zonesAmount}>
+          </InfoBox>
+        </div>
+
       </div>
 
-
       <br/>
+
+      <Toolbar>
+      </Toolbar>
 
       <div className='row'>
 
@@ -77,6 +87,7 @@ export default class Dashboard extends React.Component {
 Dashboard.propTypes = {
   tagsAmount: PropTypes.number,
   anchorsAmount: PropTypes.number,
+  zonesAmount: PropTypes.number,
   currentMap: PropTypes.number,
   floorPlan: PropTypes.string
 }

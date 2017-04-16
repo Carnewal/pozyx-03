@@ -7,7 +7,8 @@ import {
   SET_NAVDRAWER_OPEN,
   ADD_ALERT,
   REMOVE_ALERT,
-  SET_INITIAL_LOAD
+  SET_INITIAL_LOAD,
+  SET_ADDING_ZONE
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
@@ -15,7 +16,8 @@ import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
 const initialState = {
   alerts: [],
   navDrawerOpen: true,
-  initialLoad: false
+  initialLoad: false,
+  addingZone: false
 }
 
 const resetState = {
@@ -91,9 +93,11 @@ const app = (state = initialState, action) => {
     case SET_NAVDRAWER_OPEN: {
       return Object.assign({}, state, { navDrawerOpen: action.navDrawerOpen})
     }
-
     case SET_INITIAL_LOAD: {
       return Object.assign({}, state, { initialLoad: action.complete })
+    }
+    case SET_ADDING_ZONE: {
+      return Object.assing({}, state, {addingZone: action.adding})
     }
     default:
       return state

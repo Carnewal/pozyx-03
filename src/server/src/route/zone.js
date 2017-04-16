@@ -55,7 +55,7 @@ api.get('/map/:mapId/zones', (_req, _res) => {
           result.push(zone)
       })
 
-        _res.json(result)
+        _res.json({zones: result})
   })
 })
 

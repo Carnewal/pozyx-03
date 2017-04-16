@@ -7,6 +7,7 @@ export const REMOVE_ALERT = 'REMOVE_ALERT'
 export const SET_NAVDRAWER_OPEN = 'SET_NAVDRAWER_OPEN'
 export const SET_CURRENTMAP = "SET_CURRENTMAP"
 export const SET_INITIAL_LOAD = 'SET_INITIAL_LOAD'
+export const SET_ADDING_ZONE = 'SET_ADDING_ZONE'
 
 export const toggleTagLabelFilter = (labelId) => ({
   type: TOGGLE_TAG_LABEL_FILTER,
@@ -50,4 +51,9 @@ export const setCurrentmap = (mapId) => ({
 export const setInitialLoad = (complete) => ({
   type: SET_INITIAL_LOAD,
   complete
+})
+
+export const setAddingZone = (adding) => ({
+  type: SET_ADDING_ZONE,
+  adding
 })
