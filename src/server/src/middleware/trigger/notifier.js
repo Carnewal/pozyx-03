@@ -19,15 +19,21 @@ class Notifier {
   }
 
   updateState = (changes) => {
-    changes.tags.forEach((tag) => {
-      this.state.updateTag(tag)
-    })
-    changes.zones.forEach((tag) => {
-      this.state.updateZone(tag)
-    })
-    changes.anchors.forEach((tag) => {
-      this.state.updateAnchor(tag)
-    })
+    if (changes.tags) {
+      changes.tags.forEach((tag) => {
+        this.state.updateTag(tag)
+      })
+    }
+    if (changes.zones) {
+      changes.zones.forEach((zone) => {
+        this.state.updateZone(zone)
+      })
+    }
+    if (changes.anchors) {
+      changes.anchors.forEach((anchor) => {
+        this.state.updateAnchor(anchor)
+      })
+    }
     this.check()
   }
 
