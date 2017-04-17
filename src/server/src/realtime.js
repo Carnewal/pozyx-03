@@ -82,6 +82,7 @@ const realtime = (server) => {
   const primus = new Primus(server, {})
   const notifier = new Notifier() //TODO notifier integreren in live data
   notifier.initState(1) //INIT with map 1
+  notifier.initTriggers(1)
 
   primus.on('connection', () => {
     console.log('client connected')
