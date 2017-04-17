@@ -1,4 +1,5 @@
 import Primus from 'primus'
+import Notifier from './middleware/trigger/notifier'
 
 const maxdistance = {x: 99, y: 99, z: 3} // meter
 
@@ -79,6 +80,9 @@ const mgr = new Manager(
 
 const realtime = (server) => {
   const primus = new Primus(server, {})
+  const notifier = new Notifier() //TODO notifier integreren in live data
+  notifier.initState(1) //INIT with map 1
+  notifier.initTriggers(1)
 
   primus.on('connection', () => {
     console.log('client connected')
@@ -92,6 +96,13 @@ const realtime = (server) => {
     mgr.tags.forEach(function(tag) {
       const tagPosition = {
         tagId: tag.tagId,
+        id: tag.tagId,
+        position: {
+          x: tag.position.x,
+          y: tag.position.y,
+          z: tag.position.z,
+          timestamp: new Date().toISOString()
+        },
         x: tag.position.x,
         y: tag.position.y,
         z: tag.position.z,
@@ -100,6 +111,7 @@ const realtime = (server) => {
       tagPositions.push(tagPosition)
     })
 
+    notifier.updateState({tags: tagPositions})
     primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
   }, interval)
 }
