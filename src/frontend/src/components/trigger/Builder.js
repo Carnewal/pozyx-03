@@ -10,14 +10,11 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import PageBase from 'frontend/components/layout/PageBase'
 import ExpandTransition from 'material-ui/internal/ExpandTransition'
+import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import {List, ListItem} from 'material-ui/List'
 import Toggle from 'material-ui/Toggle'
-import ActionGrade from 'material-ui/svg-icons/action/grade'
-import ContentInbox from 'material-ui/svg-icons/content/inbox'
-import ContentDrafts from 'material-ui/svg-icons/content/drafts'
-import ContentSend from 'material-ui/svg-icons/content/send'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider';
 
@@ -25,17 +22,17 @@ import Divider from 'material-ui/Divider';
 import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import LightbulbOutline from 'material-ui/svg-icons/action/lightbulb-outline'
 import BatteryFull from 'material-ui/svg-icons/device/battery-full'
-import ToggleIcon from 'material-ui/svg-icons/toggle/check-box'
+import MapIcon from 'material-ui/svg-icons/maps/map'
 import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
 
 
 const expectedValues = {
-  logical: ['operator', 'children'],
+  logical: ['logic', 'children'],
   tagInZone: ['condition', 'tagIds', 'zoneId'],
   tagBattery: ['condition', 'tagIds', 'operator', 'percentage'],
   tagHWVersion: ['condition', 'tagIds', 'operator', 'number'],
-  tagAmountInZone: ['amount', 'zoneId'],
+  tagAmountInZone: ['operator', 'amount', 'zoneId'],
   labelInZone: ['condition', 'labelIds', 'zoneId'],
   labelBattery: ['condition', 'labelIds', 'operator', 'percentage'],
   anchorStatus: ['condition', 'anchorIds', 'status'],
@@ -50,8 +47,10 @@ const listIcons = {
   'logical': <LightbulbOutline />,
   'tagInZone': <TagIcon />,
   'tagBattery': <BatteryFull />,
+  'labelBattery': <BatteryFull />,
   'tagAmountInZone': <i style={{verticalAlign:'text-bottom', fontWeight:'bold', marginLeft: '20px', marginTop:'16px', color: 'rgba(0, 0, 0, 0.870588)', fill: 'rgb(117, 117, 117)'}} >#</i>,
   'anchorStatus': <AnchorIcon />,
+  'labelInZone': <MapIcon />
 }
 const getListIcon = (tree) => listIcons[tree.type] || <KeyboardArrowRight />
 
@@ -75,16 +74,16 @@ export default class Builder extends React.Component {
     stepIndex: 0,
     //Trigger-building
     triggerTree: { type: 'logical', value: {
-      operator: 'and',
+      logic: 'and',
       children: [
         {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
         {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
         {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
-        {type:'tagAmountInZone', value: {amount: 1, zoneId: 5}},
-        {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 4}},
+        {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
+        {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
         {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
         {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
-        {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [3,4], operator: '=', number: 15 }},
+        {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
       ]
     }},
     selectedItemPath: [],
@@ -103,14 +102,56 @@ export default class Builder extends React.Component {
 
   builderBlock(item) {
       return <div>{expectedValues[item.type].map(
-        (type) => this.builderComponent(type, item.value[type])
+        (name) => this.builderComponent(name, item.value[name])
       )}</div>
   }
 
-  builderComponent(type, value) {
-    return <div>{type + ' - ' + value}</div>
+  builderComponent(name, value) {
+    return this.bldrComponents[name] && this.bldrComponents[name](name, value) || <span>Not found: {name}</span>
   }
 
+  handleChange(name) {
+    return (event, index, value) => {
+      console.log(name, event, index, value)
+    }
+  }
+
+  bldrComponents = {
+    condition: (name, value) => <SelectField floatingLabelText='Condition' value={value} onChange={this.handleChange(name)}>
+        <MenuItem value={'any'} primaryText='Any' />
+        <MenuItem value={'all'} primaryText='All' />
+        <MenuItem value={'none'} primaryText='None' />
+      </SelectField>,
+      operator: (name, value) => <SelectField floatingLabelText='Operator' value={value} onChange={this.handleChange(name)}>
+          <MenuItem key={1} value={'='} primaryText='Equal' />
+          <MenuItem key={2} value={'!='} primaryText='Not Equal' />
+          <MenuItem key={3} value={'>'} primaryText='More Than' />
+          <MenuItem key={4} value={'>='} primaryText='More Than Or Equal' />
+          <MenuItem key={5} value={'<'} primaryText='Less Than' />
+          <MenuItem key={6} value={'<='} primaryText='Less Than Or Equal' />
+        </SelectField>,
+      logic: (name, value) => <SelectField floatingLabelText='Logic' value={value} onChange={this.handleChange(name)}>
+          <MenuItem key={1} value={'and'} primaryText='AND' />
+          <MenuItem key={2} value={'or'} primaryText='OR' />
+        </SelectField>,
+      tagIds: (name, value) => <SelectField floatingLabelText='Select tags' multiple value={value} onChange={this.handleChange(name)}>
+          {this.props.tags.map((t, i) => <MenuItem key={i} value={t.id} primaryText={t.name} />)}
+        </SelectField>,
+      anchorIds: (name, value) => <SelectField floatingLabelText='Select anchors' multiple value={value} onChange={this.handleChange(name)}>
+          {this.props.anchors.map((t, i) => <MenuItem key={i} value={t.id} primaryText={t.name} />)}
+        </SelectField>,
+      labelIds: (name, value) => <SelectField floatingLabelText='Select labels' multiple value={value} onChange={this.handleChange(name)}>
+            {this.props.labels.map((l, i) => <MenuItem key={i} value={l.id} primaryText={l.name} />)}
+          </SelectField>,
+      zoneId: (name, value) => <SelectField floatingLabelText='Select a zone' value={value} onChange={this.handleChange(name)}>
+            {this.props.zones.map((z, i) => <MenuItem key={i} value={z.id} primaryText={z.name} />)}
+          </SelectField>,
+      status: (name, value) => <TextField floatingLabelText='Status' value={value} onChange={this.handleChange(name)} />,
+      percentage: (name, value) => <TextField type='number' min={0} max={1} step={0.05} floatingLabelText='Percentage (0 to 1)' value={value} onChange={this.handleChange(name)} />,
+      amount: (name, value) => <TextField type='number' min={0} step={1} floatingLabelText='Amount' value={value} onChange={this.handleChange(name)} />,
+      number: (name, value) => <TextField value={value} floatingLabelText='Number' onChange={this.handleChange(name)} />,
+
+  }
 
 
   // List
@@ -138,13 +179,16 @@ export default class Builder extends React.Component {
       primaryText={buildListItemName(tree)}
       leftIcon={getListIcon(tree)}
       initiallyOpen={true}
+      key={indexPath.join()}
       primaryTogglesNestedList={true}
       onNestedListToggle={()=>{this.selectItemPath(indexPath)}}
       nestedItems={tree.type === 'logical' &&
         tree.value &&
         tree.value.children &&
         tree.value.children.length &&
-        tree.value.children.map((child, i) => this.buildListItem(child, [...indexPath, i])) }
+        tree.value.children.map((child, i) => this.buildListItem(child, [...indexPath, i])) ||
+        []
+      }
       />
   }
 
@@ -212,7 +256,7 @@ export default class Builder extends React.Component {
 
 
   renderContent() {
-    const {finished, stepIndex} = this.state;
+    const {finished, stepIndex} = this.state
     const contentStyle = {margin: '0 16px', overflow: 'hidden'}
 
     if (finished) {
@@ -283,12 +327,13 @@ export default class Builder extends React.Component {
 Builder.propTypes = {
   anchors: PropTypes.array,
   tags: PropTypes.array,
+  labels: PropTypes.array,
   zones: PropTypes.array
 }
 
 Builder.defaultProps = {
-  anchors: [{ id: 1 }, { id: 2 }],
-  tags: [{ id: 3 }, { id: 4 }],
-  zones: [{ id: 5 }, { id: 6 }],
-  labels: [{ id: 7 }, { id: 8 }]
+  anchors: [{ id: 1, name:'An' }, { id: 2, name: 'Chor' }],
+  tags: [{ id: 3, name: 'Max' }, { id: 4, name: 'Eva' }],
+  zones: [{ id: 5, name: 'Z5' }, { id: 6, name: 'Z6' }],
+  labels: [{ id: 7, name:'Shop' }, { id: 8, name:'House' }]
 }
