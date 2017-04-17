@@ -1,9 +1,10 @@
 import Primus from 'primus'
 import Notifier from './middleware/trigger/notifier'
+import Model from './model'
 
 const maxdistance = {x: 99, y: 99, z: 3} // meter
 
-const interval = 1000/30
+const interval = 1000 / 30
 
 class Tag {
   constructor(tagId, speed) {
@@ -51,14 +52,14 @@ class Tag {
 }
 
 class Manager {
-  constructor (tags, speed, interval, factor) {
+  constructor(tags, speed, interval, factor) {
     this.tags = []
     this.interval = interval
-    for (let i = 0; i < tags; i++) {
+    for (let i = 0; i < tags.length; i++) {
       const rand = speed * factor
       const adjusted_speed = speed + (rand / 2) - (Math.random() * rand) // randomly +/- factor speed
       this.adjusted_speed *= interval / 1000 // take interval into account
-      this.tags.push(new Tag(i, adjusted_speed))
+      this.tags.push(new Tag(tags[i].id, adjusted_speed))
     }
   }
 
@@ -70,49 +71,54 @@ class Manager {
   }
 }
 
-
-const mgr = new Manager(
-  20, // amount of tags
-  1, // speed in meter / s
-  interval, // interval time in ms
-  5 // +/- random factor on speed
-)
-
 const realtime = (server) => {
   const primus = new Primus(server, {})
   const notifier = new Notifier() //TODO notifier integreren in live data
-  notifier.initState(1) //INIT with map 1
-  notifier.initTriggers(1)
+  notifier.initState(2) //INIT with map id 2
+  notifier.initTriggers(2)
 
   primus.on('connection', () => {
     console.log('client connected')
   })
 
-  setInterval(() => {
-    mgr.update()
+  Model.Tag.findAll({
+    where: {
+      mapId: 2
+    }
+  }).then((tags) => {
+    const mgr = new Manager(
+      tags, // tags from db
+      1, // speed in meter / s
+      interval, // interval time in ms
+      5 // +/- random factor on speed
+    )
+    setInterval(() => {
+      mgr.update()
 
-    const tagPositions = []
+      const tagPositions = []
 
-    mgr.tags.forEach(function(tag) {
-      const tagPosition = {
-        tagId: tag.tagId,
-        id: tag.tagId,
-        position: {
+      mgr.tags.forEach(function(tag) {
+        const tagPosition = {
+          tagId: tag.tagId,
+          id: tag.tagId,
+          position: {
+            x: tag.position.x,
+            y: tag.position.y,
+            z: tag.position.z,
+            timestamp: new Date().toISOString()
+          },
           x: tag.position.x,
           y: tag.position.y,
           z: tag.position.z,
           timestamp: new Date().toISOString()
-        },
-        x: tag.position.x,
-        y: tag.position.y,
-        z: tag.position.z,
-        timestamp: new Date().toISOString()
-      }
-      tagPositions.push(tagPosition)
+        }
+        tagPositions.push(tagPosition)
+      })
+
+      notifier.updateState({tags: tagPositions})
+      primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
     })
 
-    notifier.updateState({tags: tagPositions})
-    primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
   }, interval)
 }
 
