@@ -16,6 +16,8 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 23/03/16 ,13:00,14:00,Extern, script database filler issues fixen,tag includes binnen map zelf werken niet, (het werkt nog altijd nie)
 23/03/16 ,14:00,14:30,Extern, script database filler issues gefixed,, includes in includes is het antwoord!
 28/03/16,8:15,12:15,Campus, Sequentiële Diagrammen + script database filler mergen,,
-11/4/17,13:57,15:03,Extern,"Gezocht naar een oplossing voor de alerts pull request",,
-12/4/17,10:30,11:57,Extern,"Alerts branch gemerged + kleine wijzigingen in konva branch + begonnen aan het toevoegen van zones",,
-15/4/17,13:39,18:16,Extern,"Verder gewerkt aan het toevoegen van zones",,
+11/4/17,13:57,15:03,Extern,"Pair programming Gezocht naar een oplossing voor de alerts pull request",,
+12/4/17,10:30,11:57,Extern,"Pair programming Alerts branch gemerged + kleine wijzigingen in konva branch + begonnen aan het toevoegen van zones",,
+15/4/17,13:39,18:16,Extern,"Pair programming Verder gewerkt aan het toevoegen van zones",,
+16/4/17,10:30,12:00,Extern,"Pair programming Verder zones werken",,
+16/4/17,14:30,17:00,Extern,"Pair programming Verder zones werken",,
