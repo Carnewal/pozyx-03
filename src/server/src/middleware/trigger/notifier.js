@@ -1,5 +1,5 @@
 import State from './state'
-import Model from '../model'
+import Model from '../../model'
 
 class Notifier {
   state = new State()
