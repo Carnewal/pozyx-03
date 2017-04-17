@@ -73,7 +73,7 @@ export default class TriggerTable extends React.Component {
                         <TableRow>
                             <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.price}>Toggle</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.price}>Active</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.price}>Edit</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
@@ -84,7 +84,9 @@ export default class TriggerTable extends React.Component {
                                 <TableRowColumn style={styles.columns.name}>{trigger.name}</TableRowColumn>
                                 <TableRowColumn style={styles.columns.price}>
                                   <Toggle
-                                    label='Toggled?'
+                                    toggled={trigger.enabled}
+                                    label={trigger.enabled ? 'Active' : 'Inactive'}
+                                    labelPosition='right'
                                     disabled={true}
                                     style={styles.toggle}
                                   />

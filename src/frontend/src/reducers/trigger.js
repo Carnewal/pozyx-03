@@ -13,7 +13,7 @@ const initialState = [
       {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
     ]
   }}},
-  { mapId: 1, id: 2, name: 'Trigger nr2', enabled: true, tree: {type:'tagInZone', value: {
+  { mapId: 1, id: 2, name: 'Trigger nr2', enabled: false, tree: {type:'tagInZone', value: {
     condition: 'any',
     tagIds: [3,4],
     zoneId: 6
