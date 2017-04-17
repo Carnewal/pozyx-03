@@ -24,9 +24,13 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import LightbulbOutline from 'material-ui/svg-icons/action/lightbulb-outline'
 import BatteryFull from 'material-ui/svg-icons/device/battery-full'
+import WarningIcon from 'material-ui/svg-icons/alert/warning'
 import MapIcon from 'material-ui/svg-icons/maps/map'
 import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
+
+const { Map, fromJS } = require('immutable')
+
 
 const SelectableList = makeSelectable(List)
 
@@ -44,8 +48,10 @@ const expectedValues = {
 }
 
 const buildListItemName = (tree) =>
+  tree.type &&
   tree.type.charAt(0).toUpperCase() +
-  tree.type.split(/(?=[A-Z])/).join(' ').slice(1)
+  tree.type.split(/(?=[A-Z])/).join(' ').slice(1) ||
+  'Empty item !'
 
 const listIcons = {
   'logical': <LightbulbOutline />,
@@ -56,20 +62,9 @@ const listIcons = {
   'anchorStatus': <AnchorIcon />,
   'labelInZone': <MapIcon />
 }
-const getListIcon = (tree) => listIcons[tree.type] || <KeyboardArrowRight />
-
-const traverseTree = (tree, path) => {
-  path = path.slice()
-  tree = Object.assign({}, tree)
-  if(path && path.length) {
-    path.forEach((p, i) => {
-      if(tree.value.children && i != path.length - 1) {
-        tree = tree.value.children[path[i+1]]
-      }
-    })
-  }
-  return tree
-}
+const getListIcon = (tree) => tree.type
+  ? listIcons[tree.type] || <KeyboardArrowRight />
+  : <WarningIcon />
 
 export default class Builder extends React.Component {
   state = {
@@ -89,15 +84,66 @@ export default class Builder extends React.Component {
         {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
         {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
         {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
+        { type: 'logical', value: {
+          logic: 'and',
+          children: [
+            {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
+            {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
+            {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
+            {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
+            {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
+            {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
+            {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
+            {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
+            { type: 'logical', value: {
+              logic: 'and',
+              children: [
+                {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
+                {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
+                {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
+                {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
+                {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
+                {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
+                {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
+                {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
+                { type: 'logical', value: {
+                  logic: 'and',
+                  children: [
+                    {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
+                    {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
+                    {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
+                    {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
+                    {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
+                    {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
+                    {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
+                    {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
+                  ]
+                }}
+              ]
+            }}
+          ]
+        }}
       ]
     }},
-    selectedItemPath: [0,2],
+    selectedItemPath: [0],
     triggerEnabled: true
   }
 
   // Util
   getSelectedItem() {
-    return traverseTree(this.state.triggerTree, this.state.selectedItemPath)
+    return fromJS(this.state.triggerTree).getIn(this.getSelectedItemKeyPath()).toJS()
+  }
+
+  getSelectedItemKeyPath() {
+    const {triggerTree, selectedItemPath} = this.state
+    const tree = fromJS(triggerTree)
+    let keyPath = []
+    selectedItemPath.forEach((p, i) => {
+      if(i > 0 && i <= selectedItemPath.length - 1 && tree.hasIn([...keyPath, 'value', 'children'])) {
+        keyPath = [...keyPath, 'value', 'children', selectedItemPath[i]]
+      }
+    })
+    return keyPath
   }
 
   // Builder
@@ -118,33 +164,36 @@ export default class Builder extends React.Component {
     return this.bldrComponents[name] && this.bldrComponents[name](name, value) || <span>Not found: {name}</span>
   }
 
-  // Tree Item Click Handlers
+  // Builder Item Click Handlers
   handleAddChild(name) { // Name will most likely be children
     return () => {
       const item = this.getSelectedItem()
-      if(item[name]) {
-        item[name].push({})
-      } else {
-        item[name] = [{}]
-      }
-      this.setTreeValue(this.state.triggerTree, this.state.selectedItemPath, name, item[name])
+      this.setSelectedItemValue(name, item.value[name] ? [...item.value[name], {}] : [{}])
     }
   }
 
   handleSelectChange(name) {
     return (event, index, value) => {
-      this.setTreeValue(this.state.triggerTree, this.state.selectedItemPath, name, value)
+      this.setSelectedItemValue(name, value)
     }
   }
   handleTextChange(name) {
     return (event, value) => {
-      this.setTreeValue(this.state.triggerTree, this.state.selectedItemPath, name, value)
+      this.setSelectedItemValue(name, value)
     }
   }
   //
+  setSelectedItemType() {
 
-  setTreeValue (triggerTree, indexPath, name, value) {
-    this.setState({triggerTree: triggerTree, selectedItemPath: indexPath})
+  }
+
+  setSelectedItemValue (name, value) {
+    const tree = fromJS(JSON.parse(JSON.stringify(this.state.triggerTree)))
+    const newTree = tree.updateIn(
+      [...this.getSelectedItemKeyPath(), 'value', name],
+      () => value
+    )
+    this.setState({triggerTree: newTree.toJS()})
   }
 
   bldrComponents = {
