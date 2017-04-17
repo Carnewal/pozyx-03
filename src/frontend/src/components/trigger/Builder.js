@@ -13,7 +13,7 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import {List, ListItem} from 'material-ui/List'
+import {List, ListItem, makeSelectable} from 'material-ui/List'
 import Toggle from 'material-ui/Toggle'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider'
@@ -27,6 +27,8 @@ import BatteryFull from 'material-ui/svg-icons/device/battery-full'
 import MapIcon from 'material-ui/svg-icons/maps/map'
 import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
+
+const SelectableList = makeSelectable(List)
 
 
 const expectedValues = {
@@ -57,11 +59,12 @@ const listIcons = {
 const getListIcon = (tree) => listIcons[tree.type] || <KeyboardArrowRight />
 
 const traverseTree = (tree, path) => {
+  path = path.slice()
+  tree = Object.assign({}, tree)
   if(path && path.length) {
-    path.shift()
-    path.forEach((p) => {
-      if(tree.value.children) {
-        tree = tree.value.children[p]
+    path.forEach((p, i) => {
+      if(tree.value.children && i != path.length - 1) {
+        tree = tree.value.children[path[i+1]]
       }
     })
   }
@@ -88,17 +91,20 @@ export default class Builder extends React.Component {
         {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
       ]
     }},
-    selectedItemPath: [],
+    selectedItemPath: [0,2],
     triggerEnabled: true
+  }
+
+  // Util
+  getSelectedItem() {
+    return traverseTree(this.state.triggerTree, this.state.selectedItemPath)
   }
 
   // Builder
   builder() {
-    const {selectedItemPath, triggerTree} = this.state
-    const item = traverseTree(triggerTree, selectedItemPath)
-
+    const {selectedItemPath} = this.state
     return selectedItemPath
-      ? this.builderBlock(item)
+      ? this.builderBlock(this.getSelectedItem())
       : <div>Select an item to start editing.</div>
   }
 
@@ -109,24 +115,46 @@ export default class Builder extends React.Component {
   }
 
   builderComponent(name, value) {
-    console.log(this.bldrComponents[name])
     return this.bldrComponents[name] && this.bldrComponents[name](name, value) || <span>Not found: {name}</span>
   }
 
-  handleChange(name) {
-    return (event, index, value) => {
-      console.log(Object.keys(event))
+  // Tree Item Click Handlers
+  handleAddChild(name) { // Name will most likely be children
+    return () => {
+      const item = this.getSelectedItem()
+      if(item[name]) {
+        item[name].push({})
+      } else {
+        item[name] = [{}]
+      }
+      this.setTreeValue(this.state.triggerTree, this.state.selectedItemPath, name, item[name])
     }
   }
 
+  handleSelectChange(name) {
+    return (event, index, value) => {
+      this.setTreeValue(this.state.triggerTree, this.state.selectedItemPath, name, value)
+    }
+  }
+  handleTextChange(name) {
+    return (event, value) => {
+      this.setTreeValue(this.state.triggerTree, this.state.selectedItemPath, name, value)
+    }
+  }
+  //
+
+  setTreeValue (triggerTree, indexPath, name, value) {
+    this.setState({triggerTree: triggerTree, selectedItemPath: indexPath})
+  }
+
   bldrComponents = {
-    children: (name, value) => <RaisedButton label={`Add child (${value.length})`} primary onTouchTap={this.handleChange(name)} icon={<ContentAdd />}/>,
-    condition: (name, value) => <SelectField floatingLabelText='Condition' value={value} onChange={this.handleChange(name)}>
+    children: (name, value) => <RaisedButton label={`Add child (${value.length})`} primary onTouchTap={this.handleAddChild(name)} icon={<ContentAdd />}/>,
+    condition: (name, value) => <SelectField floatingLabelText='Condition' value={value} onChange={this.handleSelectChange(name)}>
         <MenuItem value={'any'} primaryText='Any' />
         <MenuItem value={'all'} primaryText='All' />
         <MenuItem value={'none'} primaryText='None' />
       </SelectField>,
-      operator: (name, value) => <SelectField floatingLabelText='Operator' value={value} onChange={this.handleChange(name)}>
+      operator: (name, value) => <SelectField floatingLabelText='Operator' value={value} onChange={this.handleSelectChange(name)}>
           <MenuItem key={1} value={'='} primaryText='Equal' />
           <MenuItem key={2} value={'!='} primaryText='Not Equal' />
           <MenuItem key={3} value={'>'} primaryText='More Than' />
@@ -134,26 +162,26 @@ export default class Builder extends React.Component {
           <MenuItem key={5} value={'<'} primaryText='Less Than' />
           <MenuItem key={6} value={'<='} primaryText='Less Than Or Equal' />
         </SelectField>,
-      logic: (name, value) => <SelectField floatingLabelText='Logic' value={value} onChange={this.handleChange(name)}>
+      logic: (name, value) => <SelectField floatingLabelText='Logic' value={value} onChange={this.handleSelectChange(name)}>
           <MenuItem key={1} value={'and'} primaryText='AND' />
           <MenuItem key={2} value={'or'} primaryText='OR' />
         </SelectField>,
-      tagIds: (name, value) => <SelectField floatingLabelText='Select tags' multiple value={value} onChange={this.handleChange(name)}>
+      tagIds: (name, value) => <SelectField floatingLabelText='Select tags' multiple value={value} onChange={this.handleSelectChange(name)}>
           {this.props.tags.map((t, i) => <MenuItem key={i} value={t.id} primaryText={t.name} />)}
         </SelectField>,
-      anchorIds: (name, value) => <SelectField floatingLabelText='Select anchors' multiple value={value} onChange={this.handleChange(name)}>
+      anchorIds: (name, value) => <SelectField floatingLabelText='Select anchors' multiple value={value} onChange={this.handleSelectChange(name)}>
           {this.props.anchors.map((t, i) => <MenuItem key={i} value={t.id} primaryText={t.name} />)}
         </SelectField>,
-      labelIds: (name, value) => <SelectField floatingLabelText='Select labels' multiple value={value} onChange={this.handleChange(name)}>
+      labelIds: (name, value) => <SelectField floatingLabelText='Select labels' multiple value={value} onChange={this.handleSelectChange(name)}>
             {this.props.labels.map((l, i) => <MenuItem key={i} value={l.id} primaryText={l.name} />)}
           </SelectField>,
-      zoneId: (name, value) => <SelectField floatingLabelText='Select a zone' value={value} onChange={this.handleChange(name)}>
+      zoneId: (name, value) => <SelectField floatingLabelText='Select a zone' value={value} onChange={this.handleSelectChange(name)}>
             {this.props.zones.map((z, i) => <MenuItem key={i} value={z.id} primaryText={z.name} />)}
           </SelectField>,
-      status: (name, value) => <TextField floatingLabelText='Status' value={value} onChange={this.handleChange(name)} />,
-      percentage: (name, value) => <TextField type='number' min={0} max={1} step={0.05} floatingLabelText='Percentage (0 to 1)' value={value} onChange={this.handleChange(name)} />,
-      amount: (name, value) => <TextField type='number' min={0} step={1} floatingLabelText='Amount' value={value} onChange={this.handleChange(name)} />,
-      number: (name, value) => <TextField value={value} floatingLabelText='Number' onChange={this.handleChange(name)} />
+      status: (name, value) => <TextField floatingLabelText='Status' value={value} onChange={this.handleTextChange(name)} />,
+      percentage: (name, value) => <TextField type='number' min={0} max={1} step={0.05} floatingLabelText='Percentage (0 to 1)' value={value} onChange={this.handleTextChange(name)} />,
+      amount: (name, value) => <TextField type='number' min={0} step={1} floatingLabelText='Amount' value={value} onChange={this.handleTextChange(name)} />,
+      number: (name, value) => <TextField value={value} floatingLabelText='Number' onChange={this.handleTextChange(name)} />
   }
 
 
@@ -163,17 +191,16 @@ export default class Builder extends React.Component {
   }
 
   buildList() {
-    const {triggerTree} = this.state
-
+    const {triggerTree, selectedItemPath} = this.state
     return <div style={{ border: 'solid 1px #d9d9d9' }}>
-      <List>
+      <SelectableList value={selectedItemPath.join(',')}>
         <Subheader>Trigger Items</Subheader>
         <Divider />
         {triggerTree.type
           ? this.buildListItem(triggerTree, [0])
           : 'This trigger has no items yet, add one!'
         }
-      </List>
+      </SelectableList>
     </div>
   }
 
@@ -182,9 +209,10 @@ export default class Builder extends React.Component {
       primaryText={buildListItemName(tree)}
       leftIcon={getListIcon(tree)}
       initiallyOpen={true}
-      key={indexPath.join()}
+      key={indexPath.join(',')}
+      value={indexPath.join(',')}
       //primaryTogglesNestedList={true}
-      onNestedListToggle={()=>{this.selectItemPath(indexPath)}}
+      onTouchTap={()=>{this.selectItemPath(indexPath)}}
       nestedItems={tree.type === 'logical' &&
         tree.value &&
         tree.value.children &&
@@ -194,8 +222,6 @@ export default class Builder extends React.Component {
       }
       />
   }
-
-
 
   dummyAsync = (cb) => {
     this.setState({loading: true}, () => {
