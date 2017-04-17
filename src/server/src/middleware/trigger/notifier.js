@@ -1,7 +1,9 @@
 import State from './state'
 import Model from '../../model'
+import Factory from './factory'
 
 class Notifier {
+  factory = new Factory()
   state = new State()
   triggers = new Map()
 
@@ -44,14 +46,15 @@ class Notifier {
       }
     }).then((triggers) => {
       triggers.forEach((trigger) => {
-        trigger.triggered = false
-        this.triggers.set(trigger.id, trigger)
+        this.addTrigger(trigger)
       })
     })
   }
 
   addTrigger = (trigger) => {
-    this.triggers.set(trigger.id, trigger)
+    const triggerObject = this.factory.buildTrigger(trigger)
+    triggerObject.triggered = false
+    this.triggers.set(triggerObject.id, triggerObject)
   }
 
   deleteTrigger = (trigger) => {

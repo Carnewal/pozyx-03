@@ -6,12 +6,15 @@ class Factory {
 
   buildTrigger(args) {
     const compare = new Comparator(args.amountValue)[args.amount]
-    const filter = new Filter(args.filterValue)[args.filter]
+    const filter = new Filter(args.filterValue)
     const trigger = {}
 
     trigger.check = (state) => {
       const objects = state[args.objects]
-      const size = objects.filter(filter)
+      let size = 0
+      objects.forEach((value) => {
+        if (filter[args.filter](value)) size++
+      })
       return compare(size, args.value)
     }
 
