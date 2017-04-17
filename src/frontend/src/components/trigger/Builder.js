@@ -9,19 +9,92 @@ import {
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import PageBase from 'frontend/components/layout/PageBase'
-import ExpandTransition from 'material-ui/internal/ExpandTransition';
-import TextField from 'material-ui/TextField';
+import ExpandTransition from 'material-ui/internal/ExpandTransition'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+import {List, ListItem} from 'material-ui/List'
+import Toggle from 'material-ui/Toggle'
+import ActionGrade from 'material-ui/svg-icons/action/grade'
+import ContentInbox from 'material-ui/svg-icons/content/inbox'
+import ContentDrafts from 'material-ui/svg-icons/content/drafts'
+import ContentSend from 'material-ui/svg-icons/content/send'
+import Subheader from 'material-ui/Subheader'
 
-const styles = {
-
+const expectedValues = {
+  logical: ['operator', 'children'],
+  tagInZone: ['condition', 'tagIds', 'zoneId'],
+  tagBattery: ['condition', 'tagIds', 'operator', 'percentage'],
+  tagHWVersion: ['condition', 'tagIds', 'operator', 'number'],
+  tagAmountInZone: ['amount', 'zoneId'],
+  labelInZone: ['condition', 'labelIds', 'zoneId'],
+  labelBattery: ['condition', 'labelIds', 'operator', 'percentage'],
+  anchorStatus: ['condition', 'anchorIds', 'status'],
+  anchorFWVersion: ['condition', 'anchorIds', 'operator', 'number'],
 }
+
+const buildListItemName = (tree) =>
+  tree.type.charAt(0).toUpperCase() +
+  tree.type.split(/(?=[A-Z])/).join(' ').slice(1)
 
 export default class Builder extends React.Component {
   state = {
+    //Steps
     loading: false,
     finished: false,
     stepIndex: 0,
-  };
+    //Trigger-building
+    triggerTree: { type: 'logical', value: {
+      operator: 'and',
+      children: [
+        {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
+        {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
+        {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
+        {type:'tagAmountInZone', value: {amount: 1, zoneId: 5}},
+        {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 4}},
+        {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
+        {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
+        {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [3,4], operator: '=', number: 15 }}
+      ]
+    }},
+    selectedItem: null,
+    triggerEnabled: true
+  }
+
+  builder() {
+    const {selectedItem} = this.state
+    return selectedItem
+      ? <div>Building...</div>
+      : <div>Select an item to start editting.</div>
+  }
+
+  buildList() {
+    const {triggerTree} = this.state
+
+    return <List>
+      <Subheader>Trigger Items</Subheader>
+      {triggerTree.type
+        ? this.buildListItem(triggerTree)
+        : 'This trigger has no items yet, add one!'
+      }
+    </List>
+  }
+
+  buildListItem(tree) {
+    return <ListItem
+      primaryText={buildListItemName(tree)}
+      leftIcon={<ContentInbox />}
+      initiallyOpen={true}
+      primaryTogglesNestedList={true}
+      onNestedListToggle={()=>{console.log('toggle')}}
+      nestedItems={tree.type === 'logical' &&
+        tree.value &&
+        tree.value.children &&
+        tree.value.children.length &&
+        tree.value.children.map((child) => this.buildListItem(child)) }
+      />
+  }
+
+
 
   dummyAsync = (cb) => {
     this.setState({loading: true}, () => {
@@ -30,7 +103,7 @@ export default class Builder extends React.Component {
   };
 
   handleNext = () => {
-    const {stepIndex} = this.state;
+    const {stepIndex} = this.state
     if (!this.state.loading) {
       this.dummyAsync(() => this.setState({
         loading: false,
@@ -55,25 +128,27 @@ export default class Builder extends React.Component {
       case 0:
         return (
           <p>
-            Building your new trigger is easy! <br/>
+            Building a new trigger is easy! <br/>
             Press the button to start the process, and we will guide you through it.
           </p>
         )
       case 1:
-        return (
-          <div>
-            <TextField style={{marginTop: 0}} floatingLabelText='' />
-            <p>
-
-
-            </p>
-            <p>Something something whatever cool</p>
-          </div>
-        )
+        return <div>
+          {this.builder()}
+          {this.buildList()}
+        </div>
       case 2:
         return (
           <p>
-            Woot! You are ready to publish your newly created trigger.
+            Woot! You are almost ready to publish your newly created trigger. You have one more decision to make:
+            <br />
+            <br />
+
+            <Toggle
+              label='Enable your trigger?'
+              labelPosition='right'
+              toggled={this.state.triggerEnabled}
+            />
           </p>
         )
       default:
@@ -81,9 +156,10 @@ export default class Builder extends React.Component {
     }
   }
 
+
   renderContent() {
     const {finished, stepIndex} = this.state;
-    const contentStyle = {margin: '0 16px', overflow: 'hidden'};
+    const contentStyle = {margin: '0 16px', overflow: 'hidden'}
 
     if (finished) {
       return (
@@ -100,7 +176,7 @@ export default class Builder extends React.Component {
             </a> to build another trigger.
           </p>
         </div>
-      );
+      )
     }
 
     return (
@@ -108,7 +184,7 @@ export default class Builder extends React.Component {
         <div>{this.getStepContent(stepIndex)}</div>
         <div style={{marginTop: 24, marginBottom: 12}}>
           <FlatButton
-            label="Back"
+            label='Back'
             disabled={stepIndex === 0}
             onTouchTap={this.handlePrev}
             style={{marginRight: 12}}
@@ -120,16 +196,16 @@ export default class Builder extends React.Component {
           />
         </div>
       </div>
-    );
+    )
   }
 
   render() {
-    const {loading, stepIndex} = this.state;
+    const {loading, stepIndex} = this.state
 
     return (
       <PageBase title='Build a trigger'
       navigation='Application / Trigger / Build'>
-        <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+        <div style={{width: '100%', maxWidth: 1000, margin: 'auto'}}>
           <Stepper activeStep={stepIndex}>
             <Step>
               <StepLabel>Create</StepLabel>
@@ -150,6 +226,15 @@ export default class Builder extends React.Component {
   }
 }
 
-Builder.propTypes = {}
+Builder.propTypes = {
+  anchors: PropTypes.array,
+  tags: PropTypes.array,
+  zones: PropTypes.array
+}
 
-Builder.defaultProps = {}
+Builder.defaultProps = {
+  anchors: [{ id: 1 }, { id: 2 }],
+  tags: [{ id: 3 }, { id: 4 }],
+  zones: [{ id: 5 }, { id: 6 }],
+  labels: [{ id: 7 }, { id: 8 }]
+}
