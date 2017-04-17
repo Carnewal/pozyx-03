@@ -53,7 +53,7 @@ export default class Builder extends React.Component {
         {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 4}},
         {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
         {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
-        {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [3,4], operator: '=', number: 15 }}
+        {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [3,4], operator: '=', number: 15 }},
       ]
     }},
     selectedItem: null,
@@ -64,7 +64,7 @@ export default class Builder extends React.Component {
     const {selectedItem} = this.state
     return selectedItem
       ? <div>Building...</div>
-      : <div>Select an item to start editting.</div>
+      : <div>Select an item to start editing.</div>
   }
 
   buildList() {
@@ -73,24 +73,24 @@ export default class Builder extends React.Component {
     return <List>
       <Subheader>Trigger Items</Subheader>
       {triggerTree.type
-        ? this.buildListItem(triggerTree)
+        ? this.buildListItem(triggerTree, [0])
         : 'This trigger has no items yet, add one!'
       }
     </List>
   }
 
-  buildListItem(tree) {
+  buildListItem(tree, indexPath) {
     return <ListItem
       primaryText={buildListItemName(tree)}
       leftIcon={<ContentInbox />}
       initiallyOpen={true}
       primaryTogglesNestedList={true}
-      onNestedListToggle={()=>{console.log('toggle')}}
+      onNestedListToggle={()=>{console.log('toggle', indexPath)}}
       nestedItems={tree.type === 'logical' &&
         tree.value &&
         tree.value.children &&
         tree.value.children.length &&
-        tree.value.children.map((child) => this.buildListItem(child)) }
+        tree.value.children.map((child, i) => this.buildListItem(child, [...indexPath, i])) }
       />
   }
 
