@@ -20,6 +20,8 @@ import ContentDrafts from 'material-ui/svg-icons/content/drafts'
 import ContentSend from 'material-ui/svg-icons/content/send'
 import Subheader from 'material-ui/Subheader'
 
+
+
 const expectedValues = {
   logical: ['operator', 'children'],
   tagInZone: ['condition', 'tagIds', 'zoneId'],
@@ -37,12 +39,14 @@ const buildListItemName = (tree) =>
   tree.type.split(/(?=[A-Z])/).join(' ').slice(1)
 
 const traverseTree = (tree, path) => {
-  path.shift()
-  path.forEach((p) => {
-    if(tree.value.children) {
-      tree = tree.value.children[p]
-    }
-  })
+  if(path && path.length) {
+    path.shift()
+    path.forEach((p) => {
+      if(tree.value.children) {
+        tree = tree.value.children[p]
+      }
+    })
+  }
   return tree
 }
 
@@ -70,20 +74,31 @@ export default class Builder extends React.Component {
     triggerEnabled: true
   }
 
-
-  selectItemPath (indexPath) {
-    this.setState({selectedItemPath: indexPath})
-  }
-
+  // Builder
   builder() {
     const {selectedItemPath, triggerTree} = this.state
     const item = traverseTree(triggerTree, selectedItemPath)
 
     return selectedItemPath
-      ? <div>
-        Selected: {buildListItemName(item)}
-      </div>
+      ? this.builderBlock(item)
       : <div>Select an item to start editing.</div>
+  }
+
+  builderBlock(item) {
+      return <div>{expectedValues[item.type].map(
+        (type) => this.builderComponent(type, item.value[type])
+      )}</div>
+  }
+
+  builderComponent(type, value) {
+    return <div>{type + ' - ' + value}</div>
+  }
+
+
+
+  // List
+  selectItemPath (indexPath) {
+    this.setState({selectedItemPath: indexPath})
   }
 
   buildList() {
@@ -153,8 +168,8 @@ export default class Builder extends React.Component {
         )
       case 1:
         return <div>
-          {this.builder()}
           {this.buildList()}
+          {this.builder()}
         </div>
       case 2:
         return (
