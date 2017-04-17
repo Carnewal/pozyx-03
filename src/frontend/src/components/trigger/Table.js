@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
 import {Link} from 'react-router'
-import { grey500,pink500 } from 'material-ui/styles/colors'
+import { grey500,pink500, grey200 } from 'material-ui/styles/colors'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import PageBase from 'frontend/components/layout/PageBase'
+import Toggle from 'material-ui/Toggle'
+import ContentCreate from 'material-ui/svg-icons/content/create'
 
 const styles = {
     floatingActionButton: {
@@ -71,17 +73,32 @@ export default class TriggerTable extends React.Component {
                         <TableRow>
                             <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
                             <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.name}>Firmwareversion</TableHeaderColumn>
-                            <TableHeaderColumn style={styles.columns.name}>Hardwareversion</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.price}>Toggle</TableHeaderColumn>
+                            <TableHeaderColumn style={styles.columns.price}>Edit</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
-                        {triggers.map(anchor =>
-                            <TableRow key={anchor.id}>
-                                <TableRowColumn style={styles.columns.id}>{anchor.id}</TableRowColumn>
-                                <TableRowColumn style={styles.columns.name}>{anchor.name}</TableRowColumn>
-                                <TableRowColumn style={styles.columns.price}>{anchor.firmwareVersion}</TableRowColumn>
-                                <TableRowColumn style={styles.columns.price}>{anchor.hardwareVersion}</TableRowColumn>
+                        {triggers.map(trigger =>
+                            <TableRow key={trigger.id}>
+                                <TableRowColumn style={styles.columns.id}>{trigger.id}</TableRowColumn>
+                                <TableRowColumn style={styles.columns.name}>{trigger.name}</TableRowColumn>
+                                <TableRowColumn style={styles.columns.price}>
+                                  <Toggle
+                                    label='Toggled?'
+                                    disabled={true}
+                                    style={styles.toggle}
+                                  />
+                                </TableRowColumn>
+                                <TableRowColumn style={styles.columns.price}>
+                                  <Link className='button' to={`trigger/build`}>
+                                    <FloatingActionButton zDepth={0}
+                                                          mini={true}
+                                                          backgroundColor={grey200}
+                                                          iconStyle={styles.editButton}>
+                                      <ContentCreate  />
+                                    </FloatingActionButton>
+                                  </Link>
+                                </TableRowColumn>
                             </TableRow>
                         )}
                     </TableBody>

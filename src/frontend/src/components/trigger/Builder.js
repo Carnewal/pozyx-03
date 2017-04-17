@@ -31,21 +31,16 @@ export default class Builder extends React.Component {
     finished: false,
     stepIndex: 0,
     //Trigger-building
-    triggerTree: { type: 'logical', value: {
-      logic: 'and',
-      children: [
-        {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
-        {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
-        {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
-        {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
-        {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
-        {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
-        {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
-        {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
-      ]
-    }},
-    selectedItemPath: [0],
-    triggerEnabled: true
+    selectedItemPath: [],
+    triggerId: null,
+    triggerTree: {},
+    triggerEnabled: true,
+  }
+
+  toggleTriggerEnabled() {
+    return () => {
+      this.setState({triggerEnabled: !this.state.triggerEnabled})
+    }
   }
 
   // Util
@@ -127,7 +122,6 @@ export default class Builder extends React.Component {
       [...this.getSelectedItemKeyPath(), 'value'],
       {}
     )
-    console.log(newTree.toJS())
     this.setState({triggerTree: newTree.toJS()})
   }
 
@@ -191,7 +185,7 @@ export default class Builder extends React.Component {
         <Divider />
         {triggerTree.type
           ? this.buildListItem(triggerTree, [0])
-          : 'This trigger has no items yet, add one!'
+          : <p style={{paddingLeft: 10}}>This trigger has no items yet, add one!</p>
         }
       </SelectableList>
     </div>
@@ -222,6 +216,10 @@ export default class Builder extends React.Component {
       this.asyncTimer = setTimeout(cb, 500)
     })
   };
+
+  publishTrigger = () => {
+
+  }
 
   handleNext = () => {
     const {stepIndex} = this.state
@@ -269,6 +267,7 @@ export default class Builder extends React.Component {
               label='Enable your trigger?'
               labelPosition='right'
               toggled={this.state.triggerEnabled}
+              onToggle={this.toggleTriggerEnabled()}
             />
           </p>
         )
@@ -296,6 +295,7 @@ export default class Builder extends React.Component {
               Click here
             </a> to build another trigger.
           </p>
+          <p></p>
         </div>
       )
     }
@@ -351,12 +351,19 @@ Builder.propTypes = {
   anchors: PropTypes.array,
   tags: PropTypes.array,
   labels: PropTypes.array,
-  zones: PropTypes.array
+  zones: PropTypes.array,
+  triggerId: PropTypes.number,
+  triggerTree: PropTypes.object,
+  triggerEnabled: PropTypes.bool,
+  createTrigger: PropTypes.func,
+  publishTrigger: PropTypes.func
 }
 
 Builder.defaultProps = {
   anchors: [{ id: 1, name:'An' }, { id: 2, name: 'Chor' }],
   tags: [{ id: 3, name: 'Max' }, { id: 4, name: 'Eva' }],
   zones: [{ id: 5, name: 'Z5' }, { id: 6, name: 'Z6' }],
-  labels: [{ id: 7, name:'Shop' }, { id: 8, name:'House' }]
+  labels: [{ id: 7, name:'Shop' }, { id: 8, name:'House' }],
+  createTrigger: () => {},
+  publishTrigger: () => {}
 }
