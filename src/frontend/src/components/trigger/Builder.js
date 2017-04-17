@@ -1,11 +1,6 @@
 import React, {PropTypes} from 'react'
-
-import {
-  Step,
-  Stepper,
-  StepLabel,
-  StepContent,
-} from 'material-ui/Stepper'
+import { fromJS } from 'immutable'
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import PageBase from 'frontend/components/layout/PageBase'
@@ -17,54 +12,17 @@ import {List, ListItem, makeSelectable} from 'material-ui/List'
 import Toggle from 'material-ui/Toggle'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import { grey500 } from 'material-ui/styles/colors'
-
 import ContentAdd from 'material-ui/svg-icons/content/add'
-import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
-import LightbulbOutline from 'material-ui/svg-icons/action/lightbulb-outline'
-import BatteryFull from 'material-ui/svg-icons/device/battery-full'
-import WarningIcon from 'material-ui/svg-icons/alert/warning'
-import MapIcon from 'material-ui/svg-icons/maps/map'
-import TagIcon from 'material-ui/svg-icons/maps/my-location'
-import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
 
-const { Map, fromJS } = require('immutable')
+import {
+  expectedValues,
+  typeLabels,
+  buildListItemEntry
+} from 'frontend/components/trigger/util'
 
 
 const SelectableList = makeSelectable(List)
 
-
-const expectedValues = {
-  logical: ['logic', 'children'],
-  tagInZone: ['condition', 'tagIds', 'zoneId'],
-  tagBattery: ['condition', 'tagIds', 'operator', 'percentage'],
-  tagHWVersion: ['condition', 'tagIds', 'operator', 'number'],
-  tagAmountInZone: ['operator', 'amount', 'zoneId'],
-  labelInZone: ['condition', 'labelIds', 'zoneId'],
-  labelBattery: ['condition', 'labelIds', 'operator', 'percentage'],
-  anchorStatus: ['condition', 'anchorIds', 'status'],
-  anchorFWVersion: ['condition', 'anchorIds', 'operator', 'number'],
-}
-
-const buildListItemName = (tree) =>
-  tree.type &&
-  tree.type.charAt(0).toUpperCase() +
-  tree.type.split(/(?=[A-Z])/).join(' ').slice(1) ||
-  'Empty item !'
-
-const listIcons = {
-  'logical': <LightbulbOutline />,
-  'tagInZone': <TagIcon />,
-  'tagBattery': <BatteryFull />,
-  'labelBattery': <BatteryFull />,
-  'tagAmountInZone': <i style={{verticalAlign:'text-bottom', fontWeight:'bold', marginLeft: '20px', marginTop:'16px', color: 'rgba(0, 0, 0, 0.870588)', fill: 'rgb(117, 117, 117)'}} >#</i>,
-  'anchorStatus': <AnchorIcon />,
-  'labelInZone': <MapIcon />
-}
-const getListIcon = (tree) => tree.type
-  ? listIcons[tree.type] || <KeyboardArrowRight />
-  : <WarningIcon />
 
 export default class Builder extends React.Component {
   state = {
@@ -84,45 +42,6 @@ export default class Builder extends React.Component {
         {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
         {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
         {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
-        { type: 'logical', value: {
-          logic: 'and',
-          children: [
-            {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
-            {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
-            {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
-            {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
-            {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
-            {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
-            {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
-            {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
-            { type: 'logical', value: {
-              logic: 'and',
-              children: [
-                {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
-                {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
-                {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
-                {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
-                {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
-                {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
-                {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
-                {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
-                { type: 'logical', value: {
-                  logic: 'and',
-                  children: [
-                    {type:'tagInZone', value: {condition: 'any', tagIds: [3,4], zoneId: 6}},
-                    {type:'tagBattery', value: {condition: 'none', tagIds: [3,4], operator: '<', percentage: 0.5}},
-                    {type:'tagHWVersion', value: {condition: 'all', tagIds: [3,4], operator: '=', number: 15 }},
-                    {type:'tagAmountInZone', value: {operator: '>=', amount: 1, zoneId: 5}},
-                    {type:'labelInZone', value: {condition: 'all', labelIds: [7,8], zoneId: 6}},
-                    {type:'labelBattery', value: {condition: 'none', labelIds: [7,8], operator: '<', percentage: 0.5}},
-                    {type:'anchorStatus', value: {condition: 'any', anchorIds: [1,2], status: 'disabled'}},
-                    {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [1,2], operator: '=', number: 15 }},
-                  ]
-                }}
-              ]
-            }}
-          ]
-        }}
       ]
     }},
     selectedItemPath: [0],
@@ -155,9 +74,18 @@ export default class Builder extends React.Component {
   }
 
   builderBlock(item) {
-      return <div>{expectedValues[item.type].map(
-        (name) => this.builderComponent(name, item.value[name])
-      )}</div>
+    return (
+      <div>
+        <SelectField floatingLabelText='Type' value={item.type || null} onChange={this.handleTypeChange()}>
+          {Object.keys(typeLabels).map((t) => <MenuItem key={t} value={t} primaryText={typeLabels[t]} />)}
+        </SelectField> <br/>
+        {
+          item.type && expectedValues[item.type].map(
+            (name) => this.builderComponent(name, item.value[name])
+          )
+        }
+      </div>
+    )
   }
 
   builderComponent(name, value) {
@@ -165,6 +93,12 @@ export default class Builder extends React.Component {
   }
 
   // Builder Item Click Handlers
+  handleTypeChange() {
+    return (event, index, value) => {
+      this.setSelectedItemType(value)
+    }
+  }
+
   handleAddChild(name) { // Name will most likely be children
     return () => {
       const item = this.getSelectedItem()
@@ -183,8 +117,18 @@ export default class Builder extends React.Component {
     }
   }
   //
-  setSelectedItemType() {
 
+  setSelectedItemType(type) {
+    const tree = fromJS(JSON.parse(JSON.stringify(this.state.triggerTree)))
+    const newTree = tree.setIn(
+      [...this.getSelectedItemKeyPath(), 'type'],
+      type
+    ).setIn(
+      [...this.getSelectedItemKeyPath(), 'value'],
+      {}
+    )
+    console.log(newTree.toJS())
+    this.setState({triggerTree: newTree.toJS()})
   }
 
   setSelectedItemValue (name, value) {
@@ -197,7 +141,7 @@ export default class Builder extends React.Component {
   }
 
   bldrComponents = {
-    children: (name, value) => <RaisedButton label={`Add child (${value.length})`} primary onTouchTap={this.handleAddChild(name)} icon={<ContentAdd />}/>,
+    children: (name, value) => <RaisedButton label={`Add child (${value && value.length || 0})`} primary onTouchTap={this.handleAddChild(name)} icon={<ContentAdd />}/>,
     condition: (name, value) => <SelectField floatingLabelText='Condition' value={value} onChange={this.handleSelectChange(name)}>
         <MenuItem value={'any'} primaryText='Any' />
         <MenuItem value={'all'} primaryText='All' />
@@ -243,7 +187,7 @@ export default class Builder extends React.Component {
     const {triggerTree, selectedItemPath} = this.state
     return <div style={{ border: 'solid 1px #d9d9d9' }}>
       <SelectableList value={selectedItemPath.join(',')}>
-        <Subheader>Trigger Items</Subheader>
+        <Subheader>Trigger Items: For the Trigger to fire, ...</Subheader>
         <Divider />
         {triggerTree.type
           ? this.buildListItem(triggerTree, [0])
@@ -254,9 +198,10 @@ export default class Builder extends React.Component {
   }
 
   buildListItem(tree, indexPath) {
+    const {icon, text} = buildListItemEntry(tree)
     return <ListItem
-      primaryText={buildListItemName(tree)}
-      leftIcon={getListIcon(tree)}
+      primaryText={text}
+      leftIcon={icon}
       initiallyOpen={true}
       key={indexPath.join(',')}
       value={indexPath.join(',')}
@@ -310,8 +255,8 @@ export default class Builder extends React.Component {
         )
       case 1:
         return <div>
-          {this.buildList()} <br/>
-          {this.builder()}
+          {this.builder()}<br/>
+          {this.buildList()}
         </div>
       case 2:
         return (
