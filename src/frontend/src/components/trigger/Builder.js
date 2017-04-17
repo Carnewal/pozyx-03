@@ -36,6 +36,16 @@ const buildListItemName = (tree) =>
   tree.type.charAt(0).toUpperCase() +
   tree.type.split(/(?=[A-Z])/).join(' ').slice(1)
 
+const traverseTree = (tree, path) => {
+  path.shift()
+  path.forEach((p) => {
+    if(tree.value.children) {
+      tree = tree.value.children[p]
+    }
+  })
+  return tree
+}
+
 export default class Builder extends React.Component {
   state = {
     //Steps
@@ -56,14 +66,23 @@ export default class Builder extends React.Component {
         {type:'anchorFWVersion', value: {condition: 'all', anchorIds: [3,4], operator: '=', number: 15 }},
       ]
     }},
-    selectedItem: null,
+    selectedItemPath: [],
     triggerEnabled: true
   }
 
+
+  selectItemPath (indexPath) {
+    this.setState({selectedItemPath: indexPath})
+  }
+
   builder() {
-    const {selectedItem} = this.state
-    return selectedItem
-      ? <div>Building...</div>
+    const {selectedItemPath, triggerTree} = this.state
+    const item = traverseTree(triggerTree, selectedItemPath)
+
+    return selectedItemPath
+      ? <div>
+        Selected: {buildListItemName(item)}
+      </div>
       : <div>Select an item to start editing.</div>
   }
 
@@ -85,7 +104,7 @@ export default class Builder extends React.Component {
       leftIcon={<ContentInbox />}
       initiallyOpen={true}
       primaryTogglesNestedList={true}
-      onNestedListToggle={()=>{console.log('toggle', indexPath)}}
+      onNestedListToggle={()=>{this.selectItemPath(indexPath)}}
       nestedItems={tree.type === 'logical' &&
         tree.value &&
         tree.value.children &&
