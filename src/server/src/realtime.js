@@ -117,9 +117,8 @@ const realtime = (server) => {
 
       notifier.updateState({tags: tagPositions})
       primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
-    })
-
-  }, interval)
+    }, interval)
+  })
 }
 
 
