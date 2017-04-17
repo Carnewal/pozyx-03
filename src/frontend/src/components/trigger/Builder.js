@@ -19,7 +19,15 @@ import ContentInbox from 'material-ui/svg-icons/content/inbox'
 import ContentDrafts from 'material-ui/svg-icons/content/drafts'
 import ContentSend from 'material-ui/svg-icons/content/send'
 import Subheader from 'material-ui/Subheader'
+import Divider from 'material-ui/Divider';
 
+
+import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
+import LightbulbOutline from 'material-ui/svg-icons/action/lightbulb-outline'
+import BatteryFull from 'material-ui/svg-icons/device/battery-full'
+import ToggleIcon from 'material-ui/svg-icons/toggle/check-box'
+import TagIcon from 'material-ui/svg-icons/maps/my-location'
+import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
 
 
 const expectedValues = {
@@ -37,6 +45,15 @@ const expectedValues = {
 const buildListItemName = (tree) =>
   tree.type.charAt(0).toUpperCase() +
   tree.type.split(/(?=[A-Z])/).join(' ').slice(1)
+
+const listIcons = {
+  'logical': <LightbulbOutline />,
+  'tagInZone': <TagIcon />,
+  'tagBattery': <BatteryFull />,
+  'tagAmountInZone': <i style={{verticalAlign:'text-bottom', fontWeight:'bold', marginLeft: '20px', marginTop:'16px', color: 'rgba(0, 0, 0, 0.870588)', fill: 'rgb(117, 117, 117)'}} >#</i>,
+  'anchorStatus': <AnchorIcon />,
+}
+const getListIcon = (tree) => listIcons[tree.type] || <KeyboardArrowRight />
 
 const traverseTree = (tree, path) => {
   if(path && path.length) {
@@ -104,19 +121,22 @@ export default class Builder extends React.Component {
   buildList() {
     const {triggerTree} = this.state
 
-    return <List>
-      <Subheader>Trigger Items</Subheader>
-      {triggerTree.type
-        ? this.buildListItem(triggerTree, [0])
-        : 'This trigger has no items yet, add one!'
-      }
-    </List>
+    return <div style={{ border: 'solid 1px #d9d9d9' }}>
+      <List>
+        <Subheader>Trigger Items</Subheader>
+        <Divider />
+        {triggerTree.type
+          ? this.buildListItem(triggerTree, [0])
+          : 'This trigger has no items yet, add one!'
+        }
+      </List>
+    </div>
   }
 
   buildListItem(tree, indexPath) {
     return <ListItem
       primaryText={buildListItemName(tree)}
-      leftIcon={<ContentInbox />}
+      leftIcon={getListIcon(tree)}
       initiallyOpen={true}
       primaryTogglesNestedList={true}
       onNestedListToggle={()=>{this.selectItemPath(indexPath)}}
@@ -168,7 +188,7 @@ export default class Builder extends React.Component {
         )
       case 1:
         return <div>
-          {this.buildList()}
+          {this.buildList()} <br/>
           {this.builder()}
         </div>
       case 2:
@@ -238,7 +258,7 @@ export default class Builder extends React.Component {
 
     return (
       <PageBase title='Build a trigger'
-      navigation='Application / Trigger / Build'>
+      navigation='Map / Trigger / Build'>
         <div style={{width: '100%', maxWidth: 1000, margin: 'auto'}}>
           <Stepper activeStep={stepIndex}>
             <Step>
