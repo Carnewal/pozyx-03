@@ -10,15 +10,17 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import PageBase from 'frontend/components/layout/PageBase'
 import ExpandTransition from 'material-ui/internal/ExpandTransition'
-import TextField from 'material-ui/TextField';
+import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import {List, ListItem} from 'material-ui/List'
 import Toggle from 'material-ui/Toggle'
 import Subheader from 'material-ui/Subheader'
-import Divider from 'material-ui/Divider';
+import Divider from 'material-ui/Divider'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import { grey500 } from 'material-ui/styles/colors'
 
-
+import ContentAdd from 'material-ui/svg-icons/content/add'
 import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import LightbulbOutline from 'material-ui/svg-icons/action/lightbulb-outline'
 import BatteryFull from 'material-ui/svg-icons/device/battery-full'
@@ -107,16 +109,18 @@ export default class Builder extends React.Component {
   }
 
   builderComponent(name, value) {
+    console.log(this.bldrComponents[name])
     return this.bldrComponents[name] && this.bldrComponents[name](name, value) || <span>Not found: {name}</span>
   }
 
   handleChange(name) {
     return (event, index, value) => {
-      console.log(name, event, index, value)
+      console.log(Object.keys(event))
     }
   }
 
   bldrComponents = {
+    children: (name, value) => <RaisedButton label={`Add child (${value.length})`} primary onTouchTap={this.handleChange(name)} icon={<ContentAdd />}/>,
     condition: (name, value) => <SelectField floatingLabelText='Condition' value={value} onChange={this.handleChange(name)}>
         <MenuItem value={'any'} primaryText='Any' />
         <MenuItem value={'all'} primaryText='All' />
@@ -149,8 +153,7 @@ export default class Builder extends React.Component {
       status: (name, value) => <TextField floatingLabelText='Status' value={value} onChange={this.handleChange(name)} />,
       percentage: (name, value) => <TextField type='number' min={0} max={1} step={0.05} floatingLabelText='Percentage (0 to 1)' value={value} onChange={this.handleChange(name)} />,
       amount: (name, value) => <TextField type='number' min={0} step={1} floatingLabelText='Amount' value={value} onChange={this.handleChange(name)} />,
-      number: (name, value) => <TextField value={value} floatingLabelText='Number' onChange={this.handleChange(name)} />,
-
+      number: (name, value) => <TextField value={value} floatingLabelText='Number' onChange={this.handleChange(name)} />
   }
 
 
@@ -180,7 +183,7 @@ export default class Builder extends React.Component {
       leftIcon={getListIcon(tree)}
       initiallyOpen={true}
       key={indexPath.join()}
-      primaryTogglesNestedList={true}
+      //primaryTogglesNestedList={true}
       onNestedListToggle={()=>{this.selectItemPath(indexPath)}}
       nestedItems={tree.type === 'logical' &&
         tree.value &&
