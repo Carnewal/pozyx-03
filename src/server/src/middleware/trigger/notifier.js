@@ -2,8 +2,7 @@ import State from './state'
 import Model from '../model'
 
 class Notifier {
-  prevState = new State()
-  currState = new State()
+  state = new State()
   triggers = new Map()
 
   initState = (mapId) => { //TODO Anchor/zone implementation
@@ -14,28 +13,35 @@ class Notifier {
       include: [{model: Model.Label, through: Model.TagLabel, as: 'labels'}]
     }).then((tags) => {
       tags.forEach((tag) => {
-        this.prevState.updateTag(tag)
+        this.state.updateTag(tag)
       })
-      this.currState = this.prevState
     })
   }
 
   updateState = (changes) => {
-    this.prevState = this.currState
     changes.tags.forEach((tag) => {
-      this.currState.updateTag(tag)
+      this.state.updateTag(tag)
     })
     changes.zones.forEach((tag) => {
-      this.currState.updateZone(tag)
+      this.state.updateZone(tag)
     })
     changes.anchors.forEach((tag) => {
-      this.currState.updateAnchor(tag)
+      this.state.updateAnchor(tag)
     })
     this.check()
   }
 
   initTriggers = (mapId) => {
-    //TODO get existing triggers from db and add to triggers map
+    Model.Trigger.findAll({
+      where: {
+        mapId: mapId
+      }
+    }).then((triggers) => {
+      triggers.forEach((trigger) => {
+        trigger.triggered = false
+        this.triggers.set(trigger.id, trigger)
+      })
+    })
   }
 
   addTrigger = (trigger) => {
@@ -48,8 +54,11 @@ class Notifier {
 
   check = () => {
     for (const [id, trigger] of this.triggers) {
-      if (trigger.check(this.prevState, this.currState)) {
+      if (!trigger.triggered && trigger.check(this.state)) {
         trigger.action()
+        trigger.triggered = true
+      } else if (trigger.triggered && !trigger.check(this.state)) {
+        trigger.triggered = false
       }
     }
   }
