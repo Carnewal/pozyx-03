@@ -3,7 +3,7 @@ import UploadPlanArea from '../../containers/UploadPlanArea'
 import Map from '../../containers/MapContainer'
 import InfoBox from 'frontend/components/dashboard/InfoBox'
 import PageBase from 'frontend/components/layout/PageBase'
-import {Toolbar, ToolbarGroup, ToolbarSeparator} from 'material-ui/Toolbar'
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 import RaisedButton from 'material-ui/RaisedButton'
 import Toggle from 'material-ui/Toggle'
 
@@ -75,6 +75,7 @@ export default class Dashboard extends React.Component {
           <Toggle label='Show zones' labelPosition='right' defaultToggled={true}/>
         </ToolbarGroup>
         <ToolbarGroup>
+          <ToolbarTitle text={this.props.addingZone ? "Doubleclick to close the zone" : ""}/>
           {!this.props.addingZone ?
             <RaisedButton
               label='Create zone'

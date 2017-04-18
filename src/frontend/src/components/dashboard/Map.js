@@ -56,7 +56,7 @@ export default class Map extends React.Component {
     }
     if (nextProps.addingZone !== this.props.addingZone) {
       if (!nextProps.addingZone) {
-        this.refs.drawLayer.off('mousemove click')
+        this.refs.drawLayer.off('mousemove click dblclick')
         this.setState({cur: {x:0,y:0}, prev: undefined, start: undefined, points:[]})
       }
     }
@@ -77,6 +77,7 @@ export default class Map extends React.Component {
         const points = this.state.points.slice()
         pos.x /= scaling
         pos.y /= scaling
+
         points.push(pos.x, pos.y)
 
         if (this.state.points.length === 0) {
@@ -84,6 +85,31 @@ export default class Map extends React.Component {
         }
 
         this.setState({points, prev: pos})
+      })
+      this.refs.drawLayer.on('dblclick', () => {
+        if (this.state.points.length >= 10) {
+          let points = this.state.points.slice()
+          points.splice(points.length - 4)
+          points.push(points[0], points[1])
+          this.setState({points, prev: undefined})
+          this.refs.drawLayer.off('mousemove click dblclick')
+
+          //TODO: show dialog to choose name and color, going to use zone and green for the time being
+          //TODO: the code below should be executed when closing the dialog
+
+          const uploadPoints = []
+
+          for (let i = 0; i < this.state.points.length-2; i+=2) {
+            uploadPoints.push({x:points[i], y:points[i+1]})
+          }
+          this.props.requestAddZone(this.props.mapId, 'zone', 'green', uploadPoints)
+        } else {
+          let points = this.state.points.slice()
+          points.splice(points.length - 2)
+          this.setState({points})
+          this.props.showPointsAlert()
+
+        }
       })
     }
   }
@@ -149,19 +175,21 @@ export default class Map extends React.Component {
             <Layer ref='drawLayer'>
               <Line x={0} y={0}
                 points={this.state.points}
-                stroke='red'/>
+                stroke='red'
+                strokeWidth={5/mapScaling}/>
               {this.state.prev !== undefined ?
                 <Line x={0} y={0}
                   points={[this.state.prev.x, this.state.prev.y, this.state.cur.x, this.state.cur.y]}
-                  stroke='red'/>
+                  stroke='red'
+                  strokeWidth={3/mapScaling}/>
                 :
                 <Line x={0} y={0}
                   points={0,0}
                   stroke='red'/>
               }
               {this.state.start !== undefined ?
-                <Circle x={this.state.start.x} y={this.state.start.y}
-                  radius={1}
+                <Circle ref='endpoint' x={this.state.start.x} y={this.state.start.y}
+                  radius={3/mapScaling}
                   fill='blue'
                   stroke='blue'/>
                 :

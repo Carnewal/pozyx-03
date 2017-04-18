@@ -41,7 +41,6 @@ api.get('/map/:mapId/zones', (_req, _res) => {
           const zone = data.dataValues
           delete zone.createdAt
           delete zone.updatedAt
-
           const tempcoordinates = zone.polygon.coordinates[0]
           zone.polygon = []
 
@@ -77,7 +76,7 @@ api.get('/map/:mapId/zones', (_req, _res) => {
  *     }
  */
 api.post('/map/:mapId/zone', (_req, _res) => {
-  const zoneData = _req.b
+  const zoneData = _req.body
 
   //reads the coordinates from the body (bodyParser)
   //constructs a polygon (Sequelize)
