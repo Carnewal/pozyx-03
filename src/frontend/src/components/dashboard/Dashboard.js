@@ -70,35 +70,38 @@ export default class Dashboard extends React.Component {
 
       <br/>
 
-      <Toolbar>
-        <ToolbarGroup>
-          <Toggle label='Show zones' labelPosition='right' defaultToggled={true}/>
-        </ToolbarGroup>
-        <ToolbarGroup>
-          <ToolbarTitle text={this.props.addingZone ? "Doubleclick to close the zone" : ""}/>
-          {!this.props.addingZone ?
-            <RaisedButton
-              label='Create zone'
-              primary={true}
-              onClick={() => this.toggleCreateZone(true)}/>
-            :
-            <RaisedButton
-              label='Cancel'
-              primary={true}
-              onClick={() => this.toggleCreateZone(false)}/>
-          }
-
-          <div>
-            <Toggle label='Remove zones' labelPosition='right'/>
-          </div>
-        </ToolbarGroup>
-      </Toolbar>
-
       <div className='row'>
 
         <div className='col-xs-12 col-sm-12 col-md-12 col-lg-12 m-b-15 '>
-          <div ref='mapSizePlaceholder'></div>
-          {(floorPlan && floorPlan !== '') ? <Map containerWidth={this.state && this.state.mapWidth}/> : <UploadPlanArea/>}
+          <div ref='mapSizePlaceholder'>
+          </div>
+          {(floorPlan && floorPlan !== '') ?
+          <div>
+            <Toolbar>
+              <ToolbarGroup>
+                <Toggle label='Show zones' labelPosition='right' defaultToggled={true}/>
+              </ToolbarGroup>
+              <ToolbarGroup>
+                <ToolbarTitle text={this.props.addingZone ? "Doubleclick to close the zone" : ""}/>
+                {!this.props.addingZone ?
+                  <RaisedButton
+                    label='Create zone'
+                    primary={true}
+                    onClick={() => this.toggleCreateZone(true)}/>
+                  :
+                  <RaisedButton
+                    label='Cancel'
+                    primary={true}
+                    onClick={() => this.toggleCreateZone(false)}/>
+                }
+
+                <div>
+                  <Toggle label='Remove zones' labelPosition='right'/>
+                </div>
+              </ToolbarGroup>
+            </Toolbar>
+            <Map containerWidth={this.state && this.state.mapWidth}/>
+          </div>: <UploadPlanArea/>}
         </div>
 
       </div>
