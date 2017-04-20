@@ -99,7 +99,7 @@ export default class Map extends React.Component {
 
           const uploadPoints = []
 
-          for (let i = 0; i < this.state.points.length-2; i+=2) {
+          for (let i = 0; i < this.state.points.length; i+=2) {
             uploadPoints.push({x:points[i], y:points[i+1]})
           }
           this.props.requestAddZone(this.props.mapId, 'zone', 'green', uploadPoints)
