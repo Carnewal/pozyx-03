@@ -76,6 +76,7 @@
     "konva": "^1.5.0",
     "mariasql": "^0.2.6",
     "material-ui": "^0.17.0",
+    "material-ui-color-picker": "^1.0.1",
     "mysql": "^2.13.0",
     "npm": "^4.3.0",
     "primus": "^6.1.0",
