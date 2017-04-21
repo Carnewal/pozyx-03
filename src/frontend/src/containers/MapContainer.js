@@ -4,6 +4,7 @@ import { getFloorPlan } from 'frontend/selectors/map'
 import { getFilteredTags } from 'frontend/selectors/tag'
 import { getAnchors } from 'frontend/selectors/anchor'
 import { getCurrentMap } from 'frontend/selectors/map'
+import { getZones } from 'frontend/selectors/zone'
 import { addAlert } from 'frontend/actions/AppActions'
 import { requestAddZone } from 'frontend/actions/ZoneActions'
 import { WARNING } from 'frontend/constants/priorities'
@@ -17,6 +18,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     tags: getFilteredTags(state),
     anchors: getAnchors(state),
+    zones: getZones(state),
     floorPlan: getFloorPlan(state),
     containerWidth: containerWidth,
     containerHeight: containerHeight,

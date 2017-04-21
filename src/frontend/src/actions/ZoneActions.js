@@ -1,5 +1,6 @@
 export const SET_ZONES = 'SET_ZONES'
 export const REQUEST_ADD_ZONE = 'REQUEST_ADD_ZONE'
+export const ADD_ZONE = 'ADD_ZONE'
 
 export const setZones = (zones) => ({
   type: SET_ZONES,
@@ -12,4 +13,9 @@ export const requestAddZone = (mapId, name, color, points) => ({
   name,
   color,
   points
+})
+
+export const addZone = (zone) => ({
+  type: ADD_ZONE,
+  zone
 })

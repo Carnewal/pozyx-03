@@ -68,15 +68,11 @@ export default class Map extends React.Component {
       const scaling = this.props.mapScaling
       this.refs.drawLayer.on('mousemove', () => {
         const pos = stage.getPointerPosition()
-        pos.x /= scaling
-        pos.y /= scaling
         this.setState({cur: pos})
       })
       this.refs.drawLayer.on('click', () => {
         const pos = stage.getPointerPosition()
         const points = this.state.points.slice()
-        pos.x /= scaling
-        pos.y /= scaling
 
         points.push(pos.x, pos.y)
 
@@ -87,28 +83,31 @@ export default class Map extends React.Component {
         this.setState({points, prev: pos})
       })
       this.refs.drawLayer.on('dblclick', () => {
-        if (this.state.points.length >= 10) {
-          let points = this.state.points.slice()
-          points.splice(points.length - 4)
-          points.push(points[0], points[1])
-          this.setState({points, prev: undefined})
-          this.refs.drawLayer.off('mousemove click dblclick')
+        const length = this.state.points.length
 
-          //TODO: show dialog to choose name and color, going to use zone and green for the time being
-          //TODO: the code below should be executed when closing the dialog
+        if (this.state.points[length - 1] === this.state.points[length - 3] && this.state.points[length - 2] === this.state.points[length - 4]) {
+          if (this.state.points.length >= 10) {
+            let points = this.state.points.slice()
+            points.splice(points.length - 4)
+            points.push(points[0], points[1])
+            this.setState({points, prev: undefined})
+            this.refs.drawLayer.off('mousemove click dblclick')
 
-          const uploadPoints = []
+            //TODO: show dialog to choose name and color, going to use zone and green for the time being
+            //TODO: the code below should be executed when closing the dialog
 
-          for (let i = 0; i < this.state.points.length; i+=2) {
-            uploadPoints.push({x:points[i], y:points[i+1]})
+            const uploadPoints = []
+
+            for (let i = 0; i < this.state.points.length; i+=2) {
+              uploadPoints.push({x:points[i] / scaling, y:points[i+1] / scaling})
+            }
+            this.props.requestAddZone(this.props.mapId, 'zone', 'green', uploadPoints)
+          } else {
+            let points = this.state.points.slice()
+            points.splice(points.length - 2)
+            this.setState({points})
+            this.props.showPointsAlert()
           }
-          this.props.requestAddZone(this.props.mapId, 'zone', 'green', uploadPoints)
-        } else {
-          let points = this.state.points.slice()
-          points.splice(points.length - 2)
-          this.setState({points})
-          this.props.showPointsAlert()
-
         }
       })
     }
@@ -158,6 +157,20 @@ export default class Map extends React.Component {
     )
   }
 
+  zones(mapScaling) {
+    return this.props.zones.map((zone, i) =>
+      <Line x={0} y={0}
+        key={i}
+        ref={`zone${i}`}
+        points={zone.polygon}
+        stroke={zone.color}
+        scaleX={mapScaling}
+        scaleY={mapScaling}
+        strokeWidth={5/mapScaling}
+        />
+    )
+  }
+
   render() {
 
       const {containerWidth, containerHeight, mapScaling, addingZone} = this.props
@@ -166,6 +179,9 @@ export default class Map extends React.Component {
         <Stage ref='stage' width={containerWidth} height={containerHeight}>
           <Layer scale={{x:1, y: 1}}>
               {this.background(containerWidth, containerHeight)}
+          </Layer>
+          <Layer>
+            {this.zones(mapScaling)}
           </Layer>
           {!addingZone ?
             <Layer scale={{x:mapScaling, y: mapScaling}}>
@@ -176,12 +192,12 @@ export default class Map extends React.Component {
               <Line x={0} y={0}
                 points={this.state.points}
                 stroke='red'
-                strokeWidth={5/mapScaling}/>
+                strokeWidth={5}/>
               {this.state.prev !== undefined ?
                 <Line x={0} y={0}
                   points={[this.state.prev.x, this.state.prev.y, this.state.cur.x, this.state.cur.y]}
                   stroke='red'
-                  strokeWidth={3/mapScaling}/>
+                  strokeWidth={3}/>
                 :
                 <Line x={0} y={0}
                   points={0,0}
@@ -189,7 +205,7 @@ export default class Map extends React.Component {
               }
               {this.state.start !== undefined ?
                 <Circle ref='endpoint' x={this.state.start.x} y={this.state.start.y}
-                  radius={3/mapScaling}
+                  radius={3}
                   fill='blue'
                   stroke='blue'/>
                 :
