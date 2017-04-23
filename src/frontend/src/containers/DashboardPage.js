@@ -14,7 +14,8 @@ const mapStateToProps = (state) => (
     zonesAmount: getZonesAmount(state),
     tagsAmount: getTagsAmount(state),
     currentMap: state.app.currentMap,
-    addingZone: state.app.addingZone
+    addingZone: state.app.addingZone,
+    showingDialog: state.app.showingDialog
   }
 )
 

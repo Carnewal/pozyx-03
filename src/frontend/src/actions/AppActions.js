@@ -9,6 +9,8 @@ export const SET_CURRENTMAP = "SET_CURRENTMAP"
 export const SET_INITIAL_LOAD = 'SET_INITIAL_LOAD'
 export const SET_ADDING_ZONE = 'SET_ADDING_ZONE'
 export const SET_VIEWING_ZONES = 'SET_VIEWING_ZONES'
+export const SET_SHOW_SAVE_DIALOG = 'SET_SHOW_SAVE_DIALOG'
+export const SAVE_POINTS = 'SAVE_POINTS'
 
 export const toggleTagLabelFilter = (labelId) => ({
   type: TOGGLE_TAG_LABEL_FILTER,
@@ -61,5 +63,15 @@ export const setAddingZone = (adding) => ({
 
 export const setViewingZones = (visible) => ({
   type: SET_VIEWING_ZONES,
-  viewingZones: visible
+  visible
+})
+
+export const setShowSaveDialog = (show) => ({
+  type: SET_SHOW_SAVE_DIALOG,
+  show
+})
+
+export const savePoints = (points) => ({
+  type: SAVE_POINTS,
+  points
 })

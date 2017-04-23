@@ -50,6 +50,7 @@ export default class DrawLayer extends React.Component {
             this.refs.drawLayer.off('mousemove click dblclick')
 
             //TODO: show dialog to choose name and color, going to use zone and green for the time being
+
             //TODO: the code below should be executed when closing the dialog
 
             const uploadPoints = []
@@ -57,7 +58,7 @@ export default class DrawLayer extends React.Component {
             for (let i = 0; i < this.state.points.length; i+=2) {
               uploadPoints.push({x:points[i] / scaling, y:points[i+1] / scaling})
             }
-            this.props.requestAddZone(this.props.mapId, 'zone', '#007713', uploadPoints)
+            this.props.showSaveDialog(uploadPoints)
           } else {
             const points = this.state.points.slice()
             points.splice(points.length - 2)
@@ -113,7 +114,7 @@ DrawLayer.propTypes = {
   mapScaling: PropTypes.number,
   addingZone: PropTypes.bool,
   stage: PropTypes.object,
-  requestAddZone: PropTypes.func,
+  showSaveDialog: PropTypes.func,
   showPointsAlert: PropTypes.func,
   mapId: PropTypes.number
 }

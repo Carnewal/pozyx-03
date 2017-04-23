@@ -9,17 +9,22 @@ import {
   REMOVE_ALERT,
   SET_INITIAL_LOAD,
   SET_ADDING_ZONE,
-  SET_VIEWING_ZONES
+  SET_VIEWING_ZONES,
+  SET_SHOW_SAVE_DIALOG,
+  SAVE_POINTS
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
+
 
 const initialState = {
   alerts: [],
   navDrawerOpen: true,
   initialLoad: false,
   addingZone: false,
-  viewingZones: true
+  viewingZones: true,
+  showingDialog: false,
+  tempPoints: []
 }
 
 const resetState = {
@@ -102,7 +107,13 @@ const app = (state = initialState, action) => {
       return Object.assign({}, state, {addingZone: action.adding})
     }
     case SET_VIEWING_ZONES: {
-      return Object.assign({}, state, {viewingZones: action.viewingZones})
+      return Object.assign({}, state, {viewingZones: action.visible})
+    }
+    case SET_SHOW_SAVE_DIALOG:{
+      return Object.assign({}, state, {showingDialog: action.show})
+    }
+    case SAVE_POINTS:{
+      return Object.assign({}, state, {tempPoints: action.points})
     }
     default:
       return state

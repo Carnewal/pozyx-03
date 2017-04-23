@@ -3,10 +3,10 @@ import UploadPlanArea from '../../containers/UploadPlanArea'
 import Map from '../../containers/MapContainer'
 import InfoBox from 'frontend/components/dashboard/InfoBox'
 import PageBase from 'frontend/components/layout/PageBase'
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
 import RaisedButton from 'material-ui/RaisedButton'
 import Toggle from 'material-ui/Toggle'
-import SaveZoneDialog from 'frontend/components/map/SaveZone'
+import SaveZoneDialog from 'frontend/containers/map/SaveZoneDialog'
 
 import {cyan600, purple600, green600} from 'material-ui/styles/colors'
 
@@ -41,7 +41,7 @@ export default class Dashboard extends React.Component {
         navigation='Map / Dashboard'
         >
         <br/>
-        <SaveZoneDialog/>
+      { this.props.showingDialog && <SaveZoneDialog /> }
       <div className='row'>
 
         <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 '>
@@ -123,5 +123,6 @@ Dashboard.propTypes = {
   floorPlan: PropTypes.string,
   setAddingZone: PropTypes.func,
   addingZone: PropTypes.bool,
-  setViewingZones: PropTypes.func
+  setViewingZones: PropTypes.func,
+  showingDialog: PropTypes.bool
 }

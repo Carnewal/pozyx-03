@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import DrawLayer from 'frontend/components/map/DrawLayer'
 import { getZones } from 'frontend/selectors/zone'
 import { getCurrentMap } from 'frontend/selectors/map'
-import { addAlert } from 'frontend/actions/AppActions'
+import { addAlert, setShowSaveDialog, savePoints} from 'frontend/actions/AppActions'
 import { requestAddZone } from 'frontend/actions/ZoneActions'
 import { WARNING } from 'frontend/constants/priorities'
 
@@ -24,7 +24,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
      showPointsAlert: () => {dispatch(addAlert('Not enough points created, need 3', 2000, WARNING))},
-     requestAddZone: (mapId, name, color, points) => {dispatch(requestAddZone(mapId, name, color, points))}
+     showSaveDialog: (points) => {
+        dispatch(savePoints(points))
+        dispatch(setShowSaveDialog(true))
+     }
 })
 
 export default connect(

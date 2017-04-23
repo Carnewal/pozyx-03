@@ -14,5 +14,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  null,
+  null,
+  {
+    areStatesEqual: (prev, next) => JSON.stringify(prev) === JSON.stringify(next)
+  }
 )(ZoneLayer)
