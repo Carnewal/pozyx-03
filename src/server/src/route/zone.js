@@ -45,16 +45,13 @@ api.get('/map/:mapId/zones', (_req, _res) => {
           zone.polygon = []
 
           tempcoordinates.forEach(function(coordinate) {
-            const coord = {}
-            coord.x = coordinate[0]
-            coord.y = coordinate[1]
-            zone.polygon.push(coord)
+            zone.polygon.push(coordinate[0], coordinate[1])
           })
 
           result.push(zone)
       })
 
-        _res.json({zones: result})
+      _res.json({zones: result})
   })
 })
 
@@ -101,7 +98,18 @@ api.post('/map/:mapId/zone', (_req, _res) => {
       map.addZone(zone)
       map.save()
 
-      _res.status(201).json({created:true})
+      zone = zone.dataValues
+      zone.mapId = map.id
+      delete zone.createdAt
+      delete zone.updatedAt
+      const tempcoordinates = zone.polygon.coordinates[0]
+      zone.polygon = []
+
+      tempcoordinates.forEach(function(coordinate) {
+        zone.polygon.push(coordinate[0], coordinate[1])
+      })
+
+      _res.status(201).json({created:true, zone})
     })
   })
 })
