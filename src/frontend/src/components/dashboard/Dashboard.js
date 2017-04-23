@@ -79,7 +79,7 @@ export default class Dashboard extends React.Component {
           <div>
             <Toolbar>
               <ToolbarGroup>
-                <Toggle label='Show zones' labelPosition='right' defaultToggled={true}/>
+                <Toggle label='Show zones' labelPosition='right' defaultToggled={true} onToggle={(e, c) => this.props.setViewingZones(c)} />
               </ToolbarGroup>
               <ToolbarGroup>
                 <ToolbarTitle text={this.props.addingZone ? "Doubleclick to close the zone" : ""}/>
@@ -118,5 +118,8 @@ Dashboard.propTypes = {
   anchorsAmount: PropTypes.number,
   zonesAmount: PropTypes.number,
   currentMap: PropTypes.number,
-  floorPlan: PropTypes.string
+  floorPlan: PropTypes.string,
+  setAddingZone: PropTypes.func,
+  addingZone: PropTypes.bool,
+  setViewingZones: PropTypes.func
 }

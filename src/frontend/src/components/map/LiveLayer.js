@@ -60,7 +60,8 @@ export default class LiveLayer extends React.Component {
 
 LiveLayer.propTypes = {
   tags: PropTypes.array,
-  anchors: PropTypes.array
+  anchors: PropTypes.array,
+  mapScaling: PropTypes.number
 }
 
 LiveLayer.defaultProps = {

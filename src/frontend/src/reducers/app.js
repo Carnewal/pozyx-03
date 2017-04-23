@@ -8,7 +8,8 @@ import {
   ADD_ALERT,
   REMOVE_ALERT,
   SET_INITIAL_LOAD,
-  SET_ADDING_ZONE
+  SET_ADDING_ZONE,
+  SET_VIEWING_ZONES
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
@@ -17,7 +18,8 @@ const initialState = {
   alerts: [],
   navDrawerOpen: true,
   initialLoad: false,
-  addingZone: false
+  addingZone: false,
+  viewingZones: true
 }
 
 const resetState = {
@@ -77,7 +79,7 @@ const app = (state = initialState, action) => {
       return Object.assign({}, state, { tagSearch: action.search })
     }
     case ADD_ALERT: {
-      let newState = Object.assign({}, state)
+      const newState = Object.assign({}, state)
       newState.alerts.push({id: Date.now(), message: action.message, duration: action.duration, priority: action.priority})
       newState.alerts = newState.alerts
         .slice(0,1)
@@ -86,7 +88,7 @@ const app = (state = initialState, action) => {
       return newState
     }
     case REMOVE_ALERT: {
-      let newState = Object.assign({}, state)
+      const newState = Object.assign({}, state)
       delete newState.alerts.splice(0, 1)
       return newState
     }
@@ -98,6 +100,9 @@ const app = (state = initialState, action) => {
     }
     case SET_ADDING_ZONE: {
       return Object.assign({}, state, {addingZone: action.adding})
+    }
+    case SET_VIEWING_ZONES: {
+      return Object.assign({}, state, {viewingZones: action.viewingZones})
     }
     default:
       return state

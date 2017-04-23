@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import Dashboard from '../components/dashboard/Dashboard'
 
-import {setAddingZone} from 'frontend/actions/AppActions'
+import {setAddingZone,setViewingZones} from 'frontend/actions/AppActions'
 
 import {getAnchorsAmount} from 'frontend/selectors/anchor'
 import {getTagsAmount} from 'frontend/selectors/tag'
@@ -20,7 +20,8 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = (dispatch) => (
   {
-    setAddingZone: (addingZone) => { dispatch(setAddingZone(addingZone)) }
+    setAddingZone: (addingZone) => { dispatch(setAddingZone(addingZone)) },
+    setViewingZones: (visible) => { dispatch(setViewingZones(visible)) }
   }
 )
 
