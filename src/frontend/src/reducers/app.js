@@ -11,7 +11,8 @@ import {
   SET_ADDING_ZONE,
   SET_VIEWING_ZONES,
   SET_SHOW_SAVE_DIALOG,
-  SAVE_POINTS
+  SAVE_POINTS,
+  SET_REMOVING_ZONES
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
@@ -24,7 +25,8 @@ const initialState = {
   addingZone: false,
   viewingZones: true,
   showingDialog: false,
-  tempPoints: []
+  tempPoints: [],
+  removingZones: false
 }
 
 const resetState = {
@@ -114,6 +116,9 @@ const app = (state = initialState, action) => {
     }
     case SAVE_POINTS:{
       return Object.assign({}, state, {tempPoints: action.points})
+    }
+    case SET_REMOVING_ZONES: {
+      return Object.assign({}, state, {removingZones: action.remove})
     }
     default:
       return state

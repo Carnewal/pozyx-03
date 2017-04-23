@@ -98,7 +98,7 @@ export default class Dashboard extends React.Component {
                 }
 
                 <div>
-                  <Toggle label='Remove zones' labelPosition='right'/>
+                  <Toggle label='Remove zones' labelPosition='right' onToggle={(e, c) => this.props.setRemovingZones(c)}/>
                 </div>
               </ToolbarGroup>
             </Toolbar>
@@ -124,5 +124,6 @@ Dashboard.propTypes = {
   setAddingZone: PropTypes.func,
   addingZone: PropTypes.bool,
   setViewingZones: PropTypes.func,
-  showingDialog: PropTypes.bool
+  showingDialog: PropTypes.bool,
+  setRemovingZones: PropTypes.bool
 }

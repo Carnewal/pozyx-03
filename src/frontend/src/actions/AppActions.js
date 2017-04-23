@@ -11,6 +11,7 @@ export const SET_ADDING_ZONE = 'SET_ADDING_ZONE'
 export const SET_VIEWING_ZONES = 'SET_VIEWING_ZONES'
 export const SET_SHOW_SAVE_DIALOG = 'SET_SHOW_SAVE_DIALOG'
 export const SAVE_POINTS = 'SAVE_POINTS'
+export const SET_REMOVING_ZONES = 'SET_REMOVING_ZONES'
 
 export const toggleTagLabelFilter = (labelId) => ({
   type: TOGGLE_TAG_LABEL_FILTER,
@@ -74,4 +75,9 @@ export const setShowSaveDialog = (show) => ({
 export const savePoints = (points) => ({
   type: SAVE_POINTS,
   points
+})
+
+export const setRemovingZones = (remove) => ({
+  type: SET_REMOVING_ZONES,
+  remove
 })
