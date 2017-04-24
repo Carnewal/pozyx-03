@@ -11,9 +11,10 @@ const tag = (state = initialState, action) => {
       const newState = state.slice()
       const positions = action.positions
       newState.map((tag) => {
-        if(positions[tag.id]) {
-          delete positions[tag.id].id
-          tag.position = positions[tag.id]
+        const index = positions.findIndex((position) => position.id === tag.id)
+        if(positions[index]) {
+          delete positions[index].id
+          tag.position = positions[index]
         }
       })
       return newState
