@@ -1,62 +1,16 @@
-import * as types from '../src/frontend/src/actions/MapActions'
-import reducer from '../src/frontend/src/reducers/app'
+// src/reducers.test.js
+import test from 'ava';
+import { SET_CURRENTMAP } from '../src/frontend/src/reducers/app';
+import {SET_CURRENTMAP } from '../src/frontend/src/actions/MapActions';
 
-describe('app reducer', () => {
-  it('should return the initial state', () => {
-    expect(
-      reducer(undefined, {})
-    ).toEqual([
-      {
-        text: 'Use Redux',
-        completed: false,
-        id: 0
-      }
-    ])
-  })
-
-  it('should handle SET_CURRENTMAP', () => {
-    expect(
-      reducer([], {
-        type: types.SET_CURRENTMAP,
-        text: 'Run the tests'
-      })
-    ).toEqual(
-      [
-        {
-          text: 'Run the tests',
-          completed: false,
-          id: 0
-        }
-      ]
-    )
-
-    expect(
-      reducer(
-        [
-          {
-            text: 'Use Redux',
-            completed: false,
-            id: 0
-          }
-        ],
-        {
-          type: types.SET_CURRENTMAP,
-          text: 'Run the tests'
-        }
-      )
-    ).toEqual(
-      [
-        {
-          text: 'Run the tests',
-          completed: false,
-          id: 1
-        },
-        {
-          text: 'Use Redux',
-          completed: false,
-          id: 0
-        }
-      ]
-    )
-  })
-})
+test('app reducer', t => {
+  t.deepEqual(app([
+    { id: 0, completed: false, text: 'map1' },
+    { id: 1, completed: false, text: 'map2' },
+    { id: 2, completed: false, text: 'map3' }
+  ], SET_CURRENTMAP(1)), [
+    { id: 0, completed: false, text: 'map1' },
+    { id: 1, completed: true, text: 'map2' },
+    { id: 2, completed: false, text: 'map3' }
+  ]);
+});

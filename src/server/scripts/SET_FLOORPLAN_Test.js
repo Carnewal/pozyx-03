@@ -1,62 +1,15 @@
-import * as types from '../src/frontend/actions/MapActions'
-import reducer from '../src/frontend/src/reducers/map'
+import test from 'ava';
+import { SET_FLOORPLAN } from '../src/frontend/src/reducers/map';
+import {SET_FLOORPLAN } from '../src/frontend/src/actions/MapActions';
 
-describe('map reducer', () => {
-  it('should return the initial state', () => {
-    expect(
-      reducer(undefined, {})
-    ).toEqual([
-      {
-        text: 'Use Redux',
-        completed: false,
-        id: 0
-      }
-    ])
-  })
-
-  it('should handle SET_FLOORPLAN', () => {
-    expect(
-      reducer([], {
-        type: types.SET_FLOORPLAN,
-        text: 'Run the tests'
-      })
-    ).toEqual(
-      [
-        {
-          text: 'Run the tests',
-          completed: false,
-          id: 0
-        }
-      ]
-    )
-
-    expect(
-      reducer(
-        [
-          {
-            text: 'Use Redux',
-            completed: false,
-            id: 0
-          }
-        ],
-        {
-          type: types.SET_FLOORPLAN,
-          text: 'Run the tests'
-        }
-      )
-    ).toEqual(
-      [
-        {
-          text: 'Run the tests',
-          completed: false,
-          id: 1
-        },
-        {
-          text: 'Use Redux',
-          completed: false,
-          id: 0
-        }
-      ]
-    )
-  })
-})
+test('map reducer', t => {
+  t.deepEqual(map([
+    { id: 0, completed: false, text: 'floorPlan1' },
+    { id: 1, completed: false, text: 'floorPlan2' },
+    { id: 2, completed: false, text: 'floorPlan3' }
+  ], SET_FLOORPLAN(1)), [
+    { id: 0, completed: false, text: 'floorPlan1' },
+    { id: 1, completed: true, text: 'floorPlan2' },
+    { id: 2, completed: false, text: 'floorPlan3' }
+  ]);
+});
