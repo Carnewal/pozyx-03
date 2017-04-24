@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/Flatbutton'
+import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
 import { CompactPicker as ColorPicker } from 'react-color'
 

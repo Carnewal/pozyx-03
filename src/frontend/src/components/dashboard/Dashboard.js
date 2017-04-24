@@ -125,5 +125,5 @@ Dashboard.propTypes = {
   addingZone: PropTypes.bool,
   setViewingZones: PropTypes.func,
   showingDialog: PropTypes.bool,
-  setRemovingZones: PropTypes.bool
+  setRemovingZones: PropTypes.func
 }

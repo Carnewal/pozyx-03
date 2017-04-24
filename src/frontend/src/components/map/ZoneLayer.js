@@ -7,6 +7,19 @@ export default class ZoneLayer extends React.Component {
     super(props)
   }
 
+  componentDidUpdate() {
+    if (this.props.removing) {
+      for (let i = 0; i < this.props.zones.length; i++) {
+        const cross = this.refs['cross'+i]
+        cross.setOffset({x: cross.getWidth() / 2, y: cross.getHeight() / 2})
+
+        cross.on('click', () => {
+          this.props.requestRemoveZone(cross.attrs.id)
+        })
+      }
+    }
+  }
+
   zones(mapScaling) {
     return this.props.zones.map((zone, i) => <Group key={i}>
       <Line x={0} y={0}
@@ -32,6 +45,16 @@ export default class ZoneLayer extends React.Component {
         fill={'#000'}
         fontSize={5}
       />
+      {this.props.removing &&
+        <Text x={zone.polygon[0]} y={zone.polygon[1]}
+          text={'X'}
+          id={zone.id}
+          fontStyle={'bold'}
+          fontSize={5}
+          fill={'#000'}
+          ref={'cross'+i}
+        />
+      }
       </Group>
     )
   }
@@ -48,5 +71,7 @@ export default class ZoneLayer extends React.Component {
 
 ZoneLayer.propTypes = {
   mapScaling: PropTypes.number,
-  zones: PropTypes.array
+  zones: PropTypes.array,
+  removing: PropTypes.bool,
+  requestRemoveZone: PropTypes.func
 }

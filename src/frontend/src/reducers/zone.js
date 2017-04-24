@@ -1,4 +1,4 @@
-import { SET_ZONES, ADD_ZONE } from 'frontend/actions/ZoneActions'
+import { SET_ZONES, ADD_ZONE, REMOVE_ZONE } from 'frontend/actions/ZoneActions'
 
 const initialState = []
 
@@ -10,6 +10,12 @@ const zone = (state = initialState, action) => {
     case ADD_ZONE: {
       const zones = state.slice()
       zones.push(action.zone)
+      return [...zones]
+    }
+    case REMOVE_ZONE: {
+      const zones = state.slice()
+      const index = zones.findIndex((zone) => zone.id === action.zoneId)
+      zones.splice(index, 1)
       return [...zones]
     }
     default:

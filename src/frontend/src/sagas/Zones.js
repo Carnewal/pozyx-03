@@ -1,8 +1,8 @@
 import { call, fork, put, take } from 'redux-saga/effects'
 import request from 'superagent'
-import { REQUEST_ADD_ZONE } from 'frontend/actions/ZoneActions'
+import { REQUEST_ADD_ZONE, REQUEST_REMOVE_ZONE } from 'frontend/actions/ZoneActions'
 import { setAddingZone, setShowSaveDialog } from 'frontend/actions/AppActions'
-import { addZone } from 'frontend/actions/ZoneActions'
+import { addZone, removeZone } from 'frontend/actions/ZoneActions'
 
 const postZone = (mapId, name, color, points) =>
   request
@@ -12,6 +12,10 @@ const postZone = (mapId, name, color, points) =>
       color: color,
       polygon: points
     })
+
+const deleteZone = (zoneId) =>
+  request
+    .delete(`/api/zones/${zoneId}`)
 
 function * watchAddZoneRequests() {
   while(true) {
@@ -23,6 +27,14 @@ function * watchAddZoneRequests() {
   }
 }
 
+function * watchRemoveZoneRequests() {
+  while (true) {
+    const { zoneId } = yield take(REQUEST_REMOVE_ZONE)
+    const response = yield call(deleteZone, zoneId)
+    yield put(removeZone(zoneId))
+  }
+}
+
 export default function * tagEdit() {
-  yield fork(watchAddZoneRequests)
+  yield [fork(watchAddZoneRequests), fork(watchRemoveZoneRequests)]
 }

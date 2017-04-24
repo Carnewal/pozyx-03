@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import ZoneLayer from 'frontend/components/map/ZoneLayer'
 import { getZones } from 'frontend/selectors/zone'
 import { getCurrentMap } from 'frontend/selectors/map'
+import { requestRemoveZone } from 'frontend/actions/ZoneActions'
 
 const mapStateToProps = (state, ownProps) => {
   const { containerWidth } = ownProps
@@ -9,13 +10,18 @@ const mapStateToProps = (state, ownProps) => {
   const mapScaling = containerWidth / map.x
   return {
     zones: getZones(state),
-    mapScaling: mapScaling
+    mapScaling: mapScaling,
+    removing: state.app.removingZones
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  requestRemoveZone: (zoneId) => dispatch(requestRemoveZone(zoneId))
+})
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
   null,
   {
     areStatesEqual: (prev, next) => JSON.stringify(prev) === JSON.stringify(next)
