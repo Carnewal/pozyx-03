@@ -22,3 +22,6 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 21/03/17,08:15,12:00,Campus,"Issues aanmaken sprint 2, Implementaties implementeren en prioriteiten herzien",,
 28/03/17,08:15,12:00,Campus,"Lijst van anchors weergeven, server geüpdatet",,
 15/04/17,13:15,17:00,Extern,"Verwijderen en aanmaken labels",,
+18/04/17,8:15,12:15,Campus,"Wiki aanvullen, verslag updaten met feedback, bespreken triggers frontend/backend",,
+22/04/17, 12:00,14:30,Extern,"Bespreken en maken van een script om dummy data te genereren en tags te teleporteren"
+22/04/17, 18:00,19:30,Extern,"Tags bewegen naar een bepaald punt na teleporteren (zones testen)",,
