@@ -36,6 +36,7 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 14/04/17,13:10,14:30,Extern,"Fixes",,
 14/04/17,16:30,17:00,Extern,"Fixes",,
 14/04/17,16:30,17:30,Extern,"Frontend-Triggers start",,
+15/04/17,13:15,17:00,Extern,"Verwijderen en aanmaken labels",,
 17/04/17,02:30,05:00,Extern,"Frontend-Triggers builder",,
 18/04/17,16:30,18:00,Extern,"Frontend-Triggers overview & in/uitschakelen",30,
 18/04/17,03:30,03:50,Extern,"Webpack optimalizations",,
