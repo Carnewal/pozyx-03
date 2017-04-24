@@ -1,11 +1,23 @@
 require('babel-register')();
 require('babel-polyfill');
 
+
 var model = require('../src/model')
+
 model.sequelize.sync().then(function(){
+
+  model.Label.destroy({where: {}}).then(function () {})
+  model.TagLabel.destroy({where: {}}).then(function () {})
+  model.Position.destroy({where: {}}).then(function () {})
+  model.Tag.destroy({where: {}}).then(function () {})
+  model.Anchor.destroy({where: {}}).then(function () {})
+  model.Zone.destroy({where: {}}).then(function () {})
+  model.Map.destroy({where: {}}).then(function () {})
+
+
  model.Map.create({
     name: "Demo Map",
-    url: "someurltomapimage",
+    url: "",
     x: 80,
     y: 80,
     z: 2,
@@ -44,12 +56,15 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "ff0000",
-    labels: [{
-      name:"cart"}],
-    positions:[{
-      x: 40,
-      y: 40,
-      z: 2}]
+    labels: [],
+    positions:[
+      {x: 40, y: 40, z: 2, timestamp: new Date(2017, 3, 13).toJSON()},
+      {x: 44, y: 35, z: 2, timestamp: new Date(2017, 3, 12).toJSON()},
+      {x: 48, y: 30, z: 2, timestamp: new Date(2017, 3, 11).toJSON()},
+      {x: 52, y: 25, z: 2, timestamp: new Date(2017, 3, 10).toJSON()},
+      {x: 56, y: 20, z: 2, timestamp: new Date(2017, 3, 9).toJSON()},
+      {x: 60, y: 15, z: 2, timestamp: new Date(2017, 3, 8).toJSON()}
+    ]
     }
     ,{
     name:"Julius",
@@ -59,8 +74,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "ff0000",
-    labels: [{
-      name:"cart"}],
+    labels: [],
     positions:[{
       x: 40,
       y: 40,
@@ -73,8 +87,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "33cc33",
-    labels: [{
-      name:"Warehouse"}],
+    labels: [],
     positions:[{
       x: 40,
       y: 40,
@@ -87,9 +100,7 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "0066ff",
-    labels: [{
-      name:"cart"},{
-      name:"Warehouse"}],
+    labels: [],
     positions:[{
       x: 40,
       y: 40,
@@ -118,7 +129,7 @@ model.sequelize.sync().then(function(){
 model.sequelize.sync().then(function(){
 model.Map.create({
    name: "Demo Map 2",
-   url: "someurltomapimage",
+   url: "",
    x: 225,
    y: 150,
    z: 2,
@@ -157,8 +168,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "ff0000",
-   labels: [{
-     name:"student"}],
+   labels: [],
    positions:[{
      x: 60,
      y: 40,
@@ -172,8 +182,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "ff0000",
-   labels: [{
-     name:"student"}],
+   labels: [],
    positions:[{
      x: 70,
      y: 90,
@@ -186,8 +195,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "33cc33",
-   labels: [{
-     name:"teacher"}],
+   labels: [],
    positions:[{
      x: 67,
      y: 45,
@@ -200,9 +208,7 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "0066ff",
-   labels: [{
-     name:"teacher"},{
-     name:"assistent"}],
+   labels: [],
    positions:[{
      x: 115,
      y: 100,

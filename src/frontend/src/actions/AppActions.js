@@ -4,6 +4,14 @@ export const SET_TAG_BATTERY_FILTER = 'SET_TAG_BATTERY_FILTER'
 export const SET_TAG_BATTERY_OPERATOR = 'SET_TAG_BATTERY_OPERATOR'
 export const ADD_ALERT = 'ADD_ALERT'
 export const REMOVE_ALERT = 'REMOVE_ALERT'
+export const SET_NAVDRAWER_OPEN = 'SET_NAVDRAWER_OPEN'
+export const SET_CURRENTMAP = "SET_CURRENTMAP"
+export const SET_INITIAL_LOAD = 'SET_INITIAL_LOAD'
+export const SET_ADDING_ZONE = 'SET_ADDING_ZONE'
+export const SET_VIEWING_ZONES = 'SET_VIEWING_ZONES'
+export const SET_SHOW_SAVE_DIALOG = 'SET_SHOW_SAVE_DIALOG'
+export const SAVE_POINTS = 'SAVE_POINTS'
+export const SET_REMOVING_ZONES = 'SET_REMOVING_ZONES'
 
 export const toggleTagLabelFilter = (labelId) => ({
   type: TOGGLE_TAG_LABEL_FILTER,
@@ -29,8 +37,47 @@ export const addAlert = (message, duration, priority) => ({
   duration,
   priority
 })
-
 export const removeAlert = (id) => ({
   type: REMOVE_ALERT,
   id
+})
+
+export const setNavdrawerOpen = (navDrawerOpen) => ({
+  type: SET_NAVDRAWER_OPEN,
+  navDrawerOpen
+})
+
+export const setCurrentmap = (mapId) => ({
+  type: SET_CURRENTMAP,
+  mapId
+})
+
+export const setInitialLoad = (complete) => ({
+  type: SET_INITIAL_LOAD,
+  complete
+})
+
+export const setAddingZone = (adding) => ({
+  type: SET_ADDING_ZONE,
+  adding
+})
+
+export const setViewingZones = (visible) => ({
+  type: SET_VIEWING_ZONES,
+  visible
+})
+
+export const setShowSaveDialog = (show) => ({
+  type: SET_SHOW_SAVE_DIALOG,
+  show
+})
+
+export const savePoints = (points) => ({
+  type: SAVE_POINTS,
+  points
+})
+
+export const setRemovingZones = (remove) => ({
+  type: SET_REMOVING_ZONES,
+  remove
 })

@@ -1,12 +1,17 @@
 import React, {PropTypes} from 'react'
+import {Link} from 'react-router'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
-import {grey500} from 'material-ui/styles/colors'
+import {grey500, grey200} from 'material-ui/styles/colors'
 import Chip from 'material-ui/Chip'
 import TextField from 'material-ui/TextField'
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 import Slider from 'material-ui/Slider'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentCreate from 'material-ui/svg-icons/content/create'
+
 import PageBase from 'frontend/components/layout/PageBase'
+import Popout from 'frontend/containers/map/PopoutContainer'
 
 const styles = {
   floatingActionButton: {
@@ -25,16 +30,16 @@ const styles = {
       width: '10%'
     },
     name: {
-      width: '40%'
-    },
-    price: {
       width: '20%'
     },
-    category: {
+    labels: {
+      width: '35%'
+    },
+    battery: {
       width: '20%'
     },
     edit: {
-      width: '10%'
+      width:'15%'
     }
   },
   chip: {
@@ -60,6 +65,7 @@ render() {
   const {
     labels,
     labelFilters,
+    searchFilter,
     batteryFilter,
     batteryOperator,
     onLabelClick,
@@ -71,12 +77,16 @@ render() {
   return (
     <PageBase title='Tags'
     navigation='Map / Tags'>
+
+      <Popout />
+
       <br/>
 
       <div className='row'>
         <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 '>
           <TextField
           hintText='Filter by id, name or label'
+          value={searchFilter}
           onChange={(e,val) => { onSearchChange(val) }}
           />
         </div>
@@ -116,48 +126,59 @@ render() {
           <Chip
             style={styles.chip}
             key={lbl}
-            onRequestDelete={labelFilters.includes(labels[lbl].labelId)
-              ? () => { onLabelClick(labels[lbl].labelId) }
+            onRequestDelete={labelFilters.includes(labels[lbl].name)
+              ? () => { onLabelClick(labels[lbl].name) }
               : null
             }
             onTouchTap={() => {
-              onLabelClick(labels[lbl].labelId)
+              onLabelClick(labels[lbl].name)
             }}
             >
             {lbl}
           </Chip>
         )}
       </div>
-      {this.props.tags.length > 0 ? <Table>
+      {this.props.tags.length > 0 ? <Table selectable={false}>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
     <TableRow>
     <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
     <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-    <TableHeaderColumn style={styles.columns.price}>Labels</TableHeaderColumn>
-    <TableHeaderColumn style={styles.columns.id}>Battery</TableHeaderColumn>
+    <TableHeaderColumn style={styles.columns.labels}>Labels</TableHeaderColumn>
+    <TableHeaderColumn style={styles.columns.battery}>Battery</TableHeaderColumn>
+    <TableHeaderColumn style={styles.columns.edit}>Edit</TableHeaderColumn>
     </TableRow>
     </TableHeader>
     <TableBody displayRowCheckbox={false}>
     {this.props.tags.map(tag =>
-      <TableRow key={tag.tagId}>
-        <TableRowColumn style={styles.columns.id}>{tag.tagId}</TableRowColumn>
-        <TableRowColumn style={styles.columns.name}>{tag.tagName}</TableRowColumn>
-        <TableRowColumn style={styles.columns.price}>
+      <TableRow key={tag.id}>
+        <TableRowColumn style={styles.columns.id}>{tag.id}</TableRowColumn>
+        <TableRowColumn style={styles.columns.name}>{tag.name}</TableRowColumn>
+        <TableRowColumn style={styles.columns.labels}>
             <div style={styles.chipWrapper}>
               {tag.labels && tag.labels.map((l) => <Chip
                 style={styles.chip}
-                key={l.labelId}
-                onRequestDelete={labelFilters.includes(l.labelId)
-                  ? () => { this.props.onLabelClick(l.labelId) }
+                key={l.id}
+                onRequestDelete={labelFilters.includes(l.name)
+                  ? () => { this.props.onLabelClick(l.name) }
                   : null
                 }
                 onTouchTap={() => {
-                  this.props.onLabelClick(l.labelId)
+                  this.props.onLabelClick(l.name)
                 }}
-                >{l.labelName}</Chip>)}
+                >{l.name}</Chip>)}
             </div>
           </TableRowColumn>
-        <TableRowColumn style={styles.columns.id}>{tag.battery * 100} %</TableRowColumn>
+        <TableRowColumn style={styles.columns.battery}>{tag.battery * 100}%</TableRowColumn>
+        <TableRowColumn style={styles.columns.edit}>
+          <Link className='button' to={`tag/${tag.id}`}>
+            <FloatingActionButton zDepth={0}
+                                  mini={true}
+                                  backgroundColor={grey200}
+                                  iconStyle={styles.editButton}>
+              <ContentCreate  />
+            </FloatingActionButton>
+          </Link>
+        </TableRowColumn>
       </TableRow>
     )}
     </TableBody>
@@ -172,6 +193,7 @@ TagTable.propTypes = {
   tags: PropTypes.array,
   labels: PropTypes.object,
   labelFilters: PropTypes.array,
+  searchFilter: PropTypes.string,
   batteryFilter: PropTypes.number,
   batteryOperator: PropTypes.number,
   onLabelClick: PropTypes.func,

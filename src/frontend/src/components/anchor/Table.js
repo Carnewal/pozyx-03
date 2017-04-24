@@ -68,7 +68,7 @@ export default class AnchorTable extends React.Component {
 
 
                 {anchors.length > 0
-                    ? <Table>
+                    ? <Table selectable={false}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
                             <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
@@ -79,11 +79,11 @@ export default class AnchorTable extends React.Component {
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                         {anchors.map(anchor =>
-                            <TableRow key={anchor.anchorId}>
-                                <TableRowColumn style={styles.columns.id}>{anchor.anchorId}</TableRowColumn>
-                                <TableRowColumn style={styles.columns.name}>{anchor.anchorName}</TableRowColumn>
-                                <TableRowColumn style={styles.columns.price}>{anchor.firmwareVersion}</TableRowColumn>                             
-                                <TableRowColumn style={styles.columns.price}>{anchor.hardwareVersion}</TableRowColumn>                             
+                            <TableRow key={anchor.id}>
+                                <TableRowColumn style={styles.columns.id}>{anchor.id}</TableRowColumn>
+                                <TableRowColumn style={styles.columns.name}>{anchor.name}</TableRowColumn>
+                                <TableRowColumn style={styles.columns.price}>{anchor.firmwareVersion}</TableRowColumn>
+                                <TableRowColumn style={styles.columns.price}>{anchor.hardwareVersion}</TableRowColumn>
                             </TableRow>
                         )}
                     </TableBody>

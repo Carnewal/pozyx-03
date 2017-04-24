@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import TagTable from 'frontend/components/tag/Table'
-import {getFilteredTags, getExistingLabels, getLabelFilters, getBatteryFilter, getBatteryOperator} from 'frontend/selectors/tag'
+import {getFilteredTags, getExistingLabels, getLabelFilters, getBatteryFilter, getBatteryOperator, getSearchFilter} from 'frontend/selectors/tag'
 import {
   toggleTagLabelFilter,
   setTagSearch,
@@ -9,15 +9,16 @@ import {
 } from 'frontend/actions/AppActions'
 
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => (
+  {
     tags: getFilteredTags(state),
     labels: getExistingLabels(state),
+    searchFilter: getSearchFilter(state),
     labelFilters: getLabelFilters(state),
     batteryFilter: getBatteryFilter(state),
     batteryOperator: getBatteryOperator(state)
   }
-}
+)
 
 const mapDispatchToProps = (dispatch) => {
   return {

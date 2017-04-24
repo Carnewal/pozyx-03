@@ -1,16 +1,42 @@
-import { SET_CURRENTMAP } from 'frontend/actions/MapActions'
-import { TOGGLE_TAG_LABEL_FILTER, SET_TAG_SEARCH, SET_TAG_BATTERY_FILTER, SET_TAG_BATTERY_OPERATOR, ADD_ALERT, REMOVE_ALERT } from 'frontend/actions/AppActions'
+import { SET_CURRENTMAP } from 'frontend/actions/AppActions'
+import { REMOVE_LABEL } from 'frontend/actions/TagActions'
+import {
+  TOGGLE_TAG_LABEL_FILTER,
+  SET_TAG_SEARCH,
+  SET_TAG_BATTERY_FILTER,
+  SET_TAG_BATTERY_OPERATOR,
+  SET_NAVDRAWER_OPEN,
+  ADD_ALERT,
+  REMOVE_ALERT,
+  SET_INITIAL_LOAD,
+  SET_ADDING_ZONE,
+  SET_VIEWING_ZONES,
+  SET_SHOW_SAVE_DIALOG,
+  SAVE_POINTS,
+  SET_REMOVING_ZONES
+} from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
 
+
 const initialState = {
-  currentMap: 4,
-  alerts: []
+  alerts: [],
+  navDrawerOpen: true,
+  initialLoad: false,
+  addingZone: false,
+  viewingZones: true,
+  showingDialog: false,
+  tempPoints: [],
+  removingZones: false
+}
+
+const resetState = {
+  alerts: [],
+  tagLabelFilters: null
 }
 
 const sortFunction = (a1, a2) => {
   const diff = priorityNumber(a1.priority) - priorityNumber(a2.priority)
-    console.log(a1, a2,diff, a1.id-a2.id,priorityNumber(a1.priority),priorityNumber(a2.priority))
   if (diff == 0) {
     return a1.id - a2.id
   }
@@ -37,7 +63,11 @@ const priorityNumber = (priority) => {
 const app = (state = initialState, action) => {
   switch(action.type) {
     case SET_CURRENTMAP: {
-      return ({...state, currentMap: action.mapId})
+      return Object.assign({}, state, resetState, {currentMap: action.mapId})
+    }
+    case REMOVE_LABEL: {
+      console.log(action, state.tagLabelFilters.filter((label) => label !== action.labelName))
+      return Object.assign({}, state, {tagLabelFilters: state.tagLabelFilters.filter((label) => label !== action.labelName)})
     }
     case TOGGLE_TAG_LABEL_FILTER: {
       const labelSet = new Set(state.tagLabelFilters || [])
@@ -61,15 +91,39 @@ const app = (state = initialState, action) => {
       return Object.assign({}, state, { tagSearch: action.search })
     }
     case ADD_ALERT: {
-      let newState = Object.assign({}, state)
+      const newState = Object.assign({}, state)
       newState.alerts.push({id: Date.now(), message: action.message, duration: action.duration, priority: action.priority})
-      newState.alerts = newState.alerts.slice(0,1).concat(newState.alerts.slice(1,newState.alerts.length).sort(sortFunction))
+      newState.alerts = newState.alerts
+        .slice(0,1)
+        .concat(newState.alerts.slice(1,newState.alerts.length)
+        .sort(sortFunction))
       return newState
     }
     case REMOVE_ALERT: {
-      let newState = Object.assign({}, state)
+      const newState = Object.assign({}, state)
       delete newState.alerts.splice(0, 1)
       return newState
+    }
+    case SET_NAVDRAWER_OPEN: {
+      return Object.assign({}, state, { navDrawerOpen: action.navDrawerOpen})
+    }
+    case SET_INITIAL_LOAD: {
+      return Object.assign({}, state, { initialLoad: action.complete })
+    }
+    case SET_ADDING_ZONE: {
+      return Object.assign({}, state, {addingZone: action.adding})
+    }
+    case SET_VIEWING_ZONES: {
+      return Object.assign({}, state, {viewingZones: action.visible})
+    }
+    case SET_SHOW_SAVE_DIALOG:{
+      return Object.assign({}, state, {showingDialog: action.show})
+    }
+    case SAVE_POINTS:{
+      return Object.assign({}, state, {tempPoints: action.points})
+    }
+    case SET_REMOVING_ZONES: {
+      return Object.assign({}, state, {removingZones: action.remove})
     }
     default:
       return state
