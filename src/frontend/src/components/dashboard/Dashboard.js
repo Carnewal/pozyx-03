@@ -3,11 +3,16 @@ import UploadPlanArea from '../../containers/UploadPlanArea'
 import Map from '../../containers/MapContainer'
 import InfoBox from 'frontend/components/dashboard/InfoBox'
 import PageBase from 'frontend/components/layout/PageBase'
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
+import RaisedButton from 'material-ui/RaisedButton'
+import Toggle from 'material-ui/Toggle'
+import SaveZoneDialog from 'frontend/containers/map/SaveZoneDialog'
 
-import {cyan600, purple600} from 'material-ui/styles/colors'
+import {cyan600, purple600, green600} from 'material-ui/styles/colors'
 
 import TagIcon from 'material-ui/svg-icons/maps/my-location'
 import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
+import ZoneIcon from 'material-ui/svg-icons/social/pages'
 
 export default class Dashboard extends React.Component {
   constructor(props) {
@@ -25,16 +30,19 @@ export default class Dashboard extends React.Component {
     window.removeEventListener('resize', () => {})
   }
 
+  toggleCreateZone(addingZone) {
+    this.props.setAddingZone(addingZone)
+  }
 
   render() {
-    const {floorPlan, tagsAmount, anchorsAmount} = this.props
+    const {floorPlan, tagsAmount, anchorsAmount, zonesAmount} = this.props
     return (
       <PageBase title='Dashboard'
         navigation='Map / Dashboard'
         >
         <br/>
+      { this.props.showingDialog && <SaveZoneDialog /> }
       <div className='row'>
-
 
         <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 '>
           <InfoBox Icon={TagIcon}
@@ -44,7 +52,6 @@ export default class Dashboard extends React.Component {
           />
         </div>
 
-
         <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15 '>
           <InfoBox Icon={AnchorIcon}
                    color={cyan600}
@@ -53,16 +60,50 @@ export default class Dashboard extends React.Component {
           />
         </div>
 
-      </div>
+        <div className='col-xs-12 col-sm-6 col-md-3 col-lg-3 m-b-15'>
+          <InfoBox Icon={ZoneIcon}
+                   color={green600}
+                   title='Zones'
+                   value={zonesAmount}>
+          </InfoBox>
+        </div>
 
+      </div>
 
       <br/>
 
       <div className='row'>
 
         <div className='col-xs-12 col-sm-12 col-md-12 col-lg-12 m-b-15 '>
-          <div ref='mapSizePlaceholder'></div>
-          {(floorPlan && floorPlan !== '') ? <Map containerWidth={this.state && this.state.mapWidth}/> : <UploadPlanArea/>}
+          <div ref='mapSizePlaceholder'>
+          </div>
+          {(floorPlan && floorPlan !== '') ?
+          <div>
+            <Toolbar>
+              <ToolbarGroup>
+                <Toggle label='Show zones' labelPosition='right' defaultToggled={true} onToggle={(e, c) => this.props.setViewingZones(c)} />
+              </ToolbarGroup>
+              <ToolbarGroup>
+                <ToolbarTitle text={this.props.addingZone ? "Doubleclick to close the zone" : ""}/>
+                {!this.props.addingZone ?
+                  <RaisedButton
+                    label='Create zone'
+                    primary={true}
+                    onClick={() => this.toggleCreateZone(true)}/>
+                  :
+                  <RaisedButton
+                    label='Cancel'
+                    primary={true}
+                    onClick={() => this.toggleCreateZone(false)}/>
+                }
+
+                <div>
+                  <Toggle label='Remove zones' labelPosition='right' onToggle={(e, c) => this.props.setRemovingZones(c)}/>
+                </div>
+              </ToolbarGroup>
+            </Toolbar>
+            <Map containerWidth={this.state && this.state.mapWidth}/>
+          </div>: <UploadPlanArea/>}
         </div>
 
       </div>
@@ -77,6 +118,12 @@ export default class Dashboard extends React.Component {
 Dashboard.propTypes = {
   tagsAmount: PropTypes.number,
   anchorsAmount: PropTypes.number,
+  zonesAmount: PropTypes.number,
   currentMap: PropTypes.number,
-  floorPlan: PropTypes.string
+  floorPlan: PropTypes.string,
+  setAddingZone: PropTypes.func,
+  addingZone: PropTypes.bool,
+  setViewingZones: PropTypes.func,
+  showingDialog: PropTypes.bool,
+  setRemovingZones: PropTypes.func
 }
