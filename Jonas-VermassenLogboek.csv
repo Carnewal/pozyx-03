@@ -1,4 +1,4 @@
-﻿Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
+Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 14/02/17,08:15,12:15,Campus,"Inleiding vop, kennismaking scrum werkwijze en team. Brainstormen over vragen volgende sessie.",,
 21/02/17,08:15,12:15,Campus,"Presentatie Pozyx + vragen. Backlog en user stories opstellen. Project gerelateerde documenten doornemen (richtlijnen,..)",,
 28/02/17,08:15,12:15,Campus,"Standup + Todo items oplijsten en takenverdeling. Verslag sprint 1 opstellen in overleaf (Latex)",,
@@ -13,4 +13,11 @@
 18/03/17,14:00,19:00,Extern,"Pair programming: Anchors visualiseren + veranderen van maps","18,20",
 21/03/17,8:15,11:30,Campus,"Issues aanmaken sprint 2, concreet bespreken wat we wel en niet gaan implementeren. + prioriteiten herzien",32,
 28/03/17,8:15,12:15,Campus,"Linter herzien, error fixen. Code opkuisen. Brainstormen over Triggers. Project herzien nudat er een teamlid minder is.",,
-
+15/04/17,13:30,18:15,Extern,"Bugfix mbt maps. Konva branch mergen. Zone api calls aangemaakt.",,
+16/04/17,10:30,12:00,Extern,"Zones ophalen in frontend.",,
+16/04/17,14:30,17:15,Extern,"Infobox toevoegen naast bestaande (tags, anchors). ...",,
+18/04/17,8:15,12:15,Campus,"Verslag aanpassen adhv gekregen feedback (backlog items, use case diagrammen,..)",,
+20/04/17,11:00,15:00,Extern,"Polygons correct opslaan in databank (bugfix) + extra coderen omtrend zones",,
+23/04/17,13:15,17:00,Extern,"Drawlayer afgewerkt. Namen van de zones worden weergegeven. Zone toggle geimplementeerd.",,
+24/04/17,17:45,19:15,Campus,"Layout verslag aangepast (use cases uitleg), sequentiediagram van zones uitleggen. + logboek bijwerken",,
+24/04/17,19:15,22:30,Campus,"Zones verwijderen implementeren",,
