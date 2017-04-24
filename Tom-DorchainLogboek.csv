@@ -24,4 +24,4 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 17/4/17,14:00,15:15,Extern,"Sequentiële Diagrammen afgewerkt",,
 18/4/17,8:15,10:00,Campus,"Wat geholpen met Jonas aan layout, meer was niet mogelijk wegens crashprobleem van mijn eigen laptop.",,
 24/4/17,16:00,17:30,Extern,"Gewerkt aan de informatie bij de Use Case diagrammen.",,
-24/4/17,21:00,22:15,Extern,"Set up eerste unit-testen + reducer scripts",,
+24/4/17,21:00,23:00,Extern,"Set up eerste unit-testen + reducer scripts + Ava test",,
