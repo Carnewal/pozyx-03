@@ -56,9 +56,9 @@ class Manager {
     this.tags = []
     this.interval = interval
     for (let i = 0; i < tags.length; i++) {
-      const rand = speed * factor
+      const rand = speed * (factor / 3)
       const adjusted_speed = speed + (rand / 2) - (Math.random() * rand) // randomly +/- factor speed
-      this.adjusted_speed *= interval / 5000 // take interval into account
+      this.adjusted_speed *= interval / 2000 // take interval into account
       this.tags.push(new Tag(tags[i].id, adjusted_speed))
     }
   }
