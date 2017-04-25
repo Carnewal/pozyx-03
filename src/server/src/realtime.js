@@ -2,7 +2,7 @@ import Primus from 'primus'
 import Notifier from './middleware/trigger/notifier'
 import Model from './model'
 
-const maxdistance = {x: 99, y: 99, z: 3} // meter
+const maxdistance = {x: 225, y: 150, z: 3} // meter
 
 const interval = 1000 / 30
 
@@ -58,7 +58,7 @@ class Manager {
     for (let i = 0; i < tags.length; i++) {
       const rand = speed * factor
       const adjusted_speed = speed + (rand / 2) - (Math.random() * rand) // randomly +/- factor speed
-      this.adjusted_speed *= interval / 1000 // take interval into account
+      this.adjusted_speed *= interval / 2000 // take interval into account
       this.tags.push(new Tag(tags[i].id, adjusted_speed))
     }
   }
