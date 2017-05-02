@@ -8,15 +8,26 @@ import {
   SET_NAVDRAWER_OPEN,
   ADD_ALERT,
   REMOVE_ALERT,
-  SET_INITIAL_LOAD
+  SET_INITIAL_LOAD,
+  SET_ADDING_ZONE,
+  SET_VIEWING_ZONES,
+  SET_SHOW_SAVE_DIALOG,
+  SAVE_POINTS,
+  SET_REMOVING_ZONES
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
 
+
 const initialState = {
   alerts: [],
   navDrawerOpen: true,
-  initialLoad: false
+  initialLoad: false,
+  addingZone: false,
+  viewingZones: true,
+  showingDialog: false,
+  tempPoints: [],
+  removingZones: false
 }
 
 const resetState = {
@@ -80,7 +91,7 @@ const app = (state = initialState, action) => {
       return Object.assign({}, state, { tagSearch: action.search })
     }
     case ADD_ALERT: {
-      let newState = Object.assign({}, state)
+      const newState = Object.assign({}, state)
       newState.alerts.push({id: Date.now(), message: action.message, duration: action.duration, priority: action.priority})
       newState.alerts = newState.alerts
         .slice(0,1)
@@ -89,16 +100,30 @@ const app = (state = initialState, action) => {
       return newState
     }
     case REMOVE_ALERT: {
-      let newState = Object.assign({}, state)
+      const newState = Object.assign({}, state)
       delete newState.alerts.splice(0, 1)
       return newState
     }
     case SET_NAVDRAWER_OPEN: {
       return Object.assign({}, state, { navDrawerOpen: action.navDrawerOpen})
     }
-
     case SET_INITIAL_LOAD: {
       return Object.assign({}, state, { initialLoad: action.complete })
+    }
+    case SET_ADDING_ZONE: {
+      return Object.assign({}, state, {addingZone: action.adding})
+    }
+    case SET_VIEWING_ZONES: {
+      return Object.assign({}, state, {viewingZones: action.visible})
+    }
+    case SET_SHOW_SAVE_DIALOG:{
+      return Object.assign({}, state, {showingDialog: action.show})
+    }
+    case SAVE_POINTS:{
+      return Object.assign({}, state, {tempPoints: action.points})
+    }
+    case SET_REMOVING_ZONES: {
+      return Object.assign({}, state, {removingZones: action.remove})
     }
     default:
       return state

@@ -3,9 +3,22 @@ const webpack = require('webpack');
 
 module.exports = {
   devtool: 'source-map',
-  entry: [
-    './frontend/src/index'
-  ],
+  entry: {
+    jsx: './frontend/src/index',
+    vendor: [
+      'konva',
+      'react',
+      'react-dom',
+      'react-dropzone',
+      'react-konva',
+      'react-redux',
+      'react-router',
+      'react-router-redux',
+      'redux',
+      'redux-saga',
+      'material-ui'
+    ]
+  },
   output: {
     path: path.join(__dirname, 'frontend/build'),
     filename: 'bundle.js',
@@ -26,7 +39,9 @@ module.exports = {
       compressor: {
         warnings: false
       }
-    })
+    }),
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.js'}),
+
   ],
   module: {
     loaders: [

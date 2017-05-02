@@ -48,6 +48,11 @@ De configuratie van de databank verbinding gebeurt in [../server/src/config/](ht
 }
 ```
 
+In de test omgeving wordt gebruik gemaakt van een filler script dat de databank opvult:
+```
+npm run seed
+```
+
 ### Development
 
 Volgend commando start alle benodigde tools voor fullstack development (webpack dev + hot reloading, nodemon, etc):
