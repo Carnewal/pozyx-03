@@ -27,3 +27,4 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 22/04/17,18:00,19:30,Extern,"Tags bewegen naar een bepaald punt na teleporteren (zones testen)",,
 24/04/17,20:00,23:00,Extern,"Verslag, datamocking van tags aanpassen",,
 02/05/17,08:15,12:15,Campus,"Mocken van tag attributen (batterij, locatie, bewegingen) voor trigger tests",,
+03/05/17,21:00,22:15,Extern,"Tags teleporteren en batterij acties gesimuleerd",,
