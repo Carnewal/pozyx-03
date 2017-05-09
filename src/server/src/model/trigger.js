@@ -7,13 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     name: DataTypes.STRING,
     active: DataTypes.BOOLEAN,
-    amountValue: DataTypes.INTEGER,
-    amount: DataTypes.STRING,
-    objects: DataTypes.STRING,
-    filterValue: DataTypes.STRING,
-    filter: DataTypes.STRING,
-    action: DataTypes.STRING,
-    actionMessage: DataTypes.STRING
+    json: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {

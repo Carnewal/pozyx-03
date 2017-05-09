@@ -1,29 +1,38 @@
+import pip from "point-in-polygon"
+
 class Filter {
 
   reference
+  type
 
-  constructor(reference) {
+  constructor(reference, type) {
     this.reference = reference
+    this.type = type
+  }
+
+  execute(val, state) {
+    this[this.type](val, state)
   }
 
   name(tag) {
     return this.reference === tag.name
   }
 
-  inZone(tag) {
-    return true //TODO implement based on zone object properties
+  inZone(tag, state) {
+    const zone = state.zones.get(this.reference)
+    return pip([tag.position.x, tag.position.y], zone.polygon)
   }
 
-  outsideZone(tag) {
-    return !this.inZone(tag)
+  outsideZone(tag, state) {
+    return !this.inZone(tag, state)
   }
 
   label(tag) {
     return tag.labels.filter((label) => (label.labelName === this.reference)).length > 0
   }
 
-  battery(tag) {
-    return tag.battery < this.reference
+  battery(tags) {
+    return tags.filter((tag) => tag.battery >= this.reference[0] && tag.battery <= this.reference[1])
   }
 
   hardwareVersion(tag) {
@@ -32,10 +41,6 @@ class Filter {
 
   firmwareVersion(tag) {
     return tag.firmwareVersion === this.reference
-  }
-
-  status(anchor) {
-    return anchor.status === this.reference
   }
 
 }

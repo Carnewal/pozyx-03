@@ -1,9 +1,15 @@
 class Comparator {
 
   reference
+  type
 
-  constructor(reference) {
+  constructor(reference, type) {
     this.reference = reference
+    this.type = type
+  }
+
+  execute(val) {
+    this[this.type](val)
   }
 
   any() {

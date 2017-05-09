@@ -7,7 +7,7 @@ class Notifier {
   state = new State()
   triggers = new Map()
 
-  initState = (mapId) => { //TODO Anchor/zone implementation
+  initState = (mapId) => {
     Model.Tag.findAll({
       where: {
         mapId: mapId
@@ -16,6 +16,16 @@ class Notifier {
     }).then((tags) => {
       tags.forEach((tag) => {
         this.state.updateTag(tag)
+      })
+    }).then(() => {
+      Model.Zone.findAll({
+        where: {
+          mapId: mapId
+        }
+      }).then((zones) => {
+        zones.forEach((zone) => {
+          this.state.updateZone(zone)
+        })
       })
     })
   }
@@ -31,11 +41,11 @@ class Notifier {
         this.state.updateZone(zone)
       })
     }
-    if (changes.anchors) {
+    /*if (changes.anchors) {
       changes.anchors.forEach((anchor) => {
         this.state.updateAnchor(anchor)
       })
-    }
+    }*/
     this.check()
   }
 
@@ -51,10 +61,10 @@ class Notifier {
     })
   }
 
-  addTrigger = (trigger) => {
-    const triggerObject = this.factory.buildTrigger(trigger)
-    triggerObject.triggered = false
-    this.triggers.set(triggerObject.id, triggerObject)
+  addTrigger = (modelTrigger) => {
+    const trigger = this.factory.buildTrigger(modelTrigger)
+    trigger.triggered = false
+    this.triggers.set(trigger.id, trigger)
   }
 
   deleteTrigger = (trigger) => {
@@ -64,7 +74,7 @@ class Notifier {
   check = () => {
     for (const [id, trigger] of this.triggers) {
       if (!trigger.triggered && trigger.check(this.state)) {
-        trigger.action()
+        trigger.action.execute(trigger.tags)
         trigger.triggered = true
       } else if (trigger.triggered && !trigger.check(this.state)) {
         trigger.triggered = false
