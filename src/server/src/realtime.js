@@ -6,9 +6,10 @@ const maxdistance = {x: 225, y: 150, z: 3} // meter
 
 const interval = 1000 / 30
 
-const BatteryModes = {   CHARGE:  {value: 0.001},
-                         DRAIN:   {value: -0.001},
-                         FREEZE:  {value: 0} 
+const BatteryModes = {
+  CHARGE: {value: 0.001},
+  DRAIN: {value: -0.001},
+  FREEZE: {value: 0}
 }
 
 class Tag {
@@ -31,6 +32,8 @@ class Tag {
     }
     this.speed = speed
     this.originalSpeed = speed
+    this.haltAtTarget = true
+    this.targetLocation = false
     this.batteryLevel = 1.0                 //hardcoded
     this.batteryMode = BatteryModes.FREEZE  //discharging disabled
   }
@@ -55,21 +58,20 @@ class Tag {
   }
 
   move() {
-    if (this.speed == 0) {
+    if (this.speed === 0) {
       return
     }
 
-    if (this.haltAtTarget) {
-      //squaring all calculations to prevent using root (performance)
-      //let distanceSq = (maxdistance.x * maxdistance.x + maxdistance.y * maxdistance.y)  
-      let margin = 5//distanceSq / 100 * 5 //5 percent error margin, in case this provides inaccuracies change to constant value.
+    if (this.targetLocation && this.haltAtTarget) {
 
-      //untested, should but may not work
+      const margin = 5
+
+      //squaring all calculations to prevent using root (performance)
       //(X1 - X2)² + (Y1 - Y2)² = distance²
       if (((this.targetLocation.x - this.position.x) * (this.targetLocation.x - this.position.x) ///(X1 - X2) * (X1 - X2) => (X1 - X2)²
-          + (this.targetLocation.y - this.position.y) * (this.targetLocation.y - this.position.y)) < (margin * margin)) {
-          this.speed = 0
-          return
+        + (this.targetLocation.y - this.position.y) * (this.targetLocation.y - this.position.y)) < (margin * margin)) {
+        this.speed = 0
+        return
       }
     }
 
@@ -78,22 +80,22 @@ class Tag {
     this.moveInDirection("z")
   }
 
-  batteryTick(){
-   if (this.batteryMode == BatteryModes.FREEZE){
-    return
-   }
+  batteryTick() {
+    if (this.batteryMode === BatteryModes.FREEZE) {
+      return
+    }
 
-   this.batteryLevel += this.batteryMode.value
+    this.batteryLevel += this.batteryMode.value
 
-   if (this.batteryLevel > 1.0) {
-    this.batteryMode = BatteryModes.FREEZE
-    this.batteryLevel = 1.0
-   }
+    if (this.batteryLevel > 1.0) {
+      this.batteryMode = BatteryModes.FREEZE
+      this.batteryLevel = 1.0
+    }
 
-  if (this.batteryLevel < 0.0) {
-    this.batteryMode = BatteryModes.FREEZE
-    this.batteryLevel = 0.0
-   }
+    if (this.batteryLevel < 0.0) {
+      this.batteryMode = BatteryModes.FREEZE
+      this.batteryLevel = 0.0
+    }
 
   }
 }
@@ -118,59 +120,50 @@ class Manager {
     })
   }
 
-    /**
-      * (optional) teleportLocations: array of locations [x,y] to immediatly teleport tags to
-      * (optional) targetLocations: array of locations [x,y] for the tags to move towards (after teleporting)
-      * (optional) haltAtTarget: set speed to zero when reached/near targetLocation
-      * calling teleport without parameters (undef, undef, false) resumes tags at their original speed 
-      */
-    teleport(teleportLocations, targetLocations, haltAtTarget = false) { 
-      let i = 0
-      this.tags.forEach(function(tag) {
+  /**
+   * (optional) teleportLocations: array of locations [x,y] to immediatly teleport tags to
+   * (optional) targetLocations: array of locations [x,y] for the tags to move towards (after teleporting)
+   * (optional) haltAtTarget: set speed to zero when reached/near targetLocation
+   * calling teleport without parameters (undef, undef, false) resumes tags at their original speed
+   */
+  teleport(teleportLocations, targetLocations, haltAtTarget = true) {
+    this.tags.forEach(function(tag, i) {
 
-        this.speed = this.originalSpeed
+      tag.speed = tag.originalSpeed
 
-        if (teleportLocations[i] !== undefined) {
-          tag.position = teleportLocations[i]
-        } 
+      if (teleportLocations[i] === undefined) {
+        return
+      }
 
-        if (targetLocations[i] === undefined) {
-          return
-        }
+      tag.position = teleportLocations[i]
+      tag.targetLocation = targetLocations[i]
+      const deltaX = tag.targetLocation.x - tag.position.x
+      const deltaY = tag.targetLocation.y - tag.position.y
+      const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+      tag.direction = {
+        x: deltaX / length,
+        y: deltaY / length,
+        z: 0
+      }
 
-        tag.direction = {
-          x: (targetLocations[i].x - this.position[x]) / maxdistance.x,
-          y: (targetLocations[i].y - this.position[y]) / maxdistance.y,
-          z: 0
-        } 
 
-        this.targetLocation = targetLocations[i]
-        this.haltAtTarget = haltAtTarget
-        i++
-      })
-    }
+      tag.haltAtTarget = haltAtTarget
+    })
+  }
 
   /**
-    * mode: {charge, drain, freeze}
-    */
+   *
+   * @param modes Applicable modes are "CHARGE", "DRAIN" and "FREEZE"
+   */
   setBatteryMode(modes) {
-    let i = 0
-    this.tags.forEach(function(tag) {
-      switch (modes[i]) {
-        case charge:
-          this.batteryMode = BatteryModes.CHARGE
-          break
-        case drain:
-           this.batteryMode = BatteryModes.DRAIN
-          break
-        case freeze:
-           this.batteryMode = BatteryModes.FREEZE
-          break
-        default:
-          console.log("setBatteryMode function invoked with a parameter other as 'charge', 'drain' or 'freeze'")
-      }
-      i++
-    })
+    if (modes instanceof Array) {
+      // assign each tags their respective mode (same index)
+      // if there are more tags than modes given the first mode is used for the remainder of tags
+      this.tags.forEach((tag, i) => tag.batteryMode = modes[i] ? BatteryModes[modes[i]] : BatteryModes[modes[0]])
+    } else if (BatteryModes[modes]) {
+      // when modes isn't an array it is assumed it's a battery mode for all tags
+      this.tags.forEach((tag) => tag.batteryMode = BatteryModes[modes])
+    }
   }
 
 }
@@ -201,40 +194,38 @@ const realtime = (server) => {
 
       const tagData = []
 
-      mgr.tags.forEach(function(tag) { 
+      mgr.tags.forEach(function(tag) {
         const newTag = {
-         /* name: tag.name,
+          /* name: tag.name,
+           id: tag.id,
+           labels: tag.labels,
+           batteryLevel: tag.batteryLevel,
+           position: {
+           x: tag.position.x,
+           y: tag.position.y,
+           z: tag.position.z,
+           timestamp: new Date().toISOString()
+           },
+           x: tag.position.x,
+           y: tag.position.y,
+           z: tag.position.z,
+           timestamp: new Date().toISOString()
+           */
+          name: tag.name,
           id: tag.id,
           labels: tag.labels,
           batteryLevel: tag.batteryLevel,
+          batteryMode: tag.batteryMode,
+          speed: tag.speed,
+          originalSpeed: tag.originalSpeed,
+          timestamp: new Date().toISOString(),
           position: {
             x: tag.position.x,
             y: tag.position.y,
-            z: tag.position.z,
-            timestamp: new Date().toISOString()
-          },
-          x: tag.position.x,
-          y: tag.position.y,
-          z: tag.position.z,
-          timestamp: new Date().toISOString()
-*/
-          name: modelTag.name,
-          id: modelTag.id,
-          labels: modelTag.labels,
-          batteryLevel: modelTag.batteryLevel,
-          batteryMode: modelTag.batteryMode,
-          speed: modelTag.speed,
-          originalSpeed: modelTag.originalSpeed,
-          timestamp: new Date().toISOString(),
-          position: { 
-                  x:    modelTag.position.x,
-                  y:    modelTag.position.y,
-                  z:   modelTag.position.y
+            z: tag.position.y
           }
         }
-
         tagData.push(newTag)
-
       })
       notifier.updateState({tags: tagData})
       //primus.write({action: 'SHOW_POSITIONS', positions: tagPositions}) 
