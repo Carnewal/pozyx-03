@@ -42,7 +42,9 @@ Deze wordt gebruikt als ondergrond om de tags te visualiseren.
 Rechtsboven kan via een button geswitched worden tussen de verschillende toegevoegde kaarten.
 
 Links in de menu balk geeft 'Tags' een overzicht van de toegevoegde tags.
+Tags kunnen worden gefilterd op basis van id, naam of label, relevante zoektermen kunnen in de zoekbalk worden ingetikt zonder specificatie van de zoekterm. Een overzicht van de labels is ook bovenaan beschikbaar en kunnen worden aangeklikt als filter met eenvoudige toegang. Verder kan er ook op batterijpercentage worden gefilterd met de schuifbar.
 
+Het menu 'Anchors' geeft een overzicht van de anchors met hun eigenschappen. Anchors dienen op voorhand ingesteld te zijn en worden niet bewerkt via de userinterface. Door het gelimiteerd aantal anchors is er hier ook geen filtering- of zoeksysteem voorzien. 
 
 
 
