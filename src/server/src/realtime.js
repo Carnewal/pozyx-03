@@ -168,70 +168,74 @@ class Manager {
 
 }
 
-const realtime = (server) => {
-  const primus = new Primus(server, {})
-  const notifier = new Notifier()
-  notifier.initState(2) //INIT with map id 2
-  notifier.initTriggers(2)
+class Realtime {
 
-  primus.on('connection', () => {
-    console.log('client connected')
-  })
+  constructor(server) {
+    const primus = new Primus(server, {})
+    const notifier = new Notifier()
+    notifier.initState(2) //INIT with map id 2
+    notifier.initTriggers(2)
 
-  Model.Tag.findAll({
-    where: {
-      mapId: 2 ////hardcoded
-    }
-  }).then((tags) => {
-    const mgr = new Manager(
-      tags, // tags from db
-      1, // speed in meter / s
-      interval, // interval time in ms
-      5 // +/- random factor on speed
-    )
-    setInterval(() => {
-      mgr.update()
+    primus.on('connection', () => {
+      console.log('client connected')
+    })
 
-      const tagData = []
+    Model.Tag.findAll({
+      where: {
+        mapId: 2 ////hardcoded
+      }
+    }).then((tags) => {
+      this.mgr = new Manager(
+        tags, // tags from db
+        1, // speed in meter / s
+        interval, // interval time in ms
+        5 // +/- random factor on speed
+      )
+      this.timer = setInterval(() => {
+        this.mgr.update()
 
-      mgr.tags.forEach(function(tag) {
-        const newTag = {
-          /* name: tag.name,
-           id: tag.id,
-           labels: tag.labels,
-           batteryLevel: tag.batteryLevel,
-           position: {
-           x: tag.position.x,
-           y: tag.position.y,
-           z: tag.position.z,
-           timestamp: new Date().toISOString()
-           },
-           x: tag.position.x,
-           y: tag.position.y,
-           z: tag.position.z,
-           timestamp: new Date().toISOString()
-           */
-          name: tag.name,
-          id: tag.id,
-          labels: tag.labels,
-          batteryLevel: tag.batteryLevel,
-          batteryMode: tag.batteryMode,
-          speed: tag.speed,
-          originalSpeed: tag.originalSpeed,
-          timestamp: new Date().toISOString(),
-          position: {
-            x: tag.position.x,
-            y: tag.position.y,
-            z: tag.position.y
+        const tagData = []
+
+        this.mgr.tags.forEach(function(tag) {
+          const newTag = {
+            /* name: tag.name,
+             id: tag.id,
+             labels: tag.labels,
+             batteryLevel: tag.batteryLevel,
+             position: {
+             x: tag.position.x,
+             y: tag.position.y,
+             z: tag.position.z,
+             timestamp: new Date().toISOString()
+             },
+             x: tag.position.x,
+             y: tag.position.y,
+             z: tag.position.z,
+             timestamp: new Date().toISOString()
+             */
+            name: tag.name,
+            id: tag.id,
+            labels: tag.labels,
+            batteryLevel: tag.batteryLevel,
+            batteryMode: tag.batteryMode,
+            speed: tag.speed,
+            originalSpeed: tag.originalSpeed,
+            timestamp: new Date().toISOString(),
+            position: {
+              x: tag.position.x,
+              y: tag.position.y,
+              z: tag.position.y
+            }
           }
-        }
-        tagData.push(newTag)
-      })
-      notifier.updateState({tags: tagData})
-      //primus.write({action: 'SHOW_POSITIONS', positions: tagPositions}) 
-      primus.write({action: 'SEND_DATA', positions: tagData}) //not sure
-    }, interval)
-  })
+          tagData.push(newTag)
+        })
+        notifier.updateState({tags: tagData})
+        //primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
+        primus.write({action: 'SEND_DATA', positions: tagData}) //not sure
+      }, interval)
+    })
+  }
+
 }
 
-export default realtime
+export default Realtime
