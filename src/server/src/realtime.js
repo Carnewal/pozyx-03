@@ -202,7 +202,7 @@ const realtime = (server) => {
       const tagData = []
 
       mgr.tags.forEach(function(tag) { 
-        const tag = {
+        const newTag = {
          /* name: tag.name,
           id: tag.id,
           labels: tag.labels,
@@ -227,13 +227,13 @@ const realtime = (server) => {
           originalSpeed: modelTag.originalSpeed,
           timestamp: new Date().toISOString(),
           position: { 
-                      modelTag.position.x,
-                      modelTag.position.y,
-                      modelTag.position.y
+                  x:    modelTag.position.x,
+                  y:    modelTag.position.y,
+                  z:   modelTag.position.y
           }
         }
 
-        tagData.push(tag)
+        tagData.push(newTag)
 
       })
       notifier.updateState({tags: tagData})
