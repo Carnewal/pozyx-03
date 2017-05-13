@@ -197,22 +197,8 @@ class Realtime {
         const tagData = []
 
         this.mgr.tags.forEach(function(tag) {
+          const timestamp = new Date.toISOString()
           const newTag = {
-            /* name: tag.name,
-             id: tag.id,
-             labels: tag.labels,
-             batteryLevel: tag.batteryLevel,
-             position: {
-             x: tag.position.x,
-             y: tag.position.y,
-             z: tag.position.z,
-             timestamp: new Date().toISOString()
-             },
-             x: tag.position.x,
-             y: tag.position.y,
-             z: tag.position.z,
-             timestamp: new Date().toISOString()
-             */
             name: tag.name,
             id: tag.id,
             labels: tag.labels,
@@ -220,18 +206,22 @@ class Realtime {
             batteryMode: tag.batteryMode,
             speed: tag.speed,
             originalSpeed: tag.originalSpeed,
-            timestamp: new Date().toISOString(),
             position: {
+              timestamp: timestamp,
               x: tag.position.x,
               y: tag.position.y,
               z: tag.position.y
-            }
+            },
+            //for compatibility
+            timestamp: timestamp,
+            x: tag.position.x,
+            y: tag.position.y,
+            z: tag.position.z,
           }
           tagData.push(newTag)
         })
         notifier.updateState({tags: tagData})
-        //primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
-        primus.write({action: 'SEND_DATA', positions: tagData}) //not sure
+        primus.write({action: 'SHOW_POSITIONS', positions: tagData})
       }, interval)
     })
   }
