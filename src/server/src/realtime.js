@@ -197,7 +197,7 @@ class Realtime {
         const tagData = []
 
         this.mgr.tags.forEach(function(tag) {
-          const timestamp = new Date.toISOString()
+          const timestamp = new Date().toISOString()
           const newTag = {
             name: tag.name,
             id: tag.id,
