@@ -2,7 +2,7 @@ import Primus from 'primus'
 import Notifier from './middleware/trigger/notifier'
 import Model from './model'
 
-const maxdistance = {x: 225, y: 150, z: 3} // meter
+const maxdistance = {x: 75, y: 75, z: 3} // meter
 
 const interval = 1000 / 30
 
@@ -64,7 +64,7 @@ class Tag {
 
     if (this.targetLocation && this.haltAtTarget) {
 
-      const margin = 5
+      const margin = 4
 
       //squaring all calculations to prevent using root (performance)
       //(X1 - X2)² + (Y1 - Y2)² = distance²
@@ -124,18 +124,23 @@ class Manager {
    * (optional) teleportLocations: array of locations [x,y] to immediatly teleport tags to
    * (optional) targetLocations: array of locations [x,y] for the tags to move towards (after teleporting)
    * (optional) haltAtTarget: set speed to zero when reached/near targetLocation
-   * calling teleport without parameters (undef, undef, false) resumes tags at their original speed
+   * calling teleport without targetLocation or any parameters (undef, undef, false) resumes tags at their original speed
    */
   teleport(teleportLocations, targetLocations, haltAtTarget = true) {
     this.tags.forEach(function(tag, i) {
 
       tag.speed = tag.originalSpeed
 
-      if (teleportLocations[i] === undefined) {
-        return
+      if (teleportLocations[i]) {
+        tag.position = teleportLocations[i]
       }
 
-      tag.position = teleportLocations[i]
+      if (!targetLocations[i]) {
+        tag.targetLocation = null
+        haltAtTarget = false
+        return 
+      }
+
       tag.targetLocation = targetLocations[i]
       const deltaX = tag.targetLocation.x - tag.position.x
       const deltaY = tag.targetLocation.y - tag.position.y
