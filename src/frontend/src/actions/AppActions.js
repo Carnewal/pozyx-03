@@ -12,6 +12,8 @@ export const SET_VIEWING_ZONES = 'SET_VIEWING_ZONES'
 export const SET_SHOW_SAVE_DIALOG = 'SET_SHOW_SAVE_DIALOG'
 export const SAVE_POINTS = 'SAVE_POINTS'
 export const SET_REMOVING_ZONES = 'SET_REMOVING_ZONES'
+export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
 
 export const toggleTagLabelFilter = (labelId) => ({
   type: TOGGLE_TAG_LABEL_FILTER,
@@ -80,4 +82,14 @@ export const savePoints = (points) => ({
 export const setRemovingZones = (remove) => ({
   type: SET_REMOVING_ZONES,
   remove
+})
+
+export const removeNotification = (id) => ({
+  type: REMOVE_NOTIFICATION,
+  id
+})
+
+export const addNotification = (notification) => ({
+  type: ADD_NOTIFICATION,
+  notification
 })

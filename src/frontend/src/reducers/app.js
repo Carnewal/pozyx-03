@@ -13,7 +13,9 @@ import {
   SET_VIEWING_ZONES,
   SET_SHOW_SAVE_DIALOG,
   SAVE_POINTS,
-  SET_REMOVING_ZONES
+  SET_REMOVING_ZONES,
+  REMOVE_NOTIFICATION,
+  ADD_NOTIFICATION
 } from 'frontend/actions/AppActions'
 import { getCurrentAlertIndex } from 'frontend/selectors/app'
 import { ERROR, WARNING, SUCCESS } from 'frontend/constants/priorities'
@@ -27,7 +29,8 @@ const initialState = {
   viewingZones: true,
   showingDialog: false,
   tempPoints: [],
-  removingZones: false
+  removingZones: false,
+  notifications: []
 }
 
 const resetState = {
@@ -66,7 +69,6 @@ const app = (state = initialState, action) => {
       return Object.assign({}, state, resetState, {currentMap: action.mapId})
     }
     case REMOVE_LABEL: {
-      console.log(action, state.tagLabelFilters.filter((label) => label !== action.labelName))
       return Object.assign({}, state, {tagLabelFilters: state.tagLabelFilters.filter((label) => label !== action.labelName)})
     }
     case TOGGLE_TAG_LABEL_FILTER: {
@@ -124,6 +126,17 @@ const app = (state = initialState, action) => {
     }
     case SET_REMOVING_ZONES: {
       return Object.assign({}, state, {removingZones: action.remove})
+    }
+    case REMOVE_NOTIFICATION: {
+      const notifications = state.notifications.slice()
+      const index = notifications.findIndex((notification) => notification.id === action.id)
+      notifications.splice(index, 1)
+      return Object.assign({}, state, {notifications})
+    }
+    case ADD_NOTIFICATION: {
+      const notifications = state.notifications.slice()
+      notifications.push(action.notification)
+      return Object.assign({}, state, {notifications})
     }
     default:
       return state
