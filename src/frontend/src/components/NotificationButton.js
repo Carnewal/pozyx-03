@@ -10,6 +10,9 @@ import Done from 'material-ui/svg-icons/action/done'
 const style = {
   notifications: {
     cursor: 'hand'
+  },
+  url: {
+    color: 'black'
   }
 }
 
@@ -67,7 +70,7 @@ export default class NotificationButton extends React.Component {
           <List>
             {this.props.notifications.map((notification) => {
                 return <ListItem
-                  primaryText={<a href={notification.url} target='_blank'>{notification.name}</a>}
+                  primaryText={<a style={style.url} href={notification.url} target='_blank'>{notification.name}</a>}
                   secondaryText={notification.time}
                   rightIconButton={
                     <IconButton onTouchTap={() => this.removeNotification(notification)}>
