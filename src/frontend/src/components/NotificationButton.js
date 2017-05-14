@@ -34,6 +34,14 @@ export default class NotificationButton extends React.Component {
     }
   }
 
+  removeNotification(notification) {
+    if (this.props.notifications.length == 1) {
+      this.setState({open: false})
+    }
+
+    this.props.removeNotification(notification.id)
+  }
+
   handleRequestClose() {
     this.setState({
       open: false,
@@ -62,7 +70,7 @@ export default class NotificationButton extends React.Component {
                   primaryText={<a href={notification.url} target='_blank'>{notification.name}</a>}
                   secondaryText={notification.time}
                   rightIconButton={
-                    <IconButton onTouchTap={() => this.props.removeNotification(notification.id)}>
+                    <IconButton onTouchTap={() => this.removeNotification(notification)}>
                       <Done/>
                     </IconButton>
                   }
