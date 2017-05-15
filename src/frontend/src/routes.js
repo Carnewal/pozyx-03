@@ -7,7 +7,7 @@ import Tag from './containers/tag'
 import TagEdit from './containers/tag/Edit'
 import Anchor from './containers/anchor'
 import TriggerTable from './containers/trigger/TableContainer'
-import TriggerBuilder from './components/trigger/Builder'
+import TriggerBuilder from './containers/trigger/BuilderContainer'
 
 export default (
   <Route>

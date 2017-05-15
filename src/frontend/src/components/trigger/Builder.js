@@ -39,9 +39,36 @@ export default class Builder extends React.Component {
       stepIndex: 1,
       //Trigger-building
       triggerFilters: props.triggerFilters || [],
-      triggerEnabled: true,
+      triggerActive: props.triggerActive,
+      triggerComparator: props.triggerComparator || {
+        type: 'atLeast',
+        value: 1
+      },
+      triggerAction: props.triggerAction,
       editingFilter: -1
     }
+  }
+
+  Comparator() {
+    return <div>
+      The amount of tags resulting from the filters applied above should be..
+      <br/>
+      <SelectField floatingLabelText='Select comparator' value={this.state.triggerComparator.type || 'atLeast'} onChange={(e, j, val) => {this.editComparatorType(val)}}>
+        <MenuItem key={0} value={'exactly'} primaryText={'Exactly (=)'} />
+        <MenuItem key={1} value={'atLeast'} primaryText={'At Least (>=)'} />
+        <MenuItem key={2} value={'lessThan'} primaryText={'Less Than (<)'} />
+      </SelectField>
+      <br />
+      <TextField id='compVal' type='number' value={this.state.triggerComparator && this.state.triggerComparator.value} onChange={(e) => {this.editComparatorValue(e.target.value)}}/>
+
+    </div>
+  }
+
+  editComparatorType(type) {
+    this.setState({triggerComparator: {type: type, value: this.state.triggerComparator && this.state.triggerComparator.value}})
+  }
+  editComparatorValue(value) {
+    this.setState({triggerComparator: {type: this.state.triggerComparator && this.state.triggerComparator.type, value: value}})
   }
 
   FilterList() {
@@ -90,7 +117,7 @@ export default class Builder extends React.Component {
       text: (value) => `With any of labels: ${value.map((v) => this.props.labels.find((l) => l.id === v).name).join(', ')}`,
       editComponent: (i) =>
         <SelectField multiple floatingLabelText='Select labels' value={this.state.triggerFilters[i].value} onChange={(e, j, val) => {this.editFilterValue(i, val)}}>
-          {this.props.labels.map((z, j) => <MenuItem key={j} value={z.id} primaryText={z.name} />)}
+          {this.props.labels && this.props.labels.map((z, j) => <MenuItem key={j} value={z.id} primaryText={z.name} />)}
         </SelectField>
     },
     battery: {
@@ -192,7 +219,6 @@ export default class Builder extends React.Component {
   }
 
   editFilterValue = (i, value) => {
-    console.log(value)
     const ns = [...this.state.triggerFilters]
     ns[i] = Object.assign({}, ns[i], { value: value })
     this.setState({ triggerFilters: ns })
@@ -233,7 +259,7 @@ export default class Builder extends React.Component {
 
   toggleTriggerEnabled() {
     return () => {
-      this.setState({triggerEnabled: !this.state.triggerEnabled})
+      this.setState({triggerActive: !this.state.triggerActive})
     }
   }
 
@@ -278,8 +304,10 @@ export default class Builder extends React.Component {
         )
       case 1:
         return <div>
-          <p>Now we build a chain of filters to apply to the tags on this map.</p>
-          {this.FilterList()}<br/>
+          <p>Here you can define some filters to apply to the tags on the map.</p>
+          {this.FilterList()}
+          <br/>
+          {this.Comparator()}
         </div>
       case 2:
         return (
@@ -292,7 +320,7 @@ export default class Builder extends React.Component {
             <Toggle
               label='Enable your trigger?'
               labelPosition='right'
-              toggled={this.state.triggerEnabled}
+              toggled={this.state.triggerActive}
               onToggle={this.toggleTriggerEnabled()}
             />
           </p>
@@ -380,7 +408,9 @@ Builder.propTypes = {
   zones: PropTypes.array,
   triggerId: PropTypes.number,
   triggerFilters: PropTypes.array,
-  triggerEnabled: PropTypes.bool,
+  triggerAction: PropTypes.object,
+  triggerComparator: PropTypes.object,
+  triggerActive: PropTypes.bool,
   createTrigger: PropTypes.func,
   publishTrigger: PropTypes.func,
 }
