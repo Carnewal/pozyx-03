@@ -9,6 +9,7 @@ import Check from 'material-ui/svg-icons/navigation/check'
 import Menu from 'material-ui/svg-icons/navigation/menu'
 import ViewModule from 'material-ui/svg-icons/action/view-module'
 import {white} from 'material-ui/styles/colors'
+import NotificationButton from 'frontend/containers/NotificationContainer'
 
 class Header extends React.Component {
 
@@ -44,6 +45,7 @@ class Header extends React.Component {
               }
               iconElementRight={
                 <div style={style.iconsRightContainer}>
+                  <NotificationButton />
                   <IconMenu color={white}
                             iconButtonElement={
                               <IconButton>

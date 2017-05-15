@@ -2,18 +2,29 @@ import Primus from 'primus'
 import Notifier from './middleware/trigger/notifier'
 import Model from './model'
 
-const maxdistance = {x: 225, y: 150, z: 3} // meter
+const maxdistance = {x: 75, y: 75, z: 3} // meter
 
 const interval = 1000 / 30
 
-const BatteryModes = {   CHARGE: {value : 0.1},
-                         DRAIN: {value: -0.1},
-                         FREEZE: {value: 0} 
+const BatteryModes = {
+  CHARGE: {value: 0.001},
+  DRAIN: {value: -0.001},
+  FREEZE: {value: 0}
 }
 
 class Tag {
-  constructor(tagId, speed) {
-    this.tagId = tagId
+  constructor(modelTag, speed) {
+
+    // Properties that are also part of the model
+    this.id = modelTag.id
+    this.name = modelTag.name
+    this.hardwareVersion = modelTag.hardwareVersion
+    this.firmwareVersion = modelTag.firmwareVersion
+    this.battery = 1.0                 //hardcoded
+    this.labels = []
+    modelTag.labels.forEach((label) => this.labels.push(label.dataValues))
+
+    // Behavioral properties
     this.timestamp = new Date().toISOString()
     this.position = {
       x: Math.random() * maxdistance.x,
@@ -22,14 +33,16 @@ class Tag {
     }
     const x = 1 - Math.random() * 2
     const y = Math.random() > 0.5 ? Math.sqrt(1.0 - x * x) : -Math.sqrt(1.0 - x * x)
-    this.direction = { // should be unitvector
+    this.direction = {                      // should be unitvector
       x: x,
       y: y,
       z: 0
     }
     this.speed = speed
-    this.batteryLevel = 1.0
-    this.batteryMode = BatteryModes.FREEZE
+    this.originalSpeed = speed
+    this.haltAtTarget = true
+    this.targetLocation = false
+    this.batteryMode = BatteryModes.FREEZE  //discharging disabled
   }
 
   moveInDirection(dir, val) {
@@ -52,21 +65,21 @@ class Tag {
   }
 
   move() {
-    if (this.speed == 0) {
+    if (this.speed === 0) {
       return
     }
 
-    if (this.haltAtTarget) {
-      //squaring all calculations to prevent using root
-      let distance = (maxdistance.x * maxdistance.x + maxdistance.y * maxdistance.y)  
-      let margin = distance / 100 * 5 //5 percent error margin
+    if (this.targetLocation && this.haltAtTarget) {
 
-      //untested, may and probably totally wont work
-      if (((this.targetLocation.x - this.position[x]) * (this.targetLocation.x - this.position[x]) //(X1 - X2)² + (Y1 - Y2)² = distance²
-          + (this.targetLocation.y - this.position[y]) * (this.targetLocation.y - this.position[y])) / distance < margin) {
-          this.speed = 0
-          return
-      } 
+      const margin = 4
+
+      //squaring all calculations to prevent using root (performance)
+      //(X1 - X2)² + (Y1 - Y2)² = distance²
+      if (((this.targetLocation.x - this.position.x) * (this.targetLocation.x - this.position.x) ///(X1 - X2) * (X1 - X2) => (X1 - X2)²
+        + (this.targetLocation.y - this.position.y) * (this.targetLocation.y - this.position.y)) < (margin * margin)) {
+        this.speed = 0
+        return
+      }
     }
 
     this.moveInDirection("x")
@@ -74,22 +87,22 @@ class Tag {
     this.moveInDirection("z")
   }
 
-  batteryTick(){
-   if (this.batteryMode = BatteryModes.FREEZE){
-    return
-   }
+  batteryTick() {
+    if (this.batteryMode === BatteryModes.FREEZE) {
+      return
+    }
 
-   this.batteryLevel += this.batteryMode.value
+    this.battery += this.batteryMode.value
 
-   if (this.batteryLevel > 1.0) {
-    this.batteryMode = BatteryModes.FREEZE
-    this.batteryLevel = 1.0
-   }
+    if (this.battery > 1.0) {
+      this.batteryMode = BatteryModes.FREEZE
+      this.battery = 1.0
+    }
 
-  if (this.batteryLevel < 0.0) {
-    this.batteryMode = BatteryModes.FREEZE
-    this.batteryLevel = 0.0
-   }
+    if (this.battery < 0.0) {
+      this.batteryMode = BatteryModes.FREEZE
+      this.battery = 0.0
+    }
 
   }
 }
@@ -102,7 +115,7 @@ class Manager {
       const rand = speed * (factor / 3)
       const adjusted_speed = speed + (rand / 2) - (Math.random() * rand) // randomly +/- factor speed
       this.adjusted_speed *= interval / 5000 // take interval into account
-      this.tags.push(new Tag(tags[i].id, adjusted_speed))
+      this.tags.push(new Tag(tags[i], adjusted_speed))
     }
   }
 
@@ -114,107 +127,120 @@ class Manager {
     })
   }
 
-    /**
-      * (optional) teleportLocations: array of locations [x,y] to immediatly teleport tags to
-      * (optional) targetLocations: array of locations [x,y] for the tags to move towards (after teleporting)
-      * (optional) haltAtTarget: set speed to zero when reached (near) targetLocation
-      */
-    teleport(teleportLocations, targetLocations, haltAtTarget = false) { 
-      let i = 0
-      this.tags.forEach(function(tag) {
-        if (teleportLocations[i] !== undefined) {
-          tag.position = teleportLocations[i]
-        } 
+  /**
+   * (optional) teleportLocations: array of locations [x,y] to immediatly teleport tags to
+   * (optional) targetLocations: array of locations [x,y] for the tags to move towards (after teleporting)
+   * (optional) haltAtTarget: set speed to zero when reached/near targetLocation
+   * calling teleport without targetLocation or any parameters (undef, undef, false) resumes tags at their original speed
+   */
+  teleport(teleportLocations, targetLocations, haltAtTarget = true) {
+    this.tags.forEach(function(tag, i) {
 
-        if (targetLocations[i] === undefined) {
-          return
-        }
+      tag.speed = tag.originalSpeed
 
-        tag.direction = {
-          x: (targetLocations[i].x - this.position[x]) / maxdistance.x,
-          y: (targetLocations[i].y - this.position[y]) / maxdistance.y,
-          z: 0
-        } 
+      if (teleportLocations[i]) {
+        tag.position = teleportLocations[i]
+      }
 
-        this.targetLocation = targetLocations[i]
-        this.haltAtTarget = haltAtTarget
-        i++
-      })
-    }
+      if (!targetLocations[i]) {
+        tag.targetLocation = null
+        haltAtTarget = false
+        return 
+      }
+
+      tag.targetLocation = targetLocations[i]
+      const deltaX = tag.targetLocation.x - tag.position.x
+      const deltaY = tag.targetLocation.y - tag.position.y
+      const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+      tag.direction = {
+        x: deltaX / length,
+        y: deltaY / length,
+        z: 0
+      }
+
+
+      tag.haltAtTarget = haltAtTarget
+    })
+  }
 
   /**
-    * mode: {charge, drain, freeze}
-    */
+   *
+   * @param modes Applicable modes are "CHARGE", "DRAIN" and "FREEZE"
+   */
   setBatteryMode(modes) {
-    let i = 0
-    this.tags.forEach(function(tag) {
-      switch (modes[i]) {
-        case charge:
-          this.batteryMode = BatteryModes.CHARGE
-          break
-        case drain:
-           this.batteryMode = BatteryModes.DRAIN
-          break
-        case freeze:
-           this.batteryMode = BatteryModes.FREEZE
-          break
-        default:
-          console.log("setBatteryMode function invoked with a parameter other as 'charge', 'drain' or 'freeze'")
-      }
-      i++
+    if (modes instanceof Array) {
+      // assign each tags their respective mode (same index)
+      // if there are more tags than modes given the first mode is used for the remainder of tags
+      this.tags.forEach((tag, i) => tag.batteryMode = modes[i] ? BatteryModes[modes[i]] : BatteryModes[modes[0]])
+    } else if (BatteryModes[modes]) {
+      // when modes isn't an array it is assumed it's a battery mode for all tags
+      this.tags.forEach((tag) => tag.batteryMode = BatteryModes[modes])
+    }
+  }
+
+}
+
+class Realtime {
+
+  constructor(server) {
+    const primus = new Primus(server, {})
+    const notifier = new Notifier(primus)
+    notifier.initState(2) //INIT with map id 2
+    notifier.initTriggers(2)
+
+    primus.on('connection', () => {
+      console.log('client connected')
+    })
+
+    Model.Tag.findAll({
+      where: {
+        mapId: 2 ////hardcoded
+      },
+      include: [
+        {model: Model.Label, through: Model.TagLabel, as: 'labels'},
+      ]
+    }).then((tags) => {
+      this.mgr = new Manager(
+        tags, // tags from db
+        1, // speed in meter / s
+        interval, // interval time in ms
+        5 // +/- random factor on speed
+      )
+      this.timer = setInterval(() => {
+        this.mgr.update()
+
+        const tagData = []
+
+        this.mgr.tags.forEach(function(tag) {
+          const timestamp = new Date().toISOString()
+          const newTag = {
+            name: tag.name,
+            id: tag.id,
+            labels: tag.labels,
+            battery: tag.battery,
+            batteryMode: tag.batteryMode,
+            speed: tag.speed,
+            originalSpeed: tag.originalSpeed,
+            position: {
+              timestamp: timestamp,
+              x: tag.position.x,
+              y: tag.position.y,
+              z: tag.position.y
+            },
+            //for compatibility
+            timestamp: timestamp,
+            x: tag.position.x,
+            y: tag.position.y,
+            z: tag.position.z,
+          }
+          tagData.push(newTag)
+        })
+        notifier.updateState({tags: tagData})
+        primus.write({action: 'SHOW_POSITIONS', positions: tagData})
+      }, interval)
     })
   }
 
 }
 
-const realtime = (server) => {
-  const primus = new Primus(server, {})
-  const notifier = new Notifier() //TODO notifier integreren in live data
-  notifier.initState(2) //INIT with map id 2
-  notifier.initTriggers(2)
-
-  primus.on('connection', () => {
-    console.log('client connected')
-  })
-
-  Model.Tag.findAll({
-    where: {
-      mapId: 2 ////hardcoded
-    }
-  }).then((tags) => {
-    const mgr = new Manager(
-      tags, // tags from db
-      1, // speed in meter / s
-      interval, // interval time in ms
-      5 // +/- random factor on speed
-    )
-    setInterval(() => {
-      mgr.update()
-
-      const tagPositions = []
-
-      mgr.tags.forEach(function(tag) { 
-        const tagPosition = {
-          tagId: tag.tagId,
-          id: tag.tagId,
-          position: {
-            x: tag.position.x,
-            y: tag.position.y,
-            z: tag.position.z,
-            timestamp: new Date().toISOString()
-          },
-          x: tag.position.x,
-          y: tag.position.y,
-          z: tag.position.z,
-          timestamp: new Date().toISOString()
-
-        }
-        tagPositions.push(tagPosition)
-      })
-      notifier.updateState({tags: tagPositions})
-      primus.write({action: 'SHOW_POSITIONS', positions: tagPositions})
-    }, interval)
-  })
-}
-
-export default realtime
+export default Realtime

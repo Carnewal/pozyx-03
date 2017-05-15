@@ -12,7 +12,8 @@ import bodyParser from 'body-parser'
 // Routes
 import apiRoute from './route/api'
 
-import realtime from './realtime'
+import Realtime from './realtime'
+import command from './command'
 import model from './model'
 
 const app = new express()
@@ -68,7 +69,7 @@ model.sequelize.sync().then(function() {
     console.log(`Listening at http://${ipaddress}`)
     /* eslint-enable */
   })
-  realtime(server)
+  command(app, new Realtime(server))
 })
 
 export default app

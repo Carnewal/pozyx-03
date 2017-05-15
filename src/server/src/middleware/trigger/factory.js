@@ -4,21 +4,24 @@ import Action from './action'
 
 class Factory {
 
-  buildTrigger(args) {
-    const compare = new Comparator(args.amountValue)[args.amount]
-    const filter = new Filter(args.filterValue)
+  buildTrigger(modelTrigger) {
+    const json = JSON.parse(modelTrigger.json)
+    const comparator = new Comparator(json.comparator.value, json.comparator.type)
+    const filters = []
+    json.filters.forEach((filter) => {
+      filters.push(new Filter(filter.value, filter.type))
+    })
     const trigger = {}
 
     trigger.check = (state) => {
-      const objects = state[args.objects]
-      let size = 0
-      objects.forEach((value) => {
-        if (filter[args.filter](value)) size++
-      })
-      return compare(size, args.value)
+      const tags = Array.from(state.tags.values())
+      trigger.tags = filters.reduce((acc, filter) => acc.length > 0 ? filter.execute(acc, state) : [], tags)
+      return comparator.execute(trigger.tags.length)
     }
 
-    trigger.action = new Action(args.actionMessage)[args.action]
+    trigger.action = new Action(json.action.value, json.action.type)
+    trigger.name = modelTrigger.dataValues.name
+    trigger.id = modelTrigger.dataValues.id
 
     return trigger
   }

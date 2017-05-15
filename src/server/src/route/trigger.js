@@ -21,27 +21,37 @@ const api = Router()
  *           "id": 1,
  *           "name": "At least five tags in exit zone",
  *           "active": true,
- *           "amountValue": 5,
- *           "amount": "atLeast",
- *           "objects": "tags",
- *           "filterValue": "1",
- *           "filter": "inZone",
- *           "action": "print",
- *           "actionMessage": "At least five tags in exit zone"
+ *           "json": "json string, example below"
  *         },
  *         {
  *           "id": 2,
  *           "name": "At least one tag with low battery",
  *           "active": true,
- *           "amountValue": 1,
- *           "amount": "atLeast",
- *           "objects": "tags",
- *           "filterValue": "20",
- *           "filter": "battery",
- *           "action": "print",
- *           "actionMessage": "At least one tag with low battery"
+ *           "json": "json string, example below"
  *         }
  *       ]
+ *     }
+ *
+ *     Example of parsed "json string"
+ *     {
+ *       "filters": [
+ *         {
+ *           "type": "inZone",
+ *           "value": 1
+ *         },
+ *         {
+ *           "type": "battery",
+ *           "value": [0, 0.2]
+ *         }
+ *       ],
+ *       "comparator": {
+ *         "type": "atLeast",
+ *         "value": 5
+ *       },
+ *       "action": {
+ *         "type": "print",
+ *         "value": "Message that will be printed when triggered."
+ *       }
  *     }
  */
 api.get('/map/:map_id/triggers', (req, res) => {
@@ -86,17 +96,14 @@ api.post('/map/:map_id/triggers', (req, res) => {
  * TODO Docs
  */
 api.put('/map/:map_id/trigger/:trigger_id', (req, res) => {
-  model.update(
+  model.Trigger.update(
     {
+      mapId: req.params.map_id,
       active: req.body.active,
-      amount: req.body.amount,
-      amountValue: req.body.amountValue,
-      objects: req.body.objects,
-      filter: req.body.filter,
-      filterValue: req.body.filterValue,
-      action: req.body.action
+      name: req.body.name,
+      json: JSON.stringify(req.body.json),
     },
-    {where: {id: req.param.trigger_id}}
+    {where: {id: req.params.trigger_id}}
   ).then((trigger) => {
     res.status(200).json(trigger)
   }).catch((err) => {
