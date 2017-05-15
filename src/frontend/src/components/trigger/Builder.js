@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import { fromJS } from 'immutable'
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper'
+import { grey500,pink500, grey200 } from 'material-ui/styles/colors'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import PageBase from 'frontend/components/layout/PageBase'
@@ -8,33 +9,207 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
+import Avatar from 'material-ui/Avatar';
+
 import {List, ListItem, makeSelectable} from 'material-ui/List'
 import Toggle from 'material-ui/Toggle'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
-import {
-  expectedValues,
-  typeLabels,
-  buildListItemEntry
-} from 'frontend/components/trigger/util'
-
+import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
+import LightbulbOutline from 'material-ui/svg-icons/action/lightbulb-outline'
+import BatteryFull from 'material-ui/svg-icons/device/battery-full'
+import WarningIcon from 'material-ui/svg-icons/alert/warning'
+import MapIcon from 'material-ui/svg-icons/maps/map'
+import TagIcon from 'material-ui/svg-icons/maps/my-location'
+import AnchorIcon from 'material-ui/svg-icons/action/perm-scan-wifi'
 
 const SelectableList = makeSelectable(List)
 
-
 export default class Builder extends React.Component {
-  state = {
-    //Steps
-    loading: false,
-    finished: false,
-    stepIndex: 0,
-    //Trigger-building
-    selectedItemPath: [],
-    triggerId: null,
-    triggerTree: {},
-    triggerEnabled: true,
+
+  constructor(props, c) {
+    super(props, c)
+    this.state = {
+      //Steps
+      loading: false,
+      finished: false,
+      stepIndex: 1,
+      //Trigger-building
+      triggerFilters: props.triggerFilters || [],
+      triggerEnabled: true,
+      editingFilter: -1
+    }
+  }
+
+  FilterList() {
+    return(
+      <div style={{ border: 'solid 1px #d9d9d9' }}>
+        <SelectableList>
+          <Subheader>
+            Trigger Filters
+            <FlatButton
+              label='Add Filter'
+              labelPosition='after'
+              secondary
+              icon={<ContentAdd />}
+              onTouchTap={this.addFilter}
+            />
+          </Subheader>
+          <Divider />
+          {this.state.triggerFilters && this.state.triggerFilters.length > 0 && this.state.triggerFilters.map((filter, i) => this.FilterListItem(filter, i)) || <div>Start adding filters by pressing the button above.</div>}
+        </SelectableList>
+      </div>
+    )
+  }
+
+  filterTypes = {
+    inZone: {
+      icon: <MapIcon />,
+      description: 'Inside Zone',
+      text: (value) => `Inside zone ${this.props.zones.find((z) => z.id === value).name}`,
+      editComponent: (i) =>
+        <SelectField floatingLabelText='Select a zone' value={this.state.triggerFilters[i].value} onChange={(e, j, val) => {this.editFilterValue(i, val)}}>
+          {this.props.zones.map((z, j) => <MenuItem key={j} value={z.id} primaryText={z.name} />)}
+        </SelectField>
+    },
+    outZone: {
+      icon: <MapIcon />,
+      description: 'Outside Zone',
+      text: (value) => `Outside zone ${this.props.zones.find((z) => z.id === value).name}`,
+      editComponent: (i) =>
+        <SelectField floatingLabelText='Select a zone' value={this.state.triggerFilters[i].value} onChange={(e, j, val) => {this.editFilterValue(i, val)}}>
+          {this.props.zones.map((z, j) => <MenuItem key={j} value={z.id} primaryText={z.name} />)}
+        </SelectField>
+    },
+    labels: {
+      icon: <KeyboardArrowRight />,
+      description: 'With Labels',
+      text: (value) => `With any of labels: ${value.map((v) => this.props.labels.find((l) => l.id === v).name).join(', ')}`,
+      editComponent: (i) =>
+        <SelectField multiple floatingLabelText='Select labels' value={this.state.triggerFilters[i].value} onChange={(e, j, val) => {this.editFilterValue(i, val)}}>
+          {this.props.labels.map((z, j) => <MenuItem key={j} value={z.id} primaryText={z.name} />)}
+        </SelectField>
+    },
+    battery: {
+      icon: <BatteryFull />,
+      description: 'With Battery percentage',
+      text: (value) => `With a battery between ${Math.round(value[0] * 100)} and ${Math.round(value[1]*100)}%`
+    },
+    name: {
+      icon: <KeyboardArrowRight />,
+      description: 'With Name containing',
+      text: (value) => `With a name containing "${value}"`,
+      editComponent: (i) =>
+      <TextField
+        value={this.state.triggerFilters[i].value}
+        onChange={(e) => {this.editFilterValue(i, e.target.value)}}
+      />
+
+    },
+  }
+
+  TypeSelect() {
+    return  <SelectField
+      floatingLabelText='Select type'
+      value={this.state.triggerFilters[this.state.editingFilter].type}
+      onChange={this.setEditFilterType}
+      autoWidth={true}
+    >
+      {Object.keys(this.filterTypes).map(
+        (ft) => <MenuItem value={ft} primaryText={this.filterTypes[ft].description} />
+      )}
+    </SelectField>
+  }
+
+  FilterListItem(filter, i) {
+    const filterType = this.filterTypes[filter.type]
+    const editing = (i === this.state.editingFilter)
+
+    if(filterType && editing) {
+      return <ListItem leftIcon={<KeyboardArrowRight />} key={i} value={i} >
+        {this.TypeSelect()}
+        <br/>
+        {this.filterTypes[filter.type].editComponent && this.filterTypes[filter.type].editComponent(i)}
+        <br/>
+        <FlatButton label='Ok' primary={true} onTouchTap={() => {this.setEditFilter(-1)}}/>
+      </ListItem>
+    } else if(!filterType && editing) {
+      return <ListItem leftIcon={<KeyboardArrowRight />} value={i} key={i} >
+        {this.TypeSelect()}
+      </ListItem>
+    } else if(filterType && !editing) {
+      return <ListItem
+        primaryText={filter.value && filterType.text(filter.value) || `${filterType.description} (empty)` }
+        leftIcon={filterType.icon || <WarningIcon />}
+        key={i}
+        value={i}
+        onTouchTap={()=>{this.setEditFilter(i)}}
+      />
+    } else {
+      return <ListItem
+        primaryText={'Empty filter'}
+        leftIcon={<WarningIcon />}
+        key={i}
+        value={i}
+        onTouchTap={()=>{this.setEditFilter(i)}}
+      />
+    }
+  }
+
+  EditItem(i) {
+    if(i < 0 || !this.state.triggerFilters[i]) {
+      return <div>No item selected</div>
+    } else {
+      const filter = this.state.triggerFilters[i]
+      return <div>
+        <SelectField
+          floatingLabelText='Select type'
+          value={this.state.triggerFilters[this.state.editingFilter].type}
+          onChange={this.setEditFilterType}
+          autoWidth={true}
+          >
+          {Object.keys(this.filterTypes).map(
+            (ft) => <MenuItem value={ft} primaryText={this.filterTypes[ft].description} />
+          )}
+        </SelectField>
+        {filter.type && this.filterTypes[filter.type].editComponent && this.filterTypes[filter.type].editComponent(i)}
+
+      </div>
+    }
+  }
+
+
+
+
+  editFilterValue = (i, value) => {
+    const ns = [...this.state.triggerFilters]
+    ns[i] = Object.assign({}, ns[i], { value: value })
+    this.setState({ triggerFilters: ns })
+  }
+
+  setEditFilter = (index) => {
+    this.setState({editingFilter: index})
+  }
+
+  setEditFilterType = (e, i, type) => {
+    const ns = [...this.state.triggerFilters]
+    ns[this.state.editingFilter] = { type: type }
+    this.setState({ triggerFilters: ns })
+  }
+
+  addFilter = () => {
+    this.setState(
+      {
+        triggerFilters: [...this.state.triggerFilters, {}],
+        editingFilter: this.state.triggerFilters.length
+      }
+    )
+  }
+
+  publishTrigger = () => {
+
   }
 
   toggleTriggerEnabled() {
@@ -43,183 +218,14 @@ export default class Builder extends React.Component {
     }
   }
 
-  // Util
-  getSelectedItem() {
-    return fromJS(this.state.triggerTree).getIn(this.getSelectedItemKeyPath()).toJS()
-  }
+  // Page
 
-  getSelectedItemKeyPath() {
-    const {triggerTree, selectedItemPath} = this.state
-    const tree = fromJS(triggerTree)
-    let keyPath = []
-    selectedItemPath.forEach((p, i) => {
-      if(i > 0 && i <= selectedItemPath.length - 1 && tree.hasIn([...keyPath, 'value', 'children'])) {
-        keyPath = [...keyPath, 'value', 'children', selectedItemPath[i]]
-      }
-    })
-    return keyPath
-  }
-
-  // Builder
-  builder() {
-    const {selectedItemPath} = this.state
-    return selectedItemPath
-      ? this.builderBlock(this.getSelectedItem())
-      : <div>Select an item to start editing.</div>
-  }
-
-  builderBlock(item) {
-    return (
-      <div>
-        <SelectField floatingLabelText='Type' value={item.type || null} onChange={this.handleTypeChange()}>
-          {Object.keys(typeLabels).map((t) => <MenuItem key={t} value={t} primaryText={typeLabels[t]} />)}
-        </SelectField> <br/>
-        {
-          item.type && expectedValues[item.type].map(
-            (name) => this.builderComponent(name, item.value[name])
-          )
-        }
-      </div>
-    )
-  }
-
-  builderComponent(name, value) {
-    return this.bldrComponents[name] && this.bldrComponents[name](name, value) || <span>Not found: {name}</span>
-  }
-
-  // Builder Item Click Handlers
-  handleTypeChange() {
-    return (event, index, value) => {
-      this.setSelectedItemType(value)
-    }
-  }
-
-  handleAddChild(name) { // Name will most likely be children
-    return () => {
-      const item = this.getSelectedItem()
-      this.setSelectedItemValue(name, item.value[name] ? [...item.value[name], {}] : [{}])
-    }
-  }
-
-  handleSelectChange(name) {
-    return (event, index, value) => {
-      this.setSelectedItemValue(name, value)
-    }
-  }
-  handleTextChange(name) {
-    return (event, value) => {
-      this.setSelectedItemValue(name, value)
-    }
-  }
-  //
-
-  setSelectedItemType(type) {
-    const tree = fromJS(JSON.parse(JSON.stringify(this.state.triggerTree)))
-    const newTree = tree.setIn(
-      [...this.getSelectedItemKeyPath(), 'type'],
-      type
-    ).setIn(
-      [...this.getSelectedItemKeyPath(), 'value'],
-      {}
-    )
-    this.setState({triggerTree: newTree.toJS()})
-  }
-
-  setSelectedItemValue (name, value) {
-    const tree = fromJS(JSON.parse(JSON.stringify(this.state.triggerTree)))
-    const newTree = tree.updateIn(
-      [...this.getSelectedItemKeyPath(), 'value', name],
-      () => value
-    )
-    this.setState({triggerTree: newTree.toJS()})
-  }
-
-  bldrComponents = {
-    children: (name, value) => <RaisedButton label={`Add child (${value && value.length || 0})`} primary onTouchTap={this.handleAddChild(name)} icon={<ContentAdd />}/>,
-    condition: (name, value) => <SelectField floatingLabelText='Condition' value={value} onChange={this.handleSelectChange(name)}>
-        <MenuItem value={'any'} primaryText='Any' />
-        <MenuItem value={'all'} primaryText='All' />
-        <MenuItem value={'none'} primaryText='None' />
-      </SelectField>,
-      operator: (name, value) => <SelectField floatingLabelText='Operator' value={value} onChange={this.handleSelectChange(name)}>
-          <MenuItem key={1} value={'='} primaryText='Equal' />
-          <MenuItem key={2} value={'!='} primaryText='Not Equal' />
-          <MenuItem key={3} value={'>'} primaryText='More Than' />
-          <MenuItem key={4} value={'>='} primaryText='More Than Or Equal' />
-          <MenuItem key={5} value={'<'} primaryText='Less Than' />
-          <MenuItem key={6} value={'<='} primaryText='Less Than Or Equal' />
-        </SelectField>,
-      logic: (name, value) => <SelectField floatingLabelText='Logic' value={value} onChange={this.handleSelectChange(name)}>
-          <MenuItem key={1} value={'and'} primaryText='AND' />
-          <MenuItem key={2} value={'or'} primaryText='OR' />
-        </SelectField>,
-      tagIds: (name, value) => <SelectField floatingLabelText='Select tags' multiple value={value} onChange={this.handleSelectChange(name)}>
-          {this.props.tags.map((t, i) => <MenuItem key={i} value={t.id} primaryText={t.name} />)}
-        </SelectField>,
-      anchorIds: (name, value) => <SelectField floatingLabelText='Select anchors' multiple value={value} onChange={this.handleSelectChange(name)}>
-          {this.props.anchors.map((t, i) => <MenuItem key={i} value={t.id} primaryText={t.name} />)}
-        </SelectField>,
-      labelIds: (name, value) => <SelectField floatingLabelText='Select labels' multiple value={value} onChange={this.handleSelectChange(name)}>
-            {this.props.labels.map((l, i) => <MenuItem key={i} value={l.id} primaryText={l.name} />)}
-          </SelectField>,
-      zoneId: (name, value) => <SelectField floatingLabelText='Select a zone' value={value} onChange={this.handleSelectChange(name)}>
-            {this.props.zones.map((z, i) => <MenuItem key={i} value={z.id} primaryText={z.name} />)}
-          </SelectField>,
-      status: (name, value) => <TextField floatingLabelText='Status' value={value} onChange={this.handleTextChange(name)} />,
-      percentage: (name, value) => <TextField type='number' min={0} max={1} step={0.05} floatingLabelText='Percentage (0 to 1)' value={value} onChange={this.handleTextChange(name)} />,
-      amount: (name, value) => <TextField type='number' min={0} step={1} floatingLabelText='Amount' value={value} onChange={this.handleTextChange(name)} />,
-      number: (name, value) => <TextField value={value} floatingLabelText='Number' onChange={this.handleTextChange(name)} />
-  }
-
-
-  // List
-  selectItemPath (indexPath) {
-    this.setState({selectedItemPath: indexPath})
-  }
-
-  buildList() {
-    const {triggerTree, selectedItemPath} = this.state
-    return <div style={{ border: 'solid 1px #d9d9d9' }}>
-      <SelectableList value={selectedItemPath.join(',')}>
-        <Subheader>Trigger Items: For the Trigger to fire, ...</Subheader>
-        <Divider />
-        {triggerTree.type
-          ? this.buildListItem(triggerTree, [0])
-          : <p style={{paddingLeft: 10}}>This trigger has no items yet, add one!</p>
-        }
-      </SelectableList>
-    </div>
-  }
-
-  buildListItem(tree, indexPath) {
-    const {icon, text} = buildListItemEntry(tree)
-    return <ListItem
-      primaryText={text}
-      leftIcon={icon}
-      initiallyOpen={true}
-      key={indexPath.join(',')}
-      value={indexPath.join(',')}
-      //primaryTogglesNestedList={true}
-      onTouchTap={()=>{this.selectItemPath(indexPath)}}
-      nestedItems={tree.type === 'logical' &&
-        tree.value &&
-        tree.value.children &&
-        tree.value.children.length &&
-        tree.value.children.map((child, i) => this.buildListItem(child, [...indexPath, i])) ||
-        []
-      }
-      />
-  }
 
   dummyAsync = (cb) => {
     this.setState({loading: true}, () => {
       this.asyncTimer = setTimeout(cb, 500)
     })
   };
-
-  publishTrigger = () => {
-
-  }
 
   handleNext = () => {
     const {stepIndex} = this.state
@@ -253,16 +259,17 @@ export default class Builder extends React.Component {
         )
       case 1:
         return <div>
-          {this.builder()}<br/>
-          {this.buildList()}
+          <p>Now we build a chain of filters to apply to the tags on this map.</p>
+          {this.FilterList()}<br/>
         </div>
       case 2:
         return (
           <p>
-            Woot! You are almost ready to publish your newly created trigger. You have one more decision to make:
+            Woot! You are almost ready to publish your newly created trigger. You have two more decisions to make:
+            <br />
+            <TextField floatingLabelText='Trigger name' ref='triggerName' />
             <br />
             <br />
-
             <Toggle
               label='Enable your trigger?'
               labelPosition='right'
@@ -353,10 +360,12 @@ Builder.propTypes = {
   labels: PropTypes.array,
   zones: PropTypes.array,
   triggerId: PropTypes.number,
-  triggerTree: PropTypes.object,
+  triggerFilters: PropTypes.array,
   triggerEnabled: PropTypes.bool,
   createTrigger: PropTypes.func,
-  publishTrigger: PropTypes.func
+  publishTrigger: PropTypes.func,
+  addFilter: PropTypes.func,
+  removeFilter: PropTypes.func,
 }
 
 Builder.defaultProps = {
@@ -364,6 +373,36 @@ Builder.defaultProps = {
   tags: [{ id: 3, name: 'Max' }, { id: 4, name: 'Eva' }],
   zones: [{ id: 5, name: 'Z5' }, { id: 6, name: 'Z6' }],
   labels: [{ id: 7, name:'Shop' }, { id: 8, name:'House' }],
+  /*triggerFilters:[
+      {
+        type: "inZone",
+        value: 2
+      },
+      {
+        type: "outZone",
+        value: 2
+      },
+      {
+        type: "battery",
+        value: [0, 0.2]
+      },
+      {
+        type: "labels",
+        value: ['warehouse', 'shop', 'store']
+      },
+      {
+        type: "name",
+        value: "name contains string"
+      },
+      {
+        type: "hardwareVersion",
+        value: ["1.2.3", "1.2.5"]
+      },
+      {
+        type: "firmwareVersion",
+        value: ["1.2.3", "1.2.5"]
+      }
+  ],*/
   createTrigger: () => {},
   publishTrigger: () => {}
 }

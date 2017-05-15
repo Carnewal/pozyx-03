@@ -5,4 +5,4 @@ import trigger from 'frontend/reducers/trigger'
 import zone from 'frontend/reducers/zone'
 import app from 'frontend/reducers/app'
 
-export default {map, tag, anchor, app, trigger}
+export default {map, tag, anchor, app, trigger, zone}
