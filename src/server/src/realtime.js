@@ -14,10 +14,17 @@ const BatteryModes = {
 
 class Tag {
   constructor(modelTag, speed) {
+
+    // Properties that are also part of the model
     this.id = modelTag.id
     this.name = modelTag.name
+    this.hardwareVersion = modelTag.hardwareVersion
+    this.firmwareVersion = modelTag.firmwareVersion
+    this.battery = 1.0                 //hardcoded
     this.labels = []
     modelTag.labels.forEach((label) => this.labels.push(label.dataValues))
+
+    // Behavioral properties
     this.timestamp = new Date().toISOString()
     this.position = {
       x: Math.random() * maxdistance.x,
@@ -35,7 +42,6 @@ class Tag {
     this.originalSpeed = speed
     this.haltAtTarget = true
     this.targetLocation = false
-    this.batteryLevel = 1.0                 //hardcoded
     this.batteryMode = BatteryModes.FREEZE  //discharging disabled
   }
 
@@ -86,16 +92,16 @@ class Tag {
       return
     }
 
-    this.batteryLevel += this.batteryMode.value
+    this.battery += this.batteryMode.value
 
-    if (this.batteryLevel > 1.0) {
+    if (this.battery > 1.0) {
       this.batteryMode = BatteryModes.FREEZE
-      this.batteryLevel = 1.0
+      this.battery = 1.0
     }
 
-    if (this.batteryLevel < 0.0) {
+    if (this.battery < 0.0) {
       this.batteryMode = BatteryModes.FREEZE
-      this.batteryLevel = 0.0
+      this.battery = 0.0
     }
 
   }
@@ -211,7 +217,7 @@ class Realtime {
             name: tag.name,
             id: tag.id,
             labels: tag.labels,
-            batteryLevel: tag.batteryLevel,
+            battery: tag.battery,
             batteryMode: tag.batteryMode,
             speed: tag.speed,
             originalSpeed: tag.originalSpeed,
