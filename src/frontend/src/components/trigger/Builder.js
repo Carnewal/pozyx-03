@@ -164,11 +164,13 @@ export default class Builder extends React.Component {
         <br/>
         {this.filterTypes[filter.type].editComponent && this.filterTypes[filter.type].editComponent(i)}
         <br/>
-        <FlatButton label='Ok' primary={true} onTouchTap={() => {this.setEditFilter(-1)}}/>
+        <FlatButton label='Ok' primary onTouchTap={() => {this.setEditFilter(-1)}}/>
+        <FlatButton label='Remove' secondary onTouchTap={() => {this.removeFilter(i)}}/>
       </ListItem>
     } else if(!filterType && editing) {
       return <ListItem leftIcon={<KeyboardArrowRight />} value={i} key={i} >
-        {this.TypeSelect()}
+        {this.TypeSelect()}<br/>
+        <FlatButton label='Remove' secondary onTouchTap={() => {this.removeFilter(i)}}/>
       </ListItem>
     } else if(filterType && !editing) {
       return <ListItem
@@ -211,6 +213,16 @@ export default class Builder extends React.Component {
       {
         triggerFilters: [...this.state.triggerFilters, {}],
         editingFilter: this.state.triggerFilters.length
+      }
+    )
+  }
+  removeFilter = (i) => {
+    const newFilters = [...this.state.triggerFilters]
+    newFilters.splice(i, 1)
+    this.setState(
+      {
+        triggerFilters: newFilters,
+        editingFilter: -1
       }
     )
   }
@@ -371,8 +383,6 @@ Builder.propTypes = {
   triggerEnabled: PropTypes.bool,
   createTrigger: PropTypes.func,
   publishTrigger: PropTypes.func,
-  addFilter: PropTypes.func,
-  removeFilter: PropTypes.func,
 }
 
 Builder.defaultProps = {

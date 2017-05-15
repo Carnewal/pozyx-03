@@ -112,6 +112,3 @@ api.put('/map/:map_id/trigger/:trigger_id', (req, res) => {
 })
 
 export default api
-
-
-

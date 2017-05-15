@@ -1,37 +1,11 @@
+import {SET_TRIGGERS} from 'frontend/actions/TriggerActions'
 
-const initialState = [
-    {
-      type: "inZone",
-      value: 2
-    },
-    {
-      type: "outZone",
-      value: 2
-    },
-    {
-      type: "battery",
-      value: [0, 0.2]
-    },
-    {
-      type: "labels",
-      value: [0, 1, 2]
-    },
-    {
-      type: "name",
-      value: "name contains string"
-    },
-    {
-      type: "hardwareVersion",
-      value: ["1.2.3", "1.2.5"]
-    },
-    {
-      type: "firmwareVersion",
-      value: ["1.2.3", "1.2.5"]
-    }
-]
-
+const initialState = []
 const trigger = (state = initialState, action) => {
   switch(action.type) {
+    case SET_TRIGGERS: {
+      return [...action.triggers]
+    }
     default:
       return state
   }

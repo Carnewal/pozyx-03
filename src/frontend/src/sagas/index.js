@@ -3,6 +3,7 @@ import uploadFloorplanSaga from 'frontend/sagas/UploadFloorplanSaga'
 import initialLoad from 'frontend/sagas/InitialLoad'
 import tagEdit from 'frontend/sagas/TagEdit'
 import zones from 'frontend/sagas/Zones'
+import triggers from 'frontend/sagas/Triggers'
 
 import { fork } from 'redux-saga/effects'
 
@@ -13,6 +14,7 @@ export default function * root () {
     fork(uploadFloorplanSaga),
     fork(initialLoad),
     fork(tagEdit),
-    fork(zones)
+    fork(zones),
+    fork(triggers)
   ]
 }
