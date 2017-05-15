@@ -22,7 +22,7 @@ class Filter {
     if (!tag.position)
       return false
     const zone = state.zones.get(this.reference)
-    return pip([tag.position.x, tag.position.y], zone.polygon)
+    return pip([tag.position.x, tag.position.y], zone.polygon.coordinates[0])
   }
 
   outsideZone(tag, state) {
