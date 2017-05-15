@@ -33,8 +33,8 @@ class Filter {
     return tag.labels.filter((label) => (label.labelName === this.reference)).length > 0
   }
 
-  battery(tags) {
-    return tags.filter((tag) => tag.battery >= this.reference[0] && tag.battery <= this.reference[1])
+  battery(tag) {
+    return tag.battery >= this.reference[0] && tag.battery <= this.reference[1]
   }
 
   hardwareVersion(tag) {
