@@ -9,7 +9,8 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import Avatar from 'material-ui/Avatar';
+import Avatar from 'material-ui/Avatar'
+import Slider from 'material-ui/Slider'
 
 import {List, ListItem, makeSelectable} from 'material-ui/List'
 import Toggle from 'material-ui/Toggle'
@@ -95,7 +96,37 @@ export default class Builder extends React.Component {
     battery: {
       icon: <BatteryFull />,
       description: 'With Battery percentage',
-      text: (value) => `With a battery between ${Math.round(value[0] * 100)} and ${Math.round(value[1]*100)}%`
+      text: (value) => `With a battery between ${Math.round(value[0] * 100)} and ${Math.round(value[1]*100)}%`,
+      editComponent: (i) => {
+        const filterValue = this.state.triggerFilters[i].value
+        return <div>
+          Lower limit:
+          <Slider
+            min={0}
+            max={0.99}
+            step={0.01}
+            value={filterValue && filterValue[0] || 0}
+            onChange={
+              (e,val) => {
+                this.editFilterValue(i, [val, filterValue && filterValue[1] || 0.01] )
+              }
+            }
+          />
+          Upper limit:
+          <Slider
+            min={0.01}
+            max={1}
+            step={0.01}
+            value={filterValue && filterValue[1] || 0.01}
+            onChange={
+              (e,val) => {
+                this.editFilterValue(i, [filterValue && filterValue[0] || 0, val] )
+              }
+            }
+          />
+          <span>Between: {Math.round(filterValue && filterValue[0]*100 || 0)} and {Math.round(filterValue && filterValue[1]*100 || 1)}%</span>
+        </div>
+      }
     },
     name: {
       icon: <KeyboardArrowRight />,
@@ -112,7 +143,7 @@ export default class Builder extends React.Component {
 
   TypeSelect() {
     return  <SelectField
-      floatingLabelText='Select type'
+      floatingLabelText='Select filter type'
       value={this.state.triggerFilters[this.state.editingFilter].type}
       onChange={this.setEditFilterType}
       autoWidth={true}
@@ -158,32 +189,8 @@ export default class Builder extends React.Component {
     }
   }
 
-  EditItem(i) {
-    if(i < 0 || !this.state.triggerFilters[i]) {
-      return <div>No item selected</div>
-    } else {
-      const filter = this.state.triggerFilters[i]
-      return <div>
-        <SelectField
-          floatingLabelText='Select type'
-          value={this.state.triggerFilters[this.state.editingFilter].type}
-          onChange={this.setEditFilterType}
-          autoWidth={true}
-          >
-          {Object.keys(this.filterTypes).map(
-            (ft) => <MenuItem value={ft} primaryText={this.filterTypes[ft].description} />
-          )}
-        </SelectField>
-        {filter.type && this.filterTypes[filter.type].editComponent && this.filterTypes[filter.type].editComponent(i)}
-
-      </div>
-    }
-  }
-
-
-
-
   editFilterValue = (i, value) => {
+    console.log(value)
     const ns = [...this.state.triggerFilters]
     ns[i] = Object.assign({}, ns[i], { value: value })
     this.setState({ triggerFilters: ns })
