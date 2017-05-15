@@ -30,7 +30,7 @@ class Filter {
   }
 
   label(tag) {
-    return tag.labels.filter((label) => (label.labelName === this.reference)).length > 0
+    return tag.labels.filter((label) => (label.name === this.reference)).length > 0
   }
 
   battery(tag) {

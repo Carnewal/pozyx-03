@@ -16,7 +16,8 @@ class Tag {
   constructor(modelTag, speed) {
     this.id = modelTag.id
     this.name = modelTag.name
-    this.labels = modelTag.labels
+    this.labels = []
+    modelTag.labels.forEach((label) => this.labels.push(label.dataValues))
     this.timestamp = new Date().toISOString()
     this.position = {
       x: Math.random() * maxdistance.x,
@@ -188,7 +189,10 @@ class Realtime {
     Model.Tag.findAll({
       where: {
         mapId: 2 ////hardcoded
-      }
+      },
+      include: [
+        {model: Model.Label, through: Model.TagLabel, as: 'labels'},
+      ]
     }).then((tags) => {
       this.mgr = new Manager(
         tags, // tags from db
