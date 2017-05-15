@@ -23,3 +23,6 @@ Datum,Start,Einde,Plaats,Omschrijving,Issue #,Opmerkingen
 24/04/17,19:15,23:00,Extern,"Zones verwijderen implementeren, Konva branch mergen met develop, develop met master. Master versie op de server zetten",,
 25/04/17,08:15,12:30,Campus,"sprint review meeting + sprint retrospective. Sprint 3: Triggers brainstorm",,
 02/05/17,08:15,12:30,Campus,"Triggers brainstorm + initiële implementatie.",,
+14/05/17,14:00,17:30,Extern,"Toevoegen notification + primus websocket impelementeren",24,
+15/05/17,20:00,23:47,Extern,"Last minute bugfixes, logboek",24,
+
