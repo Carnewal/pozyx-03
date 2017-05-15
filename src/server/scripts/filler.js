@@ -56,7 +56,14 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "ff0000",
-    labels: [],
+    labels: [  {
+        "labelId": 1,
+        "labelName": "Cart"
+      },
+      {
+        "labelId": 2,
+        "labelName": "Warehouse"
+      }],
     positions:[
       {x: 40, y: 40, z: 2, timestamp: new Date(2017, 3, 13).toJSON()},
       {x: 44, y: 35, z: 2, timestamp: new Date(2017, 3, 12).toJSON()},
@@ -74,7 +81,14 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "ff0000",
-    labels: [],
+    labels: [  {
+        "labelId": 1,
+        "labelName": "Cart"
+      },
+      {
+        "labelId": 2,
+        "labelName": "Warehouse"
+      }],
     positions:[{
       x: 40,
       y: 40,
@@ -87,7 +101,14 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "33cc33",
-    labels: [],
+    labels: [  {
+        "labelId": 1,
+        "labelName": "Cart"
+      },
+      {
+        "labelId": 3,
+        "labelName": "Storage Room"
+      }],
     positions:[{
       x: 40,
       y: 40,
@@ -100,7 +121,18 @@ model.sequelize.sync().then(function(){
     updateRate: 1.2,
     iconNumber: 1,
     iconColor: "0066ff",
-    labels: [],
+    labels: [  {
+        "labelId": 1,
+        "labelName": "Cart"
+      },
+      {
+        "labelId": 2,
+        "labelName": "Warehouse"
+      },
+      {
+        "labelId": 3,
+        "labelName": "Storage Room"
+      }],
     positions:[{
       x: 40,
       y: 40,
@@ -168,7 +200,14 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "ff0000",
-   labels: [],
+   labels: [ {
+       "labelId": 1,
+       "labelName": "Cart"
+     },
+     {
+       "labelId": 2,
+       "labelName": "Warehouse"
+     }],
    positions:[{
      x: 60,
      y: 40,
@@ -182,7 +221,14 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "ff0000",
-   labels: [],
+   labels: [{
+       "labelId": 1,
+       "labelName": "Cart"
+     },
+     {
+       "labelId": 2,
+       "labelName": "Warehouse"
+     }],
    positions:[{
      x: 70,
      y: 90,
@@ -195,7 +241,14 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "33cc33",
-   labels: [],
+     labels: [  {
+        "labelId": 1,
+        "labelName": "Cart"
+      },
+      {
+        "labelId": 3,
+        "labelName": "Storage Room"
+      }],
    positions:[{
      x: 67,
      y: 45,
@@ -208,7 +261,18 @@ model.Map.create({
    updateRate: 1.2,
    iconNumber: 1,
    iconColor: "0066ff",
-   labels: [],
+   labels: [{
+       "labelId": 1,
+       "labelName": "Cart"
+     },
+     {
+       "labelId": 2,
+       "labelName": "Warehouse"
+     },
+     {
+       "labelId": 3,
+       "labelName": "Storage Room"
+     }],
    positions:[{
      x: 115,
      y: 100,
