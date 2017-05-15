@@ -9,7 +9,7 @@ class Comparator {
   }
 
   execute(val) {
-    this[this.type](val)
+    return this[this.type](val)
   }
 
   any() {

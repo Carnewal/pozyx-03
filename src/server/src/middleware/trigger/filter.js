@@ -10,8 +10,8 @@ class Filter {
     this.type = type
   }
 
-  execute(val, state) {
-    this[this.type](val, state)
+  execute(tags, state) {
+    return tags.filter((tag) => this[this.type](tag, state))
   }
 
   name(tag) {
@@ -19,6 +19,8 @@ class Filter {
   }
 
   inZone(tag, state) {
+    if (!tag.position)
+      return false
     const zone = state.zones.get(this.reference)
     return pip([tag.position.x, tag.position.y], zone.polygon)
   }

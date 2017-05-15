@@ -73,10 +73,11 @@ class Notifier {
 
   check = () => {
     for (const [id, trigger] of this.triggers) {
-      if (!trigger.triggered && trigger.check(this.state)) {
+      const check = trigger.check(this.state)
+      if (!trigger.triggered && check) {
         trigger.action.execute(trigger.tags)
         trigger.triggered = true
-      } else if (trigger.triggered && !trigger.check(this.state)) {
+      } else if (trigger.triggered && !check) {
         trigger.triggered = false
       }
     }

@@ -13,15 +13,11 @@ class Action {
   }
 
   print() {
-    return () => {
-      console.log(this.message)
-    }
+    console.log(this.message)
   }
 
   printTags(tags) { //Dummy version
-    return () => {
-      console.log(tags)
-    }
+    console.log(tags)
   }
 
 }
