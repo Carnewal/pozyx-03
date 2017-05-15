@@ -184,7 +184,7 @@ class Realtime {
 
   constructor(server) {
     const primus = new Primus(server, {})
-    const notifier = new Notifier()
+    const notifier = new Notifier(primus)
     notifier.initState(2) //INIT with map id 2
     notifier.initTriggers(2)
 

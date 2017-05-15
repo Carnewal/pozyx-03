@@ -20,6 +20,8 @@ class Factory {
     }
 
     trigger.action = new Action(json.action.value, json.action.type)
+    trigger.name = modelTrigger.name
+    trigger.id = modelTrigger.id
 
     return trigger
   }

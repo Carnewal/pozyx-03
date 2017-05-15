@@ -3,9 +3,18 @@ import Model from '../../model'
 import Factory from './factory'
 
 class Notifier {
-  factory = new Factory()
-  state = new State()
-  triggers = new Map()
+
+  factory
+  state
+  triggers
+  primus
+
+  constructor(primus) {
+    this.factory = new Factory()
+    this.state = new State()
+    this.triggers = new Map()
+    this.primus = primus
+  }
 
   initState = (mapId) => {
     Model.Tag.findAll({
@@ -75,7 +84,7 @@ class Notifier {
     for (const [id, trigger] of this.triggers) {
       const check = trigger.check(this.state)
       if (!trigger.triggered && check) {
-        trigger.action.execute(trigger.tags)
+        trigger.action.execute(trigger, this.primus)
         trigger.triggered = true
       } else if (trigger.triggered && !check) {
         trigger.triggered = false
