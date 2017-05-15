@@ -96,13 +96,14 @@ api.post('/map/:map_id/triggers', (req, res) => {
  * TODO Docs
  */
 api.put('/map/:map_id/trigger/:trigger_id', (req, res) => {
-  model.update(
+  model.Trigger.update(
     {
+      mapId: req.params.map_id,
       active: req.body.active,
       name: req.body.name,
       json: JSON.stringify(req.body.json),
     },
-    {where: {id: req.param.trigger_id}}
+    {where: {id: req.params.trigger_id}}
   ).then((trigger) => {
     res.status(200).json(trigger)
   }).catch((err) => {
