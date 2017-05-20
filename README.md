@@ -63,4 +63,9 @@ Men begint het bouwen van een trigger door op de knop rechtsonder het scherm te 
 
 Telkens is er de optie om te selecteren hoeveel tags er minimaal/exact/maximaal moeten voldoen aan de geselecteerde voorwaarden. Dit zorgt ervoor dat er scenario's kunnen worden toegevoegd in verband met maximale bezetting in een ruimte, een minimale voorraad of aanwezigheid van producten of mensen binnen een bepaalde omgeving en daarnaast nog veel andere belangrijke use cases.
 
+Het laatste scherm laat de gebruiker een zinvolle naam geven aan de trigger en geeft de optie mee om deze op actief in te stellen.
+De finish-knop bevestigt de wijzigingen. In onze finale versie van ons project is er echter nog een mankement die deze triggers niet zoals verwacht doorgeeft naar de backend. Dit kan omzeild worden door met Postman handmatig requests op te sturen met de trigger data.
+
+Wanneer er aan alle voorwaarden van een trigger wordt voldaan komt er bij het notificatieicoon een nieuwe melding.
+
 
