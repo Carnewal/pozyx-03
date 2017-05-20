@@ -2,7 +2,7 @@
 
 Pozyx Indoor Positioning *Groep 3*
 
-Auteurs: Rutger Benoot, Brecht Carnewal, Rémy D'heygere, Tom Dorchain, Pieter-Jan Vandenberghe, Jonas Vermassen
+Auteurs: Brecht Carnewal, Rémy D'heygere, Tom Dorchain, Pieter-Jan Vandenberghe, Jonas Vermassen
 
 ***
 
@@ -38,7 +38,7 @@ We maken gebruik van de [MariaDB] databank en [Sequelize] ORM. De nodige plugins
 De configuratie van de databank verbinding gebeurt in [../server/src/config/](https://github.ugent.be/iii-vop2017/pozyx-03/tree/master/src/server/src/config), daar dient een `config.json` file voorzien te worden. Voorbeeld:
 ```json
 {
-  "development": {
+  "production": {
     "database": "pozyx",
     "host": "127.0.0.1",
     "username": "username",
@@ -47,6 +47,7 @@ De configuratie van de databank verbinding gebeurt in [../server/src/config/](ht
   }
 }
 ```
+In tussentijdse versies wordt "production" telkens worden vervangen door "development". De waarden "username" en "password" dienen worden te vervangen door de login gegevens die worden gebruikt om te connecteren met de databank.
 
 In de test omgeving wordt gebruik gemaakt van een filler script dat de databank opvult:
 ```
@@ -85,7 +86,7 @@ Vervolgens is de documentatie terug te vinden onder ../server/public/apidoc/
 
 ### Database Design
 
-![UML Database Design](http://i.imgur.com/G19w0bm.png "UML Database Design")
+![UML Database Design](http://i.imgur.com/145qNmo.png "UML Database Design")
 
 De laatste versie van het databank model is ook steeds terug te vinden op [google drive](https://drive.google.com/open?id=0B_pQpm22Q56JYUFYVDZyRnBpMkk).
 
