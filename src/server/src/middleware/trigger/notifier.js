@@ -82,6 +82,7 @@ class Notifier {
 
   check = () => {
     for (const [id, trigger] of this.triggers) {
+      if (!trigger.check) return
       const check = trigger.check(this.state)
       if (!trigger.triggered && check) {
         trigger.action.execute(trigger, this.primus)

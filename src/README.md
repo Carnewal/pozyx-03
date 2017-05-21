@@ -90,6 +90,97 @@ Vervolgens is de documentatie terug te vinden onder ../server/public/apidoc/
 
 De laatste versie van het databank model is ook steeds terug te vinden op [google drive](https://drive.google.com/open?id=0B_pQpm22Q56JYUFYVDZyRnBpMkk).
 
+### Triggers testen
+Om triggers te testen kan men zelf scenario's bedenken. 
+De scenario's waarbij een trigger zich moet voordoen kunnen dan aan de hand van het live script gesimuleerd worden. 
+Indien de trigger zich effectief voordoet bij het testen van het scenario dan is de test succesvol.
+
+Bijvoorbeeld: een trigger gaat af zodra 2 rode tags zich in de living bevinden. 
+Om dit scenario te kunnen testen is er eerst een trigger nodig die filtert op tags met label "rood" én die zich in de specifieke zone "living" bevinden (in dit voorbeeld heeft living als zone id 2). 
+Vervolgens kunnen we het scenario simuleren door het live script alle tags naar zelf gekozen locaties buiten de living te laten teleporteren en ze naar welgekozen punten in de living te laten lopen. 
+Zodra er 2 rode tags in de zone aangekomen zijn wordt de trigger afgevuurd. 
+
+Onderstaand voorbeeld toont hoe het trigger object voor dit scenario eruit ziet.
+
+```json
+{
+  "name": "At least 2 red tags in living",
+  "json" : {
+    "active": true,
+    "comparator": {
+      "type": "atLeast",
+      "value": 2
+    },
+    "action": {
+      "type": "notify",
+      "value": ""
+    },
+    "filters": [
+      {
+        "type": "inZone",
+        "value": 2
+      },
+      {
+      	"type": "label",
+        "value": "rood"
+      }
+    ]
+  }
+}
+```
+
+Onderstaand voorbeeld toont hoe het simulatie script eruit zou zien. 
+We gaan ervan uit dat de punten in "teleportLocations" buiten de zone "living" zijn en de punten in "targetLocations" binnen de zone liggen. 
+Elk achtereenvolgende locatie in beide arrays (teleportLocations en targetLocations) is voor een specifieke tag. 
+De vlag "haltAtTarget" geeft aan dat de tags moeten stoppen zodra ze aangekomen zijn aan hun respectievelijke target locations.
+
+```json
+{
+    "type": "TELEPORT",
+    "scenario": {
+        "teleportLocations": [
+            {"x": 0, "y": 0},
+            {"x": 20, "y": 0},
+            {"x": 40, "y": 0},
+            {"x": 60, "y": 0},
+            {"x": 80, "y": 0},
+            {"x": 100, "y": 0}
+        ],
+        "targetLocations": [
+            {"x": 50, "y": 50},
+            {"x": 50, "y": 50},
+            {"x": 50, "y": 50},
+            {"x": 50, "y": 50},
+            {"x": 50, "y": 50},
+            {"x": 50, "y": 50}
+        ],
+        "haltAtTarget": true
+    }
+}
+```
+
+Het is ook mogelijk batterij verbuik en opladen te simuleren. 
+Analoog wordt voor elke tag het wenselijke gedrag in een array meegegeven.
+
+```json
+{
+    "type": "BATTERY",
+    "scenario": {
+        "modes": [
+            "FREEZE",
+            "CHARGE",
+            "CHARGE",
+            "CHARGE",
+            "CHARGE",
+            "DRAIN",
+            "DRAIN",
+            "DRAIN",
+            "DRAIN"
+        ]
+    }
+}
+```
+
 [//]: #
 
    [MariaDB]: <https://mariadb.org/>

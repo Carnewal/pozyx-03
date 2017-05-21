@@ -2,7 +2,7 @@ import Primus from 'primus'
 import Notifier from './middleware/trigger/notifier'
 import Model from './model'
 
-const maxdistance = {x: 75, y: 75, z: 3} // meter
+const maxdistance = {x: 225, y: 150, z: 3} // meter
 
 const interval = 1000 / 30
 

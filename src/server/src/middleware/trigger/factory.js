@@ -5,13 +5,19 @@ import Action from './action'
 class Factory {
 
   buildTrigger(modelTrigger) {
+    const trigger = {}
+    trigger.name = modelTrigger.dataValues.name
+    trigger.id = modelTrigger.dataValues.id
+
+    if (!modelTrigger.json) return trigger
+
     const json = JSON.parse(modelTrigger.json)
     const comparator = new Comparator(json.comparator.value, json.comparator.type)
     const filters = []
     json.filters.forEach((filter) => {
       filters.push(new Filter(filter.value, filter.type))
     })
-    const trigger = {}
+
 
     trigger.check = (state) => {
       const tags = Array.from(state.tags.values())
@@ -20,8 +26,6 @@ class Factory {
     }
 
     trigger.action = new Action(json.action.value, json.action.type)
-    trigger.name = modelTrigger.dataValues.name
-    trigger.id = modelTrigger.dataValues.id
 
     return trigger
   }
